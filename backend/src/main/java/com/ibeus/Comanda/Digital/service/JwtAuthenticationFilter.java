@@ -1,5 +1,13 @@
 package com.ibeus.Comanda.Digital.service;
 
+// --- NOVOS IMPORTS NECESSÁRIOS ---
+import java.util.ArrayList;
+import java.util.List;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import io.jsonwebtoken.Claims;
+// --- FIM DOS NOVOS IMPORTS ---
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -26,11 +34,23 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
         if (token != null) {
             try {
-                String username = tokenProvider.validateToken(token);
+                // --- MUDANÇA 1: AGORA RECEBEMOS O OBJETO 'Claims' ---
+                Claims claims = tokenProvider.validateToken(token);
+                String username = claims.getSubject();
+                
+                // --- MUDANÇA 2: EXTRAÍMOS A 'role' DE DENTRO DO TOKEN ---
+                String role = claims.get("role", String.class);
+                
+                // --- MUDANÇA 3: CRIAMOS A LISTA DE PERMISSÕES ---
+                List<GrantedAuthority> authorities = new ArrayList<>();
+                if (role != null) {
+                    authorities.add(new SimpleGrantedAuthority(role));
+                }
 
-                // Autentica o usuário no contexto do Spring Security
+                // --- MUDANÇA 4: ENTREGAMOS AS PERMISSÕES AO SPRING ---
                 PreAuthenticatedAuthenticationToken authentication =
-                        new PreAuthenticatedAuthenticationToken(username, null, null);
+                        new PreAuthenticatedAuthenticationToken(username, null, authorities);
+                
                 SecurityContextHolder.getContext().setAuthentication(authentication);
             } catch (Exception e) {
                 SecurityContextHolder.clearContext();

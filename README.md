@@ -1,109 +1,117 @@
+Com certeza\! Aqui está o arquivo `README.md` completo, incluindo a arquitetura de pastas e as instruções de configuração do `env.ts` para ambientes local e de nuvem.
+
+```markdown
 # Vending Machine Social (Projeto de Formação Técnica)
 
-![Status](https://img.shields.io/badge/status-conclu%C3%ADdo-brightgreen)
-![Java](https://img.shields.io/badge/Java-17-blue)
+![Status](https://img.shields.io/badge/status-CONCLU%C3%8DDO-brightgreen)
+![Java](https://img-shields.io/badge/Java-17-blue)
 ![Spring](https://img.shields.io/badge/Spring_Boot-3.3-green)
 ![Angular](https://img.shields.io/badge/Angular-17-red)
-![MySQL](https://img.shields.io/badge/MySQL-8.0-orange)
+![MySQL](https://img.shields.io/badge/MySQL-Railway-orange)
 
-Este projeto é um sistema Full-Stack de **Vending Machine Social**, simulando a distribuição automatizada de produtos essenciais. O sistema implementa um modelo de gestão social onde os produtos retirados são registrados, contabilizados e o custo é rastreado para cobrança posterior de ONGs parceiras.
-
-O projeto foi desenvolvido como parte da Formação Técnica, transformando um antigo projeto de e-commerce ("Los Gourmet") em um sistema de logística social robusto.
+Este projeto implementa um sistema Full-Stack de **Vending Machine Social**, simulando um modelo de **gestão social** onde os produtos retirados são registrados, contabilizados e o custo é rastreado para cobrança posterior de ONGs parceiras.
 
 ---
 
-## 🚀 Funcionalidades Principais
+## ✅ Funcionalidades Principais
 
-O sistema é dividido em duas frentes: a interface pública (Cliente) e o painel de gestão (Gerente/ONG).
+O sistema foi estruturado para atender a todas as demandas de um projeto em produção, com divisões claras entre as responsabilidades de cada usuário.
 
 ### 👨‍💻 Lado do Cliente (Público)
-* **Cardápio de Itens:** Visualização dos itens sociais disponíveis (ex: Fraldas, Absorventes, Arroz) com seus custos.
-* **Cálculo de Lead Time:** O carrinho calcula dinamicamente o tempo de retirada baseado na fórmula: `Tempo Fixo da Máquina (10 min) + (Quantidade × Tempo de Reposição do Item)`.
-* **Sistema de Conta:**
-    * **Registro Seguro:** Usuários podem criar uma conta (com senha criptografada em BCrypt).
-    * **Login por Documento:** Autenticação segura usando Documento (CPF) e Senha.
-    * **Troca de Senha:** Usuários logados podem alterar a própria senha com segurança (validando a senha antiga).
-* **Registro de Retirada:** Ao "Finalizar", a retirada é registrada no banco de dados (tabela `withdrawals`), contabilizando o custo para o usuário.
+* **Cardápio e Carrinho:** Catálogo de itens e cálculo do total da retirada.
+* **Cálculo de Lead Time Dinâmico:** O carrinho calcula o tempo de retirada baseado na fórmula: `10 min (Fixo) + (Quantidade Solicitada × Tempo de Reposição do Item)`.
+* **Histórico de Retiradas:** Usuários logados podem ver seu histórico de pedidos (`/minhas-retiradas`).
+* **Autenticação Segura:** Registro e Login por Documento (CPF) e Senha, com proteção de rota para troca de senha.
 
 ### 🔐 Lado do Admin (Gerente/ONG)
-* **Acesso Seguro:** Painel protegido que só pode ser acessado por usuários com `role` de "gerente".
-* **Gerenciamento de Itens (CRUD):** O gerente pode Criar, Ler, Atualizar e Deletar itens do catálogo, incluindo `nome`, `descrição`, `custo` e `tempo de reposição`.
-* **Relatório de Retiradas:** O gerente tem acesso a uma página de "Relatórios" que exibe **todas as retiradas** feitas no sistema, mostrando o usuário, os itens, a data e o **custo total para cobrança da ONG**.
+* **Acesso Restrito:** Painel protegido que exige a role **`GERENTE`**.
+* **Gerenciamento de Itens (CRUD):** O gerente pode **Criar, Ler, Atualizar e Deletar** itens do catálogo.
+* **Relatórios:** Exibe **todas as retiradas** do sistema, detalhando usuário, itens e o custo total (`/relatorios`).
 
 ---
 
-## 🛠️ Tecnologias Utilizadas
+## 🌐 Arquitetura, Hosting e Estrutura de Pastas
 
-Este projeto é um "monorepo" contendo duas aplicações separadas:
+O projeto utiliza uma arquitetura Full-Cloud com as seguintes plataformas:
 
-* **Back-end (`/backend`)**
-    * **Java 17**
-    * **Spring Boot 3** (com `spring-boot-starter-web`)
-    * **Spring Security 6** (para segurança de endpoints e criptografia `BCrypt`)
-    * **JWT (Java Web Token)** (para autenticação stateless)
-    * **Spring Data JPA (Hibernate)** (para comunicação com o banco)
-    * **MySQL 8** (Banco de Dados relacional)
+| Camada | Tecnologia | Plataforma de Publicação |
+| :--- | :--- | :--- |
+| **Banco de Dados** | **MySQL 8** | **Railway** |
+| **Back-end (API)** | **Java 17 / Spring Boot 3** | **Render** |
+| **Front-end (Web)** | **Angular 17** | **Vercel** |
 
-* **Front-end (`/frontend`)**
-    * **Angular 17** (usando Standalone Components)
-    * **TypeScript**
-    * **CSS Moderno** (com variáveis e layout Flexbox/Grid)
-    * **Angular Router** (para navegação)
-    * **Auth0 Angular-JWT** (para interceptar e enviar o token automaticamente)
+### Estrutura de Pastas
+
+O projeto é um **monorepo** com separação clara entre as aplicações:
+
+```
+
+dish-app-java/
+├── backend/                  \# Aplicação Spring Boot
+│   ├── src/main/java/        \# Código Java (Controladores, Serviços, Configurações)
+│   ├── src/main/resources/   \# Arquivos de Configuração (.properties)
+│   └── pom.xml               \# Dependências Maven
+└── frontend/                 \# Aplicação Angular
+├── src/app/
+│   ├── components/       \# Componentes reutilizáveis (Formulários, Listas)
+│   ├── pages/            \# Componentes de rotas (Login, Gerente, Cliente)
+│   ├── services/         \# Lógica de negócio e comunicação com a API
+│   └── app.config.ts     \# Configurações de rotas e injeção (Interceptors, Guards)
+└── angular.json          \# Configuração do Workspace Angular
+
+````
 
 ---
 
-## ⚙️ Como Rodar o Projeto Localmente
+## ⚙️ Configuração (Local vs. Nuvem)
 
-Siga estes passos para rodar a aplicação na sua máquina.
+Para alternar entre ambientes de desenvolvimento (local) e produção (nuvem), é necessário configurar a URL da API e as credenciais do banco.
 
-### Pré-requisitos
-* **Java JDK 17** (ou superior)
-* **Node.js 18** (ou superior)
-* **MySQL 8** (ou um servidor compatível, como o XAMPP)
-* Uma IDE Java (ex: **Eclipse** ou IntelliJ)
-* Um editor de código (ex: **VS Code**)
-* (Opcional) **HeidiSQL** ou DBeaver para gerenciar o banco.
+### 1. Configuração do Back-end (Conexão com Banco)
 
-### 1. Configuração do Back-end (Eclipse)
+Para rodar o back-end (`/backend`), as credenciais do banco de dados são injetadas através de **Variáveis de Ambiente**.
 
-1.  Abra seu servidor MySQL (XAMPP, MySQL Workbench, etc.).
-2.  Usando o HeidiSQL (ou similar), crie um novo banco de dados (schema) chamado `comanda_digital`.
-3.  Abra a pasta `backend/` como um projeto Maven existente na sua IDE (Eclipse/IntelliJ).
-4.  Vá para o arquivo `backend/src/main/resources/application.properties`.
-5.  Altere as linhas `spring.datasource.username` e `spring.datasource.password` para bater com o seu usuário e senha do MySQL (ex: `root` e `root`).
-6.  Encontre e rode o arquivo `ComandaDigitalApplication.java`.
-7.  O Spring Boot vai iniciar. No console, você verá o Hibernate **criar automaticamente** todas as tabelas (`users`, `dishes`, `withdrawals`, etc.).
-8.  O back-end estará rodando em `http://localhost:8081`.
+| Variável | Uso |
+| :--- | :--- |
+| `DB_URL` | Endereço (`shortline.proxy.rlwy.net:30748`) |
+| `DB_NAME` | Nome do Schema (`railway`) |
+| `DB_USER` | Usuário do MySQL (root) |
+| `DB_PASS` | Senha do MySQL |
 
-### 2. Configuração do Front-end (VS Code)
+> **Para rodar LOCALMENTE (Eclipse/IntelliJ):** Estas variáveis devem ser configuradas na aba **Environment Variables** da sua **Run Configuration**.
 
-1.  Abra a pasta **raiz** do projeto (`dish-app-java/`) no VS Code.
-2.  Abra um novo terminal.
-3.  Entre na pasta do front-end: `cd frontend`
-4.  Instale as dependências: `npm install`
-5.  Inicie o servidor de desenvolvimento: `ng serve`
-6.  O front-end estará rodando em `http://localhost:4200`.
+> **Para rodar na NUVEM (Render):** Estas variáveis devem ser configuradas na seção **Environment** do seu Web Service no Render.
 
-### 3. Criando Usuários (Importante!)
+### 2. Configuração do Front-end (`env.ts`)
 
-O sistema não permite que usuários se registrem como "Gerente" por segurança.
+O arquivo `frontend/src/app/services/config/env.ts` define a URL da API que o Angular deve utilizar:
 
-1.  **Para criar um Usuário Cliente:**
-    * Vá em `http://localhost:4200/register`.
-    * Crie uma conta. O `role` será "cliente" por padrão.
-2.  **Para criar um Usuário Gerente (Admin):**
-    * **Método 1 (Recomendado):** Crie um usuário "cliente" (como no passo 1).
-    * Vá no HeidiSQL, abra a tabela `users`.
-    * Encontre o usuário que você criou e mude o valor da coluna `role` de "cliente" para "gerente".
-    * **Método 2 (SQL):** Rode o script abaixo no seu HeidiSQL para criar um admin (Documento: `123`, Senha: `admin`).
-    ```sql
-    INSERT INTO users (name, email, password, role, documento) 
-    VALUES (
-      'Admin Vending', 
-      'admin@vending.com', 
-      '$2a$10$f/d.m.61KjL/sA.1Nms5vu6.NlqgQ.d1TyN.a2/a/133sJbC.v8s6', 
-      'gerente', 
-      '123'
-    );
+| Ambiente | `production` | `apiUrl` |
+| :--- | :--- | :--- |
+| **TESTE LOCAL** | `false` | `'http://localhost:8081'` |
+| **PRODUÇÃO** | `true` | `'https://vending-machine-z87w.onrender.com'` |
+
+**Instrução de Uso:**
+* **Ao desenvolver (local):** Mantenha `production: false` e `apiUrl` apontando para `localhost`.
+* **Ao publicar (Vercel):** Mude para `production: true` e `apiUrl` para a URL do Render, e então faça o `commit` e `push`.
+
+---
+
+## 🛠️ Como Rodar o Projeto Localmente
+
+### 1. Iniciar Back-end
+
+1.  Configure as **Environment Variables** na sua IDE (conforme instrução acima).
+2.  Rode a `ComandaDigitalApplication.java` no Eclipse/IntelliJ.
+3.  O servidor estará em `http://localhost:8081`.
+
+### 2. Iniciar Front-end
+
+1.  Ajuste o `frontend/src/app/services/config/env.ts` para o modo **Local** (`localhost:8081`).
+2.  No terminal, na pasta `frontend/`:
+    ```bash
+    npm install
+    ng serve
     ```
+3.  O aplicativo estará em `http://localhost:4200/`.
+```

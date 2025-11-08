@@ -3,7 +3,7 @@ package com.ibeus.Comanda.Digital.model;
 import jakarta.persistence.*;
 
 @Entity
-@Table(name = "dishes") // Vamos continuar usando a tabela "dishes" por enquanto
+@Table(name = "dishes")
 public class Dish {
 
     @Id
@@ -14,13 +14,15 @@ public class Dish {
 
     private String description;
 
-    // 1. RENOMEAMOS "price" PARA "custo"
-    @Column(name = "custo") // O nome no banco de dados será "custo"
+    @Column(name = "custo")
     private Double custo;
 
-    // 2. ADICIONAMOS O TEMPO DE REPOSIÇÃO (em minutos, por exemplo)
     @Column(name = "tempo_reposicao_min")
     private Integer tempoReposicao;
+    
+    // --- NOVO CAMPO: Bloqueio Lógico (Soft Delete) ---
+    @Column(name = "is_active", nullable = false)
+    private boolean isActive = true; // Por padrão, o prato é ativo
 
     // --- Getters e Setters Gerados Manualmente ---
 
@@ -48,7 +50,6 @@ public class Dish {
         this.description = description;
     }
 
-    // Getter e Setter para "custo"
     public Double getCusto() {
         return custo;
     }
@@ -57,12 +58,20 @@ public class Dish {
         this.custo = custo;
     }
 
-    // Getter e Setter para "tempoReposicao"
     public Integer getTempoReposicao() {
         return tempoReposicao;
     }
 
     public void setTempoReposicao(Integer tempoReposicao) {
         this.tempoReposicao = tempoReposicao;
+    }
+    
+    // --- NOVO: Getters e Setters para isActive ---
+    public boolean isActive() {
+        return isActive;
+    }
+
+    public void setActive(boolean isActive) {
+        this.isActive = isActive;
     }
 }

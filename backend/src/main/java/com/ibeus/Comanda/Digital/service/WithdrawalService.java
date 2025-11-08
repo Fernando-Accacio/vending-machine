@@ -69,11 +69,17 @@ public class WithdrawalService {
     
     
     /**
-     * Busca todas as retiradas do banco, para o relatório.
+     * Busca todas as retiradas do banco, para o relatório (Gerente).
      */
     public List<Withdrawal> findAll() {
-        // --- MUDANÇA AQUI ---
-        // Trocamos o 'findAll()' (lento) pelo 'findAllWithDetails()' (otimizado)
         return withdrawalRepository.findAllWithDetails();
+    }
+    
+    /**
+     * NOVO: Busca retiradas por email (Histórico do Cliente).
+     */
+    public List<Withdrawal> findByEmail(String email) {
+        // Isso depende de você ter configurado a relação correta no WithdrawalRepository
+        return withdrawalRepository.findByUserEmail(email); 
     }
 }

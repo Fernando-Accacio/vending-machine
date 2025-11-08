@@ -21,27 +21,32 @@ public class JwtProvider {
     // Gera o token
     public String generateToken(String email, String role, String name, String phone) {
         return Jwts.builder()
-            .setSubject(email) // <-- 1. MUDANÇA AQUI (Define o "Principal")
+            .setSubject(email) 
+            
+            // --- CORREÇÃO AQUI: Garante que o campo 'email' existe no token ---
+            .claim("email", email) 
+            
             .claim("role", role)
             .claim("name", name)
             .claim("phone", phone)
-            .claim("iat", new Date()) // Issued At
-            .claim("exp", new Date(System.currentTimeMillis() + EXPIRATION_TIME)) // Expiration
+            .claim("iat", new Date()) 
+            .claim("exp", new Date(System.currentTimeMillis() + EXPIRATION_TIME)) 
             .signWith(secretKey)
             .compact();
     }
 
     // Valida o token e extrai as informações do usuário
-    public String validateToken(String token) {
+    // --- MUDANÇA 1: VAI RETORNAR 'Claims', NÃO 'String' ---
+    public Claims validateToken(String token) {
         try {
             Claims claims = Jwts.parser()
-                .setSigningKey(secretKey) // Set the key once
+                .setSigningKey(secretKey) 
                 .build()
-                .parseClaimsJws(token) // Parse the JWT
+                .parseClaimsJws(token) 
                 .getBody();
 
-            // 2. MUDANÇA AQUI (Retorna o "Subject", que agora é o email)
-            return claims.getSubject(); 
+            // --- MUDANÇA 2: RETORNA TODAS AS INFORMAÇÕES ---
+            return claims; 
             
         } catch (UnsupportedJwtException e) {
             throw new RuntimeException("Token não suportado", e);

@@ -68,8 +68,9 @@ public class SecurityConfig {
                 
                 // --- ROTAS DE ADMIN ---
                 // Apenas 'gerente' pode ver relatórios ou gerenciar itens (dishes)
-                .requestMatchers("/withdrawals").hasRole("GERENTE") // Rota de Relatórios
-                .requestMatchers("/dishes/**").hasRole("GERENTE") // Rota de Itens
+                .requestMatchers(HttpMethod.POST, "/withdrawals").authenticated() // Permite POST para qualquer logado
+                .requestMatchers(HttpMethod.GET, "/withdrawals").hasAuthority("GERENTE") // Apenas Gerente vê a lista (GET)
+                // Se o seu método de criar pedido for POST, use a linha acima.                .requestMatchers("/dishes/**").hasAuthority("GERENTE") // Rota de Itens
                 
                 // Todo o resto precisa de autenticação (token JWT)
                 .anyRequest().authenticated() 

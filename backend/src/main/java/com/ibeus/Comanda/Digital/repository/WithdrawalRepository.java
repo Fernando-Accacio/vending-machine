@@ -9,14 +9,15 @@ import java.util.List;
 @Repository
 public interface WithdrawalRepository extends JpaRepository<Withdrawal, Long> {
     
-    // --- MÉTODO NOVO ADICIONADO ---
-    //
-    // Esta query customizada "força" o Hibernate a buscar tudo de uma vez.
-    // "JOIN FETCH" significa "vá buscar os dados relacionados na mesma viagem"
+    // NOVO: Busca retiradas pelo email do usuário (Spring Data JPA Magic)
+    // Assume que a entidade Withdrawal tem um campo User e User tem um campo email
+    List<Withdrawal> findByUserEmail(String email); 
+    
+    // --- MÉTODO ANTIGO ADICIONADO ---
     @Query("SELECT w FROM Withdrawal w " +
-           "LEFT JOIN FETCH w.user " +
-           "LEFT JOIN FETCH w.items i " +
-           "LEFT JOIN FETCH i.dish " +
-           "ORDER BY w.withdrawalDate DESC")
+            "LEFT JOIN FETCH w.user " +
+            "LEFT JOIN FETCH w.items i " +
+            "LEFT JOIN FETCH i.dish " +
+            "ORDER BY w.withdrawalDate DESC")
     List<Withdrawal> findAllWithDetails();
 }
