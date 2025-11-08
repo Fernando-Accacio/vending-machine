@@ -3,6 +3,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+// CORREÇÃO: Importa o objeto environment central
 import { environment } from '../../environments/environment'; 
 
 // 1. INTERFACE
@@ -19,7 +20,7 @@ export interface Dish {
 })
 export class DishService {
   
-  // *** CORREÇÃO AQUI: Usa environment.apiUrl diretamente ***
+  // CORREÇÃO AQUI: Usa environment.apiUrl diretamente
   private apiUrl = `${environment.apiUrl}/dishes`; 
 
   constructor(private http: HttpClient) {}

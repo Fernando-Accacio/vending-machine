@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-// *** NOVA IMPORTAÇÃO DO ARQUIVO DE AMBIENTE PADRÃO ***
+// CORREÇÃO: Importa o objeto environment central
 import { environment } from '../../environments/environment'; 
 
 // Interface (molde) para o DTO do back-end

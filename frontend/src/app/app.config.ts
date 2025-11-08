@@ -10,6 +10,7 @@ import { ReportsComponent } from './pages/gerente/reports/reports.component';
 import { RegisterComponent } from './pages/register/register.component';
 import { ChangePasswordComponent } from './pages/change-password/change-password.component';
 import { MyWithdrawalsComponent } from './pages/cliente/my-withdrawals/my-withdrawals.component'; // NOVO IMPORT
+import { authGuard } from './services/auth/guards/auth-guard';
 
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { clienteGuardGuard } from './services/auth/guards/cliente-guard.guard';
@@ -28,8 +29,7 @@ const routes: Routes = [
   { path: 'relatorios', component: ReportsComponent, canActivate: [gerenteGuardGuard] },
 
   // Rota de Mudar Senha (Qualquer um logado)
-  { path: 'change-password', component: ChangePasswordComponent, canActivate: [clienteGuardGuard] },
-
+  { path: 'change-password', component: ChangePasswordComponent, canActivate: [authGuard] },  
   // --- ROTA DE CLIENTE NOVO ---
   { path: 'minhas-retiradas', component: MyWithdrawalsComponent, canActivate: [clienteGuardGuard] },
 
@@ -54,7 +54,8 @@ export const appConfig: ApplicationConfig = {
           tokenGetter: tokenGetter,
           allowedDomains: [
             "localhost:8081", 
-            "vending-machine-z87w.onrender.com"
+            "vending-machine-z87w.onrender.com",
+            "vending-social.vercel.app"
           ], 
           disallowedRoutes: [
             "https://vending-machine-z87w.onrender.com/auth/login",
