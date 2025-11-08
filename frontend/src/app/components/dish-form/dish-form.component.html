@@ -1,0 +1,24 @@
+<!-- src/app/components/dish-form/dish-form.component.html -->
+
+<h2>{{ isEdit ? 'Editar Prato' : 'Adicionar Prato' }}</h2>
+<div>
+<form (ngSubmit)="saveDish()">
+  <label for="name">Nome:</label>
+  <input type="text" id="name" [(ngModel)]="dish.name" name="name" required>
+
+  <label for="description">Descrição:</label>
+  <input type="text" id="description" [(ngModel)]="dish.description" name="description" required>
+
+<div>
+  <label for="custo">Custo:</label>
+  <input type="number" id="custo" [(ngModel)]="dish.custo" name="custo" required>
+</div>
+<div>
+  
+  <label for="tempoReposicao">Tempo de Reposição (min):</label>
+  <input type="number" id="tempoReposicao" [(ngModel)]="dish.tempoReposicao" name="tempoReposicao" required>
+</div>
+
+  <button class="adicionar" type="submit">{{ isEdit ? 'Atualizar' : 'Adicionar' }}</button>
+</form>
+</div>

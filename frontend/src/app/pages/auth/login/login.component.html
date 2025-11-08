@@ -1,0 +1,27 @@
+<a routerLink="/" class="back-arrow-link">
+  <i class="fas fa-arrow-left"></i> Voltar ao Cardápio
+</a>
+
+<div class="login-container">
+  <h2>Login</h2>
+  <div>
+    <form (ngSubmit)="login()">
+      
+      <div class="form-group">
+        <label for="documento">Documento:</label>
+        <input type="text" id="documento" [(ngModel)]="user.documento" name="documento" required>
+      </div>
+      
+      <div class="form-group">
+        <label for="password">Senha:</label> <input type="password" id="password" [(ngModel)]="user.password" name="password" required>
+      </div>
+      
+      <button class="adicionar" type="submit">Entrar</button>
+
+      <div class="register-link">
+        Não tem uma conta? <a routerLink="/register">Registre-se aqui</a>
+      </div>
+
+    </form>
+  </div>
+</div>

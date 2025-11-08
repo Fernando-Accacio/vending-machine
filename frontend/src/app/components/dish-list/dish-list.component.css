@@ -1,0 +1,81 @@
+h2 {
+  margin-top: 0;
+  border-bottom: 2px solid var(--border-color);
+  padding-bottom: 10px;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 20px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+}
+
+th, td {
+  border: 1px solid var(--border-color);
+  padding: 12px;
+  text-align: left;
+  vertical-align: middle;
+}
+
+thead th {
+  background-color: #f9fafb; /* Gray 50 */
+  color: var(--text-color-light);
+  font-weight: 600;
+}
+
+tbody tr:nth-child(even) {
+  background-color: #fdfdfd;
+}
+
+/* Botões de Ação */
+td:last-child {
+  display: flex;
+  gap: 10px;
+  border-bottom: none; /* Remove borda dupla */
+  border-left: none;
+  border-right: none;
+}
+
+.delete, .edit {
+  padding: 8px 12px;
+  border: none;
+  border-radius: 6px;
+  color: white;
+  font-weight: 500;
+  cursor: pointer;
+  text-decoration: none;
+  font-size: 14px;
+}
+
+.delete {
+  background-color: var(--danger-color);
+}
+.delete:hover {
+  background-color: #dc2626;
+}
+
+.edit {
+  background-color: #2563eb; /* Blue 600 */
+}
+.edit:hover {
+  background-color: #1d4ed8; /* Blue 700 */
+}
+
+/* Botão "NOVO ITEM" (herda de .primary-btn, mas verde) */
+.newDish {
+  display: inline-block;
+  padding: 14px 20px;
+  border: none;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: 600;
+  color: white;
+  background-color: var(--secondary-color); /* Verde */
+  cursor: pointer;
+  transition: background-color 0.2s;
+  text-decoration: none;
+}
+.newDish:hover {
+  background-color: #059669; /* Verde mais escuro */
+}

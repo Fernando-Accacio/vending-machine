@@ -1,0 +1,52 @@
+/* 1. Estilo para a Seta de Voltar */
+.back-arrow-link {
+  display: block;
+  max-width: 400px;
+  margin: 1.5rem auto 0;
+  padding: 0 2.5rem;
+  font-weight: 500;
+  color: var(--text-color-light);
+  text-decoration: none;
+  font-size: 0.9rem;
+}
+.back-arrow-link:hover {
+  color: var(--text-color);
+}
+.back-arrow-link i {
+  margin-right: 5px;
+}
+
+/* 2. O resto do CSS (que você já tinha, mas agora vai funcionar) */
+.container {
+  max-width: 400px;
+  margin: 1rem auto 4rem; /* Margem menor no topo por causa da seta */
+  padding: 2.5rem;
+  background-color: var(--card-background);
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+}
+
+h2 {
+  text-align: center;
+  margin-top: 0;
+  margin-bottom: 2rem;
+  font-size: 1.8rem;
+  color: var(--text-color);
+}
+
+.adicionar {
+  margin-top: 1.5rem;
+}
+
+.login-link {
+  text-align: center;
+  margin-top: 1.5rem;
+  font-size: 14px;
+  color: var(--text-color-light);
+}
+
+.login-link a {
+  font-weight: 600;
+  color: var(--primary-color);
+}

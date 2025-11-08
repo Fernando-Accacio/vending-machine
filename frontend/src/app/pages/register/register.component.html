@@ -1,0 +1,47 @@
+<a routerLink="/login" class="back-arrow-link">
+  <i class="fas fa-arrow-left"></i> Voltar ao Login
+</a>
+
+<div class="container">
+  <h2>Registrar Novo Usuário</h2>
+  <div>
+    <form (ngSubmit)="register()">
+      
+      <div class="form-group">
+        <label for="name">Nome Completo:</label>
+        <input type="text" id="name" [(ngModel)]="registerData.name" name="name" required>
+      </div>
+
+      <div class="form-group">
+        <label for="email">Email:</label>
+        <input type="email" id="email" [(ngModel)]="registerData.email" name="email" required>
+      </div>
+
+      <div class="form-group">
+        <label for="documento">Documento (CPF):</label>
+        <input type="text" id="documento" [(ngModel)]="registerData.documento" name="documento" required>
+      </div>
+      
+      <div class="form-group">
+        <label for="phoneNumber">Telefone:</label>
+        <input type="text" id="phoneNumber" [(ngModel)]="registerData.phoneNumber" name="phoneNumber">
+      </div>
+
+      <div class="form-group">
+        <label for="password">Senha:</label>
+        <input type="password" id="password" [(ngModel)]="registerData.password" name="password" required>
+      </div>
+
+      <div class="form-group">
+        <label for="confirmPassword">Confirmar Senha:</label>
+        <input type="password" id="confirmPassword" [(ngModel)]="registerData.confirmPassword" name="confirmPassword" required>
+      </div>
+
+      <button class="adicionar" type="submit">Registrar</button>
+
+      <div class="login-link">
+        Já tem uma conta? <a routerLink="/login">Faça o login</a>
+      </div>
+    </form>
+  </div>
+</div>

@@ -1,0 +1,38 @@
+# Ignora logs e arquivos de sistema
+*.log
+npm-debug.log*
+.DS_Store
+Thumbs.db
+
+# Ignora arquivos de IDE
+.vscode/
+.idea/
+*.iml
+*.project
+*.classpath
+.settings/
+
+# --- FRONT-END (Angular / Node.js) ---
+
+# Pasta de dependências (OBRIGATÓRIO)
+frontend/node_modules/
+
+# Pasta de build (produção)
+frontend/dist/
+frontend/build/
+
+# Cache do Angular
+frontend/.angular/cache/
+
+# --- BACK-END (Java / Maven) ---
+
+# Pasta de build (OBRIGATÓRIO)
+backend/target/
+
+# Arquivos gerados pelo Maven
+backend/pom.xml.tag
+backend/pom.xml.releaseBackup
+backend/pom.xml.versionsBackup
+backend/release.properties
+backend/dependency-reduced-pom.xml
+backend/.mvn/

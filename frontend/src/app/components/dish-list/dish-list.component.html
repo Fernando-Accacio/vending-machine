@@ -1,0 +1,30 @@
+<h2>Gerenciamento de Itens</h2>
+
+<div>
+  <table>
+    <tr>
+      <th>ID</th>
+      <th>Nome</th>
+      <th>Descrição</th>
+      <th>Custo (R$)</th>
+      <th>Tempo Reposição (min)</th>
+      <th>Ações</th>
+    </tr>
+
+    <tr *ngFor="let dish of dishes">
+      <td>{{ dish.id }}</td>
+      <td>{{ dish.name }}</td>
+      <td>{{ dish.description }}</td>
+      <td>R$ {{ dish.custo.toFixed(2) }}</td>
+      <td>{{ dish.tempoReposicao || 0 }} min</td>
+      <td>
+        <button class="delete" (click)="deleteDish(dish.id!)">Deletar</button>
+        
+        <a class="edit" [routerLink]="['/edit-item', dish.id]">Editar</a>
+      </td>
+    </tr>
+  </table>
+  
+  <a class="newDish" routerLink="/add-item">NOVO ITEM</a>
+
+</div>

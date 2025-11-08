@@ -1,0 +1,100 @@
+/* --- NOVA PALETA DE CORES MODERNA (ROXO/AZUL) --- */
+:root {
+  --primary-color: #4f46e5; /* Roxo/Azul (Indigo 600) */
+  --primary-color-dark: #4338ca; /* Roxo/Azul mais escuro */
+  --secondary-color: #10b981; /* Verde (Emerald 500) */
+  --danger-color: #ef4444; /* Vermelho */
+  --background-color: #f3f4f6; /* Cinza de fundo (Gray 100) */
+  --text-color: #1f2937; /* Preto suave (Gray 800) */
+  --text-color-light: #6b7280; /* Cinza (Gray 500) */
+  --card-background: #ffffff; /* Branco dos cards */
+  --border-color: #e5e7eb; /* Borda cinza (Gray 200) */
+}
+
+/* --- RESET GLOBAL --- */
+html, body {
+  margin: 0;
+  padding: 0;
+  font-family: 'Roboto', sans-serif;
+  background-color: var(--background-color);
+  color: var(--text-color);
+}
+
+.app-container {
+  width: 100%;
+  /* --- MUDANÇA AQUI --- */
+  max-width: 900px; /* Era 600px. Agora o carrinho tem espaço. */
+  margin: 0 auto;
+  padding: 0;
+  background-color: var(--card-background);
+  min-height: 100vh;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+}
+
+.main-content {
+  padding: 20px;
+}
+
+/* --- ESTILOS GLOBAIS DE FORMULÁRIO (Labels, Inputs) --- */
+.form-group {
+  margin-bottom: 1.25rem;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-weight: 500;
+  color: var(--text-color);
+}
+
+.form-group input[type="text"],
+.form-group input[type="email"],
+.form-group input[type="password"],
+.form-group input[type="number"],
+.form-group textarea {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  font-size: 16px;
+  box-sizing: border-box; 
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.form-group input:focus {
+  outline: none;
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.2);
+}
+
+/* --- ESTILOS GLOBAIS DE BOTÃO --- */
+.primary-btn, .adicionar, .confirm-button {
+  display: block;
+  width: 100%;
+  padding: 14px;
+  border: none;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: 600;
+  color: white;
+  background-color: var(--primary-color);
+  cursor: pointer;
+  transition: background-color 0.2s;
+  text-align: center;
+  text-decoration: none;
+  margin-top: 20px;
+}
+
+.primary-btn:hover, .adicionar:hover, .confirm-button:hover {
+  background-color: var(--primary-color-dark);
+}
+
+/* Link (ex: "Registre-se aqui") */
+a {
+  color: var(--primary-color);
+  text-decoration: none;
+  cursor: pointer;
+}
+a:hover {
+  text-decoration: underline;
+}
