@@ -46,6 +46,17 @@ public class SecurityConfig {
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
             
             .authorizeHttpRequests(authorize -> authorize
+                // --- NOVAS ROTAS PÚBLICAS ---
+                // Endpoints públicos (health check, erro, e documentação da API)
+                .requestMatchers(
+                        "/",                    // Permitir a raiz (health check do Render)
+                        "/error",               // Permitir a página de erro padrão
+                        "/api-docs/**",         // Documentação OpenAPI (o JSON)
+                        "/swagger-ui/**",       // Interface gráfica do Swagger
+                        "/swagger-ui.html"      // Ponto de entrada do Swagger
+                ).permitAll()
+                
+                // --- SUAS REGRAS ANTIGAS (corretas) ---
                 // Endpoints públicos (login e registro)
                 .requestMatchers("/auth/**").permitAll()
                 // Cardápio (GET /dishes) é público
