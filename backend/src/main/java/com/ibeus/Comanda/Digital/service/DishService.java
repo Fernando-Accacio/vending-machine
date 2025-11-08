@@ -6,7 +6,7 @@ import com.ibeus.Comanda.Digital.model.Dish;
 import com.ibeus.Comanda.Digital.repository.DishRepository;
 
 import java.util.List;
-import java.util.stream.Collectors;
+import java.util.stream.Collectors; // Removível, pois não usaremos mais streams para findAll()
 
 @Service
 public class DishService {
@@ -16,13 +16,12 @@ public class DishService {
 
     // --- CORREÇÃO 1: FILTRAR APENAS PRATOS ATIVOS ---
     public List<Dish> findAll() {
-        return dishRepository.findAll().stream()
-               .filter(Dish::isActive) // Filtra para incluir apenas pratos ativos
-               .collect(Collectors.toList());
+        // Agora usamos o método otimizado do repositório para filtrar no SQL
+        return dishRepository.findByIsActiveTrue(); 
     }
 
     public Dish findById(Long id) {
-        // Encontra o prato, mas a validação de 'ativo' deve ser feita no Controller/Frontend
+        // Encontra o prato
         return dishRepository.findById(id).orElseThrow(() -> new RuntimeException("Dish not found"));
     }
 
@@ -37,9 +36,11 @@ public class DishService {
         dish.setName(dishDetails.getName());
         dish.setDescription(dishDetails.getDescription());
         dish.setCusto(dishDetails.getCusto());
-        // Mantenha o estado 'isActive' ao atualizar, a menos que o formulário o mude
-        // Se o formulário tiver um campo para reativar, você deve incluir:
+        
+        // Se a entidade Dish tiver o is_active, ela deve ser mantida,
+        // a menos que o formulário de edição permita reativar/inativar
         // dish.setActive(dishDetails.isActive()); 
+        
         return dishRepository.save(dish);
     }
 
