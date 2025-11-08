@@ -9,24 +9,34 @@
             <p class="logo">Vending Social</p>
 
             <div class="nav-wrapper">
-              <div class="nav-container" *ngIf="!isGerente && !isEntregador">
-                  <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}" class="nav-button">Cardápio</a>
-              </div>
-  
-              <div class="nav-container" *ngIf="isGerente">
-                  <a routerLink="/itens" routerLinkActive="active" class="nav-button">Itens</a>
-                  <a routerLink="/relatorios" routerLinkActive="active" class="nav-button">Relatórios</a>
-              </div>
-  
-              <div class="nav-container" *ngIf="isEntregador">
-                  <a routerLink="/entregas" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}" class="nav-button">Pedidos</a>
-              </div>
+                <div class="nav-container" *ngIf="isCliente || (!isGerente && !isEntregador)">
+                    <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}" class="nav-button">Cardápio</a>
+                    
+                    <a *ngIf="isAuthenticated" routerLink="/minhas-retiradas" routerLinkActive="active" class="nav-button">
+                        Minhas Retiradas
+                    </a>
+                </div>
+ 
+                <div class="nav-container" *ngIf="isGerente">
+                    <a routerLink="/itens" routerLinkActive="active" class="nav-button">Itens</a>
+                    <a routerLink="/relatorios" routerLinkActive="active" class="nav-button">Relatórios</a>
+                </div>
+ 
+                <div class="nav-container" *ngIf="isEntregador">
+                    <a routerLink="/entregas" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}" class="nav-button">Pedidos</a>
+                </div>
             </div>
 
             <div class="auth-btn">
+
+                <div class="user-info" *ngIf="isAuthenticated && userName">
+                    Olá, 
+                    <span class="user-name">{{ userName }}</span>
+                    <span class="user-role">({{ isGerente ? 'Gerente' : 'Cliente' }})</span>
+                </div>
                 
                 <a *ngIf="isAuthenticated" routerLink="/change-password" class="nav-button change-pass-btn">
-                  Mudar Senha
+                    Mudar Senha
                 </a>
                 
                 <button class="nav-button logout-btn" (click)="logout()" *ngIf="isAuthenticated">

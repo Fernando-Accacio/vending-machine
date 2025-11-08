@@ -1,0 +1,31 @@
+<div class="withdrawals-history-container">
+    <h2>Minhas Retiradas</h2>
+
+    <div *ngIf="isLoading" class="loading">Carregando histórico...</div>
+
+    <div *ngIf="errorMessage" class="error-message">{{ errorMessage }}</div>
+
+    <div *ngIf="!isLoading && history.length === 0 && !errorMessage" class="empty-message">
+        Você ainda não realizou nenhuma retirada.
+    </div>
+
+    <div *ngIf="!isLoading && history.length > 0">
+        <div *ngFor="let withdrawal of history" class="withdrawal-card">
+            <div class="withdrawal-header">
+                <h3>Retirada #{{ withdrawal.id }}</h3>
+                <span class="date">{{ withdrawal.withdrawalDate | date: 'dd/MM/yyyy HH:mm' }}</span>
+            </div>
+            
+            <div class="withdrawal-details">
+                <p><strong>Custo Total:</strong> R$ {{ withdrawal.totalCost | number: '1.2-2' }}</p>
+                
+                <h4>Itens:</h4>
+                <ul>
+                    <li *ngFor="let item of withdrawal.items">
+                        {{ item.quantity }}x {{ item.dish.name }} (R$ {{ item.costAtTime | number: '1.2-2' }})
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>

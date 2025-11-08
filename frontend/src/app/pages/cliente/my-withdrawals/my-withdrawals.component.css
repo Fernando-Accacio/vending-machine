@@ -1,0 +1,96 @@
+/* Container Principal */
+.withdrawals-history-container {
+    max-width: 800px;
+    margin: 20px auto;
+    padding: 20px;
+    font-family: Arial, sans-serif;
+}
+
+h2 {
+    color: var(--primary-color, #4CAF50);
+    border-bottom: 2px solid #f0f0f0;
+    padding-bottom: 10px;
+    margin-bottom: 25px;
+}
+
+/* Card Individual de Retirada */
+.withdrawal-card {
+    background-color: white;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    padding: 20px;
+    margin-bottom: 20px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+    transition: transform 0.2s;
+}
+
+.withdrawal-card:hover {
+    transform: translateY(-2px); /* Efeito sutil ao passar o mouse */
+    box-shadow: 0 6px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Cabeçalho do Card (Retirada #ID e Data) */
+.withdrawal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    border-bottom: 1px dashed #ccc;
+    padding-bottom: 10px;
+    margin-bottom: 15px;
+}
+
+.withdrawal-header h3 {
+    font-size: 1.5em;
+    color: #333;
+    margin: 0;
+}
+
+.withdrawal-header .date {
+    font-size: 0.9em;
+    color: #666;
+}
+
+/* Detalhes (Custo Total) */
+.withdrawal-details p {
+    font-size: 1.1em;
+    font-weight: 600;
+    color: var(--primary-color-dark, #38703c);
+    margin-bottom: 15px;
+    display: block; /* Garante que o span abaixo use o espaço correto */
+}
+
+/* Lista de Itens */
+.withdrawal-details h4 {
+    font-size: 1.1em;
+    margin-top: 15px;
+    margin-bottom: 8px;
+    color: #555;
+}
+
+.withdrawal-details ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+.withdrawal-details li {
+    background-color: #f9f9f9;
+    padding: 8px 15px;
+    border-left: 4px solid var(--primary-color, #4CAF50);
+    margin-bottom: 5px;
+    font-size: 0.95em;
+}
+
+/* Mensagens de Estado (Loading, Erro, Vazio) */
+.loading, .error-message, .empty-message {
+    text-align: center;
+    padding: 30px;
+    background-color: #f0f0f0;
+    border-radius: 6px;
+    color: #555;
+}
+
+.error-message {
+    background-color: #fdd;
+    color: #dc2626;
+    border: 1px solid #f99;
+}

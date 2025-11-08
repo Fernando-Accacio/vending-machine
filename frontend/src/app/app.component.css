@@ -1,3 +1,10 @@
+:root {
+  --primary-color: #4CAF50; /* Verde principal (pode ser ajustado) */
+  --primary-color-dark: #38703c; /* Verde escuro */
+  --danger-color: #ef4444; /* Vermelho */
+}
+
+/* --- ESTILOS PADRÕES DO HEADER --- */
 .header {
   background-color: var(--primary-color);
   padding: 0.75rem 1rem; 
@@ -65,10 +72,30 @@
   margin-right: 10px; 
 }
 
-/* --- ESTILOS NOVOS AQUI --- */
+/* --- ESTILOS AUTH E USER INFO (CORREÇÃO VISUAL) --- */
 .auth-btn {
   display: flex;
+  align-items: center;
   gap: 10px; /* Espaço entre os botões */
+}
+
+/* Bloco de Olá, Nome(Role) */
+.user-info {
+    color: white;
+    font-size: 14px;
+    padding: 0 5px; /* Espaço para não encostar nos botões */
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.user-info .user-name {
+    font-weight: 700;
+}
+
+.user-info .user-role {
+    font-size: 0.9em;
+    opacity: 0.8;
 }
 
 /* Botão de Login (quando deslogado) */
@@ -78,13 +105,13 @@
   font-weight: 600;
 }
 .auth-btn .login-btn:hover {
-  background-color: #f3f4f6; /* Cinza claro no hover */
+  background-color: #f3f4f6; 
 }
 
 /* Botão Mudar Senha (logado) */
 .auth-btn .change-pass-btn {
   color: white;
-  background-color: var(--primary-color-dark); /* Roxo escuro */
+  background-color: var(--primary-color-dark); 
 }
 .auth-btn .change-pass-btn:hover {
   background-color: rgba(255, 255, 255, 0.1);
@@ -92,18 +119,18 @@
 
 /* Botão Sair (logado) */
 .auth-btn .logout-btn {
-  background-color: var(--danger-color); /* Vermelho */
+  background-color: var(--danger-color); 
   color: white;
   font-weight: 600;
 }
 .auth-btn .logout-btn:hover {
-   background-color: #dc2626; /* Vermelho escuro */
+    background-color: #dc2626; 
 }
 
 
-/* A barra "INICIANDO CAIXA" */
+/* A barra "SISTEMA DE GESTÃO SOCIAL" */
 .status-bar {
-  background-color: #374151; /* Gray 700 (mais sutil) */
+  background-color: #374151; 
   color: white;
   text-align: center;
   padding: 4px;

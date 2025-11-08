@@ -1,13 +1,13 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Router, RouterModule, NavigationEnd } from '@angular/router'; // 1. Importações novas
+import { Router, RouterModule, NavigationEnd } from '@angular/router'; 
 import { AuthenticateService } from './services/auth/authenticate.service';
-import { filter } from 'rxjs'; // 2. Importação nova
+import { filter } from 'rxjs'; 
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [CommonModule, RouterModule], // 3. RouterModule (para o [routerLink])
+  imports: [CommonModule, RouterModule], 
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })
@@ -18,6 +18,11 @@ export class AppComponent {
   isGerente = false;
   isCliente = false;
   isEntregador = false;
+  
+  // --- PROPRIEDADES DO USUÁRIO ---
+  userName: string | null = null; 
+  userEmail: string | null = null;
+  // ------------------------------
 
   constructor(
     private authService: AuthenticateService, 
@@ -26,9 +31,18 @@ export class AppComponent {
     // 4. "Escuta" o estado de autenticação
     this.authService.authState$.subscribe(state => {
       this.isAuthenticated = state.isAuthenticated;
-      this.isGerente = state.role === 'gerente';
+      this.isGerente = state.role === 'GERENTE'; // <-- CORRIGIDO AQUI
       this.isCliente = state.role === 'cliente';
       this.isEntregador = state.role === 'entregador';
+
+      // Atualiza os dados do usuário quando o estado de autenticação muda
+      if (this.isAuthenticated) {
+        this.userName = this.authService.getName();
+        this.userEmail = this.authService.getEmail();
+      } else {
+        this.userName = null;
+        this.userEmail = null;
+      }
     });
 
     // 5. "Escuta" as mudanças de rota
@@ -46,7 +60,7 @@ export class AppComponent {
 
   logout(): void {
     this.authService.logout();
-    this.router.navigate(['/login']); // Manda para o login ao sair
+    this.router.navigate(['/login']); 
   }
 
   goBack(): void {

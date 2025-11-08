@@ -1,102 +1,61 @@
-.dish-form-container {
-    max-width: 600px;
-    margin: 0 auto;
-    padding: 20px;
-    font-family: Arial, sans-serif;
+/* src/app/components/dish-form/dish-form.component.css */
+
+/* O container principal que vai alinhar os campos */
+.form-container {
+  display: flex;        /* Usa flexbox para alinhar */
+  flex-wrap: wrap;      /* Faz os campos quebrarem a linha em telas pequenas */
+  gap: 15px 20px;     /* 15px de espaço entre linhas, 20px entre colunas */
+  margin-bottom: 20px;  /* Espaço antes do botão */
 }
 
-.header {
-    display: flex;
-    align-items: center;
-    padding: 10px 0;
-    margin-bottom: 20px;
+/* * Cada "grupo" (label + input) 
+ * - 'flex: 1 1 300px' é a mágica:
+ * Tenta ter 300px, cresce se precisar (1), encolhe se precisar (1).
+ * Isso cria um layout de 2 colunas em telas largas e 1 coluna em telas estreitas.
+*/
+.form-group {
+  display: flex;
+  flex-direction: column; /* Coloca o label EM CIMA do input */
+  gap: 5px;               /* Espaço pequeno entre o label e o input */
+  
+  flex: 1 1 300px;        
+  min-width: 250px;       /* Largura mínima antes de quebrar a linha */
 }
 
-.adicionar{
-    text-transform: uppercase;
-    background-color: #4CAF50;
+/* Estilo do Label */
+label {
+  font-weight: bold;
+  font-size: 0.9em;
+  color: #333;
 }
 
-.back-btn {
-    background: none;
-    border: none;
-    font-size: 20px;
-    padding: 10px;
-    cursor: pointer;
+/* Estilo do Input */
+input[type="text"],
+input[type="number"] {
+  padding: 10px 12px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 1em;
 }
 
-.logo {
-    height: 40px;
-    margin: 0 auto;
+/* Estilo do Botão (baseado no que você já tinha) */
+.adicionar {
+  width: 100%; /* O botão ocupa a largura total */
+  padding: 12px;
+  
+  text-transform: uppercase;
+  background-color: #4CAF50; /* Verde */
+  color: white;
+  
+  font-weight: bold;
+  font-size: 16px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  
+  transition: background-color 0.2s;
 }
 
-.status-bar {
-    background-color: #ff4444;
-    color: white;
-    text-align: center;
-    padding: 5px;
-    width: 100%;
-}
-
-.product-card {
-    background: white;
-    border-radius: 10px;
-    padding: 20px;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-}
-
-.product-image {
-    width: 100%;
-    height: 200px;
-    object-fit: cover;
-    border-radius: 8px;
-    margin-bottom: 15px;
-}
-
-.product-name {
-    font-size: 1.5em;
-    margin: 10px 0;
-}
-
-.product-price {
-    font-size: 1.2em;
-    color: #333;
-    margin-bottom: 15px;
-}
-
-.quantity-control {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 10px;
-    background: #f5f5f5;
-    border-radius: 5px;
-    margin-bottom: 15px;
-}
-
-.quantity-btn {
-    background: none;
-    border: none;
-    cursor: pointer;
-}
-
-.observations-input {
-    width: 100%;
-    padding: 10px;
-    border: 1px solid #ddd;
-    border-radius: 5px;
-    margin-bottom: 15px;
-    resize: vertical;
-    min-height: 80px;
-}
-
-.add-btn {
-    width: 100%;
-    padding: 15px;
-    background-color: #4CAF50;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    font-size: 1.1em;
-    cursor: pointer;
+.adicionar:hover {
+  background-color: #45a049;
 }

@@ -1,15 +1,16 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { JwtHelperService } from '@auth0/angular-jwt';
-import { getUrl } from '../config/env';
+// O import é para o objeto environment central
+import { environment } from '../../../environments/environment'; 
 import { BehaviorSubject, Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthenticateService {
-  // URL base do Auth
-  private authUrl = getUrl() + '/auth';
+  // CORREÇÃO AQUI: Usamos environment.apiUrl diretamente
+  private authUrl = environment.apiUrl + '/auth';
 
   private authState = new BehaviorSubject({
     isAuthenticated: false,
@@ -29,20 +30,13 @@ export class AuthenticateService {
     return this.http.post<any>(`${this.authUrl}/login`, { documento, password });
   }
 
-  //
-  // --- MÉTODO NOVO ADICIONADO AQUI ---
-  //
   /**
    * Tenta registrar um novo usuário
-   * @param registerData Objeto com name, email, documento, password, etc.
    */
   register(registerData: any): Observable<any> {
     return this.http.post<any>(`${this.authUrl}/register`, registerData);
   }
-  //
-  // --- FIM DO MÉTODO NOVO ---
-  //
-
+  
   isAuthenticated(): boolean {
     const token = this.getToken();
     return token != null && !this.jwtHelper.isTokenExpired(token);
@@ -52,10 +46,8 @@ export class AuthenticateService {
     return this.getRole() === 'cliente';
   }
   
-  // (O resto do arquivo continua igual...)
-
   isGerente(): boolean {
-    return this.getRole() === 'gerente';
+    return this.getRole() === 'GERENTE';
   }
 
   isEntregador(): boolean {

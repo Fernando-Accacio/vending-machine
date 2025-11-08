@@ -7,9 +7,13 @@ export const gerenteGuardGuard: CanActivateFn = (route, state) => {
   const router = inject(Router);
 
   const role = authService.getRole();
-  if (role === 'gerente') {
+  
+  // --- A CORREÇÃO ESTÁ AQUI ---
+  if (role === 'GERENTE') { // Checa por "GERENTE" (maiúsculo)
     return true;
   }
+  
+  // Se não for GERENTE, manda de volta para o login
   router.navigate(['/login']);
   return false;
 };

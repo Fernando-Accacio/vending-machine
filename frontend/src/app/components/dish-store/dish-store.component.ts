@@ -87,14 +87,25 @@ export class DishStoreComponent implements OnInit {
   //
   // --- FUNÇÃO CHECKOUT TOTALMENTE REESCRITA ---
   //
-  checkout(): void {
-    // 1. Checa se o usuário está logado
-    const email = this.authService.getEmail();
-    if (!email) {
+checkout(): void {
+    
+    // 1. Checa se o usuário está logado (usando o método mais robusto)
+    if (!this.authService.isAuthenticated()) {
       alert('Você precisa estar logado para finalizar uma retirada!');
-      this.router.navigate(['/auth/login']); // Redireciona para o login
+      
+      // Manda para a rota de login que definimos no app.config.ts
+      this.router.navigate(['/login']); 
       return;
     }
+    
+    // Se estiver autenticado, pegamos o email. Se for null (o que não deveria ser), tratamos.
+    const email = this.authService.getEmail(); 
+    if (!email) {
+        alert('Erro de autenticação: Email não encontrado no token. Tente fazer login novamente.');
+        this.router.navigate(['/login']); 
+        return;
+    }
+
 
     // 2. Transforma o carrinho (front-end) no formato que o back-end espera (DTO)
     const cartDto: CartItemDto[] = this.cart.map(item => ({
@@ -118,8 +129,7 @@ export class DishStoreComponent implements OnInit {
         this.updateTotal();
         localStorage.removeItem('cart'); // Limpa o carrinho antigo do localStorage
         
-        // (Podemos criar uma página de "Comprovante" depois)
-        this.router.navigate(['/']); 
+        this.router.navigate(['/']); // Manda para o cardápio
       },
       error: (err) => {
         // Erro!

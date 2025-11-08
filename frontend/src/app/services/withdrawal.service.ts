@@ -1,69 +1,69 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { getUrl } from './config/env';
+// O import é para o objeto environment central
+import { environment } from '../../environments/environment'; 
 
-// (Vamos recriar as interfaces aqui para o relatório)
+// --- INTERFACES DO BACKEND ---
 
-// O que esperamos de um item no relatório
-export interface ReportItem {
-  id: number;
-  dish: {
+export interface Dish {
+    id: number;
     name: string;
+    description: string;
     custo: number;
-  };
-  quantity: number;
-  costAtTime: number;
+    tempoReposicao: number;
 }
 
-// O que esperamos de uma retirada (Withdrawal) no relatório
-export interface ReportWithdrawal {
-  id: number;
-  user: {
-    name: string;
-    documento: string;
-  };
-  items: ReportItem[];
-  totalCost: number;
-  withdrawalDate: string; // O JSON da data virá como string
+export interface WithdrawalItem {
+    id: number;
+    quantity: number;
+    costAtTime: number;
+    dish: Dish; 
 }
 
+export interface Withdrawal { 
+    id: number;
+    totalCost: number;
+    withdrawalDate: string;
+    user: {
+        documento: string;
+        name: string;
+        email: string;
+    };
+    items: WithdrawalItem[];
+}
 
-// DTO para CRIAR uma retirada
+export type ReportWithdrawal = Withdrawal; 
+
 export interface CartItemDto {
-  dishId: number;
-  quantity: number;
-}
-export interface WithdrawalRequest {
-  email: string;
-  cart: CartItemDto[];
+    dishId: number; 
+    quantity: number;
 }
 
+export interface WithdrawalRequest {
+    email: string;
+    cart: CartItemDto[];
+}
 
 @Injectable({
-  providedIn: 'root'
+    providedIn: 'root'
 })
 export class WithdrawalService {
-  
-  private apiUrl = getUrl() + '/withdrawals'; // O endpoint base
 
-  constructor(private http: HttpClient) { }
+    // CORREÇÃO AQUI: Usamos environment.apiUrl diretamente
+    private apiUrl = `${environment.apiUrl}/withdrawals`; 
 
-  /**
-   * (O que já fizemos)
-   * Salva uma nova retirada no banco
-   */
-  createWithdrawal(request: WithdrawalRequest): Observable<any> {
-    return this.http.post(this.apiUrl, request);
-  }
+    constructor(private http: HttpClient) {}
 
-  //
-  // --- MÉTODO NOVO ADICIONADO AQUI ---
-  //
-  /**
-   * Busca a lista de todas as retiradas para o relatório
-   */
-  getWithdrawals(): Observable<ReportWithdrawal[]> {
-    return this.http.get<ReportWithdrawal[]>(this.apiUrl);
-  }
+    createWithdrawal(request: WithdrawalRequest): Observable<Withdrawal> {
+        return this.http.post<Withdrawal>(this.apiUrl, request);
+    }
+
+    getHistory(): Observable<Withdrawal[]> { // Função para o Cliente
+        return this.http.get<Withdrawal[]>(`${this.apiUrl}/history`);
+    }
+
+    getWithdrawalsReport(): Observable<ReportWithdrawal[]> { // Função para o Gerente
+        return this.http.get<ReportWithdrawal[]>(this.apiUrl); 
+    }
 }

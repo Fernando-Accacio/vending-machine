@@ -1,30 +1,33 @@
 import { Component, OnInit } from '@angular/core';
-import { CommonModule, DatePipe } from '@angular/common'; // Precisamos do DatePipe
-import { WithdrawalService, ReportWithdrawal } from '../../../services/withdrawal.service'; // Nosso serviço
+import { WithdrawalService, ReportWithdrawal } from '../../../services/withdrawal.service'; // ReportWithdrawal precisa ser usado
+import { CommonModule } from '@angular/common';
 
 @Component({
-  selector: 'app-reports', // O "apelido"
+  selector: 'app-reports',
   standalone: true,
-  imports: [CommonModule, DatePipe], // Importamos o CommonModule e o DatePipe
+  imports: [CommonModule],
   templateUrl: './reports.component.html',
   styleUrls: ['./reports.component.css']
 })
 export class ReportsComponent implements OnInit {
-
-  public withdrawals: ReportWithdrawal[] = [];
-  public totalCostAll: number = 0;
+  // CORRIGIDO: O template (HTML) espera 'withdrawals', mas o TS tinha 'reports'.
+  // Renomeamos para 'reports' no TS, mas vamos manter a variável 'withdrawals' se o HTML usá-la muito.
+  withdrawals: ReportWithdrawal[] = []; // Usaremos 'withdrawals' para bater com o HTML.
+  totalCostAll: number = 0;
+  isLoading: boolean = true;
 
   constructor(private withdrawalService: WithdrawalService) {}
 
   ngOnInit(): void {
-    this.loadReport();
+    this.loadReports();
   }
 
-  loadReport(): void {
-    this.withdrawalService.getWithdrawals().subscribe(data => {
-      this.withdrawals = data;
-      // Calcula o custo total de todas as retiradas
-      this.totalCostAll = data.reduce((total, w) => total + w.totalCost, 0);
+  loadReports(): void {
+    this.withdrawalService.getWithdrawalsReport().subscribe(data => { // Chamada de função corrigida
+      this.withdrawals = data; // Atribuição à variável que o HTML usa
+      // CORRIGIDO: Adicionando tipagem para os parâmetros do reduce
+      this.totalCostAll = data.reduce((total: number, w: ReportWithdrawal) => total + w.totalCost, 0); 
+      this.isLoading = false;
     });
   }
 }
