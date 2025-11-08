@@ -1,8 +1,6 @@
-const isProduction = false;
-
 const environment = {
-    production: isProduction,
-    apiUrl: isProduction ? 'https://dishes.com.br' : 'http://localhost:8081'
+  production: true,
+  apiUrl: 'https://vending-machine-z87w.onrender.com' 
 };
 
 export const getUrl = () => environment.apiUrl;
