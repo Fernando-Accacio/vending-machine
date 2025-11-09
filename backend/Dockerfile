@@ -17,9 +17,8 @@ RUN ./mvnw dependency:go-offline
 COPY src ./src
 
 # 6. Roda o "Build Command" (compila o Java)
-# (O Render não vai mais fazer isso, o Docker vai)
-RUN ./mvnw clean install -DskipTests
+# Adicionamos -Dfile.encoding=UTF-8 para resolver o MalformedInputException no build do container
+RUN ./mvnw clean install -DskipTests -Dfile.encoding=UTF-8
 
 # 7. Roda o "Start Command" (inicia o app)
-# (O Render também não vai fazer isso, o Docker vai)
 CMD ["java", "-jar", "target/Comanda-Digital-0.0.1-SNAPSHOT.jar"]
