@@ -13,7 +13,7 @@
         <div *ngFor="let withdrawal of history" class="withdrawal-card">
             <div class="withdrawal-header">
                 <h3>Retirada #{{ withdrawal.id }}</h3>
-                <span class="date">{{ withdrawal.withdrawalDate | date: 'dd/MM/yyyy HH:mm' }}</span>
+                <span class="date">{{ withdrawal.withdrawalDate | date: 'dd/MM/yyyy HH:mm':'UTC' }}</span>
             </div>
             
             <div class="withdrawal-details">
