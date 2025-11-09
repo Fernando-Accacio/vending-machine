@@ -46,31 +46,24 @@ public class SecurityConfig {
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
             
             .authorizeHttpRequests(authorize -> authorize
-                // --- NOVAS ROTAS PÚBLICAS ---
-                // Endpoints públicos (health check, erro, e documentação da API)
+                // --- ROTAS PÚBLICAS GERAIS ---
                 .requestMatchers(
-                        "/",                    // Permitir a raiz (health check do Render)
-                        "/error",               // Permitir a página de erro padrão
-                        "/api-docs/**",         // Documentação OpenAPI (o JSON)
-                        "/swagger-ui/**",       // Interface gráfica do Swagger
-                        "/swagger-ui.html"      // Ponto de entrada do Swagger
+                    "/",                        
+                    "/error",                   
+                    "/api-docs/**",             
+                    "/swagger-ui/**",           
+                    "/swagger-ui.html"          
                 ).permitAll()
                 
-                // --- SUAS REGRAS ANTIGAS (corretas) ---
                 // Endpoints públicos (login e registro)
                 .requestMatchers("/auth/**").permitAll()
                 // Cardápio (GET /dishes) é público
                 .requestMatchers(HttpMethod.GET, "/dishes").permitAll() 
                 
-                // --- ROTA ATUALIZADA ---
-                // Qualquer usuário logado ('authenticated') pode trocar a senha
+                // Rotas que exigem autenticação
                 .requestMatchers("/users/change-password").authenticated() 
-                
-                // --- ROTAS DE ADMIN ---
-                // Apenas 'gerente' pode ver relatórios ou gerenciar itens (dishes)
-                .requestMatchers(HttpMethod.POST, "/withdrawals").authenticated() // Permite POST para qualquer logado
-                .requestMatchers(HttpMethod.GET, "/withdrawals").hasAuthority("GERENTE") // Apenas Gerente vê a lista (GET)
-                // Se o seu método de criar pedido for POST, use a linha acima.                .requestMatchers("/dishes/**").hasAuthority("GERENTE") // Rota de Itens
+                .requestMatchers(HttpMethod.POST, "/withdrawals").authenticated()
+                .requestMatchers(HttpMethod.GET, "/withdrawals").hasAuthority("GERENTE")
                 
                 // Todo o resto precisa de autenticação (token JWT)
                 .anyRequest().authenticated() 
@@ -89,10 +82,17 @@ public class SecurityConfig {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(Arrays.asList("*")); 
+        
+        // CORREÇÃO: DOMÍNIOS ESPECÍFICOS E ALLOW_CREDENTIALS
+        configuration.setAllowedOrigins(Arrays.asList(
+            "https://vending-social.vercel.app", 
+            "http://localhost:4200" 
+        )); 
+        
         configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
-        configuration.setAllowedHeaders(Arrays.asList("*"));
-        configuration.setExposedHeaders(Arrays.asList("Authorization", "Content-Type"));
+        configuration.setAllowedHeaders(Arrays.asList("Authorization", "Content-Type"));
+        configuration.setAllowCredentials(true); 
+        configuration.setExposedHeaders(Arrays.asList("Authorization", "Content-Type")); // Mantido do seu código original
         
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", configuration);
