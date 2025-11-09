@@ -51,24 +51,28 @@ public class AuthController {
     }
 
 
-    // --- DTO (Molde) para o Login ---
-    // 1. MUDANÇA AQUI (adicionado "public")
+    // --- DTO (Molde) para o Login CORRIGIDO ---
     public static class LoginRequest {
         private String documento;
         private String password;
 
+        // Getters
         public String getDocumento() { return this.documento; }
         public String getPassword() { return this.password; }
+        
+        // >>> SETTERS ADICIONADOS PARA FUNCIONAR O @RequestBody <<<
+        public void setDocumento(String documento) { this.documento = documento; }
+        public void setPassword(String password) { this.password = password; }
     }
 
-    // --- DTO (Molde) para o Registro ---
-    // 2. MUDANÇA AQUI (adicionado "public")
+    // --- DTO (Molde) para o Registro CORRIGIDO ---
     public static class RegisterRequest {
         private String name;
         private String email;
         private String password;
         private String documento;
         private String phoneNumber;
+        private String role; // <<< CAMPO ROLE ADICIONADO PARA CORRESPONDER AO SEU JSON DE TESTE
 
         // Getters
         public String getName() { return name; }
@@ -76,10 +80,18 @@ public class AuthController {
         public String getPassword() { return password; }
         public String getDocumento() { return documento; }
         public String getPhoneNumber() { return phoneNumber; }
+        public String getRole() { return role; } // <<< GETTER ADICIONADO
+
+        // >>> SETTERS ADICIONADOS PARA FUNCIONAR O @RequestBody <<<
+        public void setName(String name) { this.name = name; }
+        public void setEmail(String email) { this.email = email; }
+        public void setPassword(String password) { this.password = password; }
+        public void setDocumento(String documento) { this.documento = documento; }
+        public void setPhoneNumber(String phoneNumber) { this.phoneNumber = phoneNumber; }
+        public void setRole(String role) { this.role = role; } // <<< SETTER ADICIONADO
     }
 
     // --- DTO para a Resposta ---
-    // 3. MUDANÇA AQUI (adicionado "public")
     public static class LoginResponse {
         private String token;
 
@@ -89,6 +101,11 @@ public class AuthController {
 
         public String getToken() {
             return token;
+        }
+        
+        // Setter para garantir que o Jackson consiga serializar (boa prática)
+        public void setToken(String token) {
+            this.token = token;
         }
     }
 }
