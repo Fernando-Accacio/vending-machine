@@ -13,11 +13,13 @@
         <div *ngFor="let withdrawal of history" class="withdrawal-card">
             <div class="withdrawal-header">
                 <h3>Retirada #{{ withdrawal.id }}</h3>
+                <!-- CORREÇÃO DE DATA: Formato BR explícito com UTC -->
                 <span class="date">{{ withdrawal.withdrawalDate | date: 'dd/MM/yyyy HH:mm':'UTC' }}</span>
             </div>
             
             <div class="withdrawal-details">
-                <p><strong>Custo Total:</strong> R$ {{ withdrawal.totalCost | number: '1.2-2' }}</p>
+                <!-- Mantendo o filtro currency que estava na conversa anterior -->
+                <p><strong>Custo Total:</strong> R$ {{ withdrawal.totalCost | number: '1.2-2' }}</p> 
                 
                 <h4>Itens:</h4>
                 <ul>

@@ -7,20 +7,20 @@
 /* --- ESTILOS PADRÕES DO HEADER --- */
 .header {
   background-color: var(--primary-color);
-  padding: 0.75rem 1rem; 
+  padding: 0.75rem 1rem;
   display: flex;
   align-items: center;
-  justify-content: space-between; 
+  justify-content: space-between;
   position: sticky;
   top: 0;
   z-index: 100;
   flex-direction: row;
-  flex-wrap: nowrap; 
+  flex-wrap: nowrap;
   box-shadow: 0 2px 4px rgba(0,0,0,0.1);
 }
 
 .header .logo {
-  font-size: 1.25em; 
+  font-size: 1.25em;
   font-weight: 600;
   color: white;
   margin: 0;
@@ -28,7 +28,7 @@
 }
 
 .nav-wrapper {
-  flex-grow: 1; 
+  flex-grow: 1;
   display: flex;
   justify-content: center;
 }
@@ -49,13 +49,14 @@
   text-decoration: none;
   transition: background-color 0.2s, color 0.2s;
   cursor: pointer;
-  white-space: nowrap; 
+  white-space: nowrap;
 }
 
 .nav-button:hover {
   background-color: rgba(255, 255, 255, 0.1);
   color: white;
 }
+
 .nav-button.active {
   background-color: white;
   color: var(--primary-color);
@@ -69,33 +70,48 @@
   font-size: 20px;
   padding: 0 10px 0 0;
   cursor: pointer;
-  margin-right: 10px; 
+  margin-right: 10px;
 }
 
-/* --- ESTILOS AUTH E USER INFO (CORREÇÃO VISUAL) --- */
+/* --- ESTILOS AUTH E USER INFO --- */
 .auth-btn {
   display: flex;
   align-items: center;
-  gap: 10px; /* Espaço entre os botões */
+  gap: 10px; /* Espaço entre os botões e a info do usuário */
+}
+
+/* Novo container para os botões de ação (Mudar Senha e Sair) */
+.auth-buttons {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+/* --- CORREÇÃO DE LARGURA DOS BOTÕES DE AÇÃO --- */
+.auth-buttons .nav-button,
+.auth-buttons button {
+  width: 140px; /* Largura fixa para igualar os botões */
+  text-align: center;
+  box-sizing: border-box;
 }
 
 /* Bloco de Olá, Nome(Role) */
 .user-info {
-    color: white;
-    font-size: 14px;
-    padding: 0 5px; /* Espaço para não encostar nos botões */
-    display: flex;
-    align-items: center;
-    gap: 5px;
+  color: white;
+  font-size: 14px;
+  padding: 0 5px;
+  display: flex;
+  align-items: center;
+  gap: 5px;
 }
 
 .user-info .user-name {
-    font-weight: 700;
+  font-weight: 700;
 }
 
 .user-info .user-role {
-    font-size: 0.9em;
-    opacity: 0.8;
+  font-size: 0.9em;
+  opacity: 0.8;
 }
 
 /* Botão de Login (quando deslogado) */
@@ -104,33 +120,35 @@
   color: var(--primary-color-dark);
   font-weight: 600;
 }
+
 .auth-btn .login-btn:hover {
-  background-color: #f3f4f6; 
+  background-color: #f3f4f6;
 }
 
 /* Botão Mudar Senha (logado) */
 .auth-btn .change-pass-btn {
   color: white;
-  background-color: var(--primary-color-dark); 
+  background-color: var(--primary-color-dark);
 }
+
 .auth-btn .change-pass-btn:hover {
   background-color: rgba(255, 255, 255, 0.1);
 }
 
 /* Botão Sair (logado) */
 .auth-btn .logout-btn {
-  background-color: var(--danger-color); 
+  background-color: var(--danger-color); /* Vermelho */
   color: white;
   font-weight: 600;
 }
-.auth-btn .logout-btn:hover {
-    background-color: #dc2626; 
-}
 
+.auth-btn .logout-btn:hover {
+  background-color: #dc2626;
+}
 
 /* A barra "SISTEMA DE GESTÃO SOCIAL" */
 .status-bar {
-  background-color: #374151; 
+  background-color: #374151;
   color: white;
   text-align: center;
   padding: 4px;

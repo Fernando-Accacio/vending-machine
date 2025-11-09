@@ -35,19 +35,22 @@
                     <span class="user-role">({{ isGerente ? 'Gerente' : 'Cliente' }})</span>
                 </div>
                 
-                <a *ngIf="isAuthenticated" routerLink="/change-password" class="nav-button change-pass-btn">
-                    Mudar Senha
-                </a>
-                
-                <button class="nav-button logout-btn" (click)="logout()" *ngIf="isAuthenticated">
-                    Sair
-                </button>
+                <div class="auth-buttons" *ngIf="isAuthenticated">
+                    <a routerLink="/change-password" class="nav-button change-pass-btn">
+                        Mudar Senha
+                    </a>
+                    
+                    <button class="nav-button logout-btn" (click)="logout()">
+                        Sair
+                    </button>
+                </div>
+
                 <a *ngIf="!isAuthenticated" routerLink="/login" routerLinkActive="active" class="nav-button login-btn">Login</a>
             </div>
         </header>
     
         <div class="status-bar">
-             Sistema de Gestão Social
+              Sistema de Gestão Social
         </div>
     </div>
 

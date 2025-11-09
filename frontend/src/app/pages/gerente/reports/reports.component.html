@@ -19,6 +19,7 @@
         <tbody>
             <tr *ngFor="let w of withdrawals">
                 <td>{{ w.id }}</td>
+                <!-- CORREÇÃO: Usando 'UTC' para forçar o Angular a não deslocar a data, resolvendo o problema do ano/mês/dia -->
                 <td>{{ w.withdrawalDate | date:'dd/MM/yyyy HH:mm':'UTC' }}</td>
                 <td>{{ w.user.name }} ({{ w.user.documento }})</td>
                 
