@@ -1,7 +1,7 @@
 import { ApplicationConfig, importProvidersFrom } from '@angular/core';
 import { provideRouter, Routes } from '@angular/router';
-import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
-import { JwtHelperService, JwtInterceptor, JwtModule } from '@auth0/angular-jwt';
+import { HttpClientModule } from '@angular/common/http';
+import { JwtModule } from '@auth0/angular-jwt';
 import { DishListComponent } from './components/dish-list/dish-list.component';
 import { DishFormComponent } from './components/dish-form/dish-form.component';
 import { DishStoreComponent } from './components/dish-store/dish-store.component';
@@ -16,6 +16,12 @@ import { provideAnimationsAsync } from '@angular/platform-browser/animations/asy
 import { clienteGuardGuard } from './services/auth/guards/cliente-guard.guard';
 import { gerenteGuardGuard } from './services/auth/guards/gerente-guard.guard';
 
+// --- DEFINIÇÃO DAS CONSTANTES DE DOMÍNIO PARA CLAREZA ---
+// Nota: O allowedDomains geralmente espera apenas o domínio/host, sem protocolo.
+const API_DOMAIN = 'vending-machine-z87w.onrender.com'; 
+const VERCEL_DOMAIN = 'vending-social.vercel.app'; 
+
+
 // --- O MAPA DE ROTAS FINAL E LIMPO ---
 const routes: Routes = [
   { path: '', component: DishStoreComponent },
@@ -29,7 +35,7 @@ const routes: Routes = [
   { path: 'relatorios', component: ReportsComponent, canActivate: [gerenteGuardGuard] },
 
   // Rota de Mudar Senha (Qualquer um logado)
-  { path: 'change-password', component: ChangePasswordComponent, canActivate: [authGuard] },  
+  { path: 'change-password', component: ChangePasswordComponent, canActivate: [authGuard] },  
   // --- ROTA DE CLIENTE NOVO ---
   { path: 'minhas-retiradas', component: MyWithdrawalsComponent, canActivate: [clienteGuardGuard] },
 
@@ -37,7 +43,6 @@ const routes: Routes = [
   { path: '**', redirectTo: '' }
 ];
 
-// ... (Restante do appConfig não precisa ser alterado)
 export function tokenGetter() {
   return localStorage.getItem("token");
 }
@@ -52,16 +57,15 @@ export const appConfig: ApplicationConfig = {
       JwtModule.forRoot({
         config: {
           tokenGetter: tokenGetter,
+          // APENAS DOMÍNIOS DE PRODUÇÃO
           allowedDomains: [
-            "localhost:8081", 
-            "vending-machine-z87w.onrender.com",
-            "vending-social.vercel.app"
+            API_DOMAIN, 
+            VERCEL_DOMAIN
           ], 
+          // APENAS ROTAS DE PRODUÇÃO
           disallowedRoutes: [
-            "https://vending-machine-z87w.onrender.com/auth/login",
-            "https://vending-machine-z87w.onrender.com/auth/register",
-            "http://localhost:8081/auth/login",
-            "http://localhost:8081/auth/register"
+            `https://${API_DOMAIN}/auth/login`,
+            `https://${API_DOMAIN}/auth/register`,
           ],
         },
       })
