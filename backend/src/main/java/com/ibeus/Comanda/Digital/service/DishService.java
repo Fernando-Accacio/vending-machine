@@ -6,7 +6,6 @@ import com.ibeus.Comanda.Digital.model.Dish;
 import com.ibeus.Comanda.Digital.repository.DishRepository;
 
 import java.util.List;
-import java.util.stream.Collectors; // Removível, pois não usaremos mais streams para findAll()
 
 @Service
 public class DishService {
@@ -14,7 +13,6 @@ public class DishService {
     @Autowired
     private DishRepository dishRepository;
 
-    // --- CORREÇÃO 1: FILTRAR APENAS PRATOS ATIVOS ---
     public List<Dish> findAll() {
         // Agora usamos o método otimizado do repositório para filtrar no SQL
         return dishRepository.findByIsActiveTrue(); 
@@ -33,18 +31,23 @@ public class DishService {
 
     public Dish update(Long id, Dish dishDetails) {
         Dish dish = findById(id);
+        
+        // --- CORREÇÃO DA EDIÇÃO ---
         dish.setName(dishDetails.getName());
         dish.setDescription(dishDetails.getDescription());
         dish.setCusto(dishDetails.getCusto());
         
-        // Se a entidade Dish tiver o is_active, ela deve ser mantida,
-        // a menos que o formulário de edição permita reativar/inativar
+        // ESSENCIAL: Adicionar o Setter para o Tempo de Reposição
+        dish.setTempoReposicao(dishDetails.getTempoReposicao());
+        // --------------------------
+        
+        // Mantém o status ativo atual (se o formulário de edição permite essa alteração)
+        // Se o formulário tiver a checkbox de inativar:
         // dish.setActive(dishDetails.isActive()); 
         
         return dishRepository.save(dish);
     }
 
-    // --- CORREÇÃO 2: IMPLEMENTAÇÃO DO SOFT DELETE ---
     public void delete(Long id) {
         Dish dish = findById(id);
         dish.setActive(false); // Marca o prato como inativo (Soft Delete)
