@@ -1,14 +1,16 @@
 /* --- NOVA PALETA DE CORES MODERNA (ROXO/AZUL) --- */
 :root {
-  --primary-color: #4f46e5; /* Roxo/Azul (Indigo 600) */
-  --primary-color-dark: #4338ca; /* Roxo/Azul mais escuro */
-  --secondary-color: #10b981; /* Verde (Emerald 500) */
-  --danger-color: #ef4444; /* Vermelho */
-  --background-color: #f3f4f6; /* Cinza de fundo (Gray 100) */
-  --text-color: #1f2937; /* Preto suave (Gray 800) */
-  --text-color-light: #6b7280; /* Cinza (Gray 500) */
-  --card-background: #ffffff; /* Branco dos cards */
-  --border-color: #e5e7eb; /* Borda cinza (Gray 200) */
+  --primary-color: #4f46e5;
+  --primary-color-dark: #4338ca;
+  --primary-hover: #3730a3;
+  --secondary-color: #10b981;
+  --danger-color: #ef4444;
+  --danger-hover: #dc2626;
+  --background-color: #f3f4f6;
+  --text-color: #1f2937;
+  --text-color-light: #6b7280;
+  --card-background: #ffffff;
+  --border-color: #e5e7eb;
 }
 
 /* --- RESET GLOBAL --- */
@@ -22,8 +24,7 @@ html, body {
 
 .app-container {
   width: 100%;
-  /* --- MUDANÇA AQUI --- */
-  max-width: 900px; /* Era 600px. Agora o carrinho tem espaço. */
+  max-width: 900px;
   margin: 0 auto;
   padding: 0;
   background-color: var(--card-background);
@@ -35,7 +36,7 @@ html, body {
   padding: 20px;
 }
 
-/* --- ESTILOS GLOBAIS DE FORMULÁRIO (Labels, Inputs) --- */
+/* --- ESTILOS GLOBAIS DE FORMULÁRIO --- */
 .form-group {
   margin-bottom: 1.25rem;
 }
@@ -57,7 +58,7 @@ html, body {
   border: 1px solid var(--border-color);
   border-radius: 8px;
   font-size: 16px;
-  box-sizing: border-box; 
+  box-sizing: border-box;
   transition: border-color 0.2s, box-shadow 0.2s;
 }
 
@@ -69,32 +70,327 @@ html, body {
 
 /* --- ESTILOS GLOBAIS DE BOTÃO --- */
 .primary-btn, .adicionar, .confirm-button {
-  display: block;
-  width: 100%;
-  padding: 14px;
+  display: inline-block;
+  padding: 10px 20px;
   border: none;
-  border-radius: 8px;
-  font-size: 16px;
+  border-radius: 6px;
+  font-size: 14px;
   font-weight: 600;
   color: white;
   background-color: var(--primary-color);
   cursor: pointer;
-  transition: background-color 0.2s;
+  transition: all 0.2s ease;
   text-align: center;
   text-decoration: none;
-  margin-top: 20px;
+  margin: 4px;
+  min-width: 140px;
+  box-sizing: border-box;
 }
 
 .primary-btn:hover, .adicionar:hover, .confirm-button:hover {
-  background-color: var(--primary-color-dark);
+  background-color: var(--primary-hover);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(79, 70, 229, 0.3);
 }
 
-/* Link (ex: "Registre-se aqui") */
+.danger-btn {
+  display: inline-block;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 6px;
+  font-size: 14px;
+  font-weight: 600;
+  color: white;
+  background-color: var(--danger-color);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-align: center;
+  text-decoration: none;
+  margin: 4px;
+  min-width: 140px;
+  box-sizing: border-box;
+}
+
+/* Estilos herdados de .nav-button */
+.nav-button {
+  background: none;
+  border: none;
+  color: rgba(255, 255, 255, 0.85);
+  padding: 8px 16px;
+  border-radius: 6px;
+  font-size: 14px;
+  font-weight: 500;
+  text-decoration: none;
+  transition: all 0.2s ease;
+  cursor: pointer;
+  white-space: nowrap;
+  display: inline-block;
+  text-align: center;
+  box-sizing: border-box;
+}
+
+/* E também de .auth-buttons */
+.auth-buttons .nav-button,
+.auth-buttons button {
+  min-width: 130px;
+  padding: 8px 16px;
+  text-align: center;
+  box-sizing: border-box;
+  font-size: 14px;
+  font-weight: 600;
+  border-radius: 6px;
+  transition: all 0.2s ease;
+}
+
+.change-pass-btn {
+    padding: 8px 16px !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    text-align: center !important;
+    background-color: rgba(255, 255, 255, 0.15) !important;
+    color: white !important;
+    line-height: 1.2 !important;
+}
+
+.change-pass-btn:hover {
+  background-color: rgba(255, 255, 255, 0.25) !important;
+}
+
+.danger-btn:hover {
+  background-color: var(--danger-hover);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(239, 68, 68, 0.3);
+}
+
+/* --- ESTILOS DO CABEÇALHO --- */
+.header {
+  background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-color-dark) 100%);
+  color: white;
+  padding: 14px 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  flex-wrap: wrap;
+}
+
+.header-left {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-shrink: 0;
+}
+
+.back-button {
+  background: none;
+  border: none;
+  color: white;
+  font-size: 24px;
+  cursor: pointer;
+  padding: 4px 8px;
+  display: flex;
+  align-items: center;
+  transition: opacity 0.2s;
+}
+
+.back-button:hover {
+  opacity: 0.8;
+}
+
+.header-title {
+  font-size: 18px;
+  font-weight: 700;
+  margin: 0;
+  letter-spacing: -0.3px;
+  white-space: nowrap;
+}
+
+.header-subtitle {
+  font-size: 12px;
+  opacity: 0.9;
+  font-weight: 400;
+}
+
+.header-center {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+  flex-wrap: wrap;
+  justify-content: center;
+  flex: 1;
+}
+
+.header-nav {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+  flex-wrap: wrap;
+  margin-left: auto;
+}
+
+.header button,
+.header-center button,
+.header-nav button {
+  padding: 10px 18px;
+  font-size: 14px;
+  font-weight: 600;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+  min-width: 130px;
+  text-align: center;
+  box-sizing: border-box;
+}
+
+.header .primary-btn,
+.header-center .primary-btn,
+.header-nav .primary-btn {
+  background-color: rgba(255, 255, 255, 0.2);
+  color: white;
+  margin: 0;
+}
+
+.header .primary-btn:hover,
+.header-center .primary-btn:hover,
+.header-nav .primary-btn:hover {
+  background-color: rgba(255, 255, 255, 0.3);
+  transform: translateY(-1px);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+}
+
+.header .primary-btn.active,
+.header-center .primary-btn.active {
+  background-color: white;
+  color: var(--primary-color);
+}
+
+.header .danger-btn,
+.header-nav .danger-btn {
+  background-color: var(--danger-color);
+  margin: 0;
+  color: white;
+}
+
+.header .danger-btn:hover,
+.header-nav .danger-btn:hover {
+  background-color: var(--danger-hover);
+  transform: translateY(-1px);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+}
+
+.user-info {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 12px;
+  background-color: rgba(255, 255, 255, 0.15);
+  border-radius: 6px;
+  font-size: 13px;
+  font-weight: 500;
+  white-space: nowrap;
+  min-width: auto;
+}
+
+/* --- ESTILOS DO SUBTÍTULO DA PÁGINA --- */
+.page-header {
+  background-color: #374151;
+  color: white;
+  padding: 12px 20px;
+  text-align: center;
+  font-size: 15px;
+  font-weight: 600;
+  letter-spacing: 0.3px;
+}
+
+.page-title {
+  font-size: 28px;
+  font-weight: 700;
+  color: var(--text-color);
+  margin: 24px 0 16px 0;
+  padding: 0 20px;
+}
+
+/* --- ESTILOS PARA PÁGINA DE MUDAR SENHA --- */
+.back-arrow-link {
+  display: block;
+  max-width: 400px;
+  margin: 1.5rem auto 0;
+  padding: 0 2.5rem;
+  font-weight: 500;
+  color: var(--text-color-light);
+  text-decoration: none;
+  font-size: 0.9rem;
+}
+
+.back-arrow-link:hover {
+  color: var(--text-color);
+}
+
+.back-arrow-link i {
+  margin-right: 5px;
+}
+
+.change-password-container {
+  max-width: 400px;
+  margin: 1rem auto 4rem;
+  padding: 2.5rem;
+  background-color: var(--card-background);
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+}
+
+h2 {
+  text-align: center;
+  margin-top: 0;
+  margin-bottom: 2rem;
+  font-size: 1.8rem;
+  color: var(--text-color);
+}
+
+.adicionar {
+  margin-top: 1.5rem;
+  width: 100%;
+}
+
+/* Link */
 a {
   color: var(--primary-color);
   text-decoration: none;
   cursor: pointer;
 }
+
 a:hover {
   text-decoration: underline;
+}
+
+/* Responsividade para telas menores */
+@media (max-width: 768px) {
+  .header {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 10px;
+  }
+  
+  .header-center {
+    order: 2;
+    width: 100%;
+  }
+  
+  .header-nav {
+    order: 3;
+    width: 100%;
+    justify-content: center;
+  }
+  
+  .header button,
+  .header-center button,
+  .header-nav button {
+    flex: 1;
+    min-width: 100px;
+  }
 }
