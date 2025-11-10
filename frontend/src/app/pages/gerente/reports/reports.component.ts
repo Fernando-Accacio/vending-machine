@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { WithdrawalService, ReportWithdrawal } from '../../../services/withdrawal.service'; // ReportWithdrawal precisa ser usado
+import { WithdrawalService, ReportWithdrawal } from '../../../services/withdrawal.service'; 
 import { CommonModule } from '@angular/common';
 
 @Component({
@@ -10,9 +10,7 @@ import { CommonModule } from '@angular/common';
   styleUrls: ['./reports.component.css']
 })
 export class ReportsComponent implements OnInit {
-  // CORRIGIDO: O template (HTML) espera 'withdrawals', mas o TS tinha 'reports'.
-  // Usaremos 'withdrawals' para bater com o HTML e converter a data.
-  withdrawals: any[] = []; // Usaremos any[] temporariamente para conversão de data
+  withdrawals: any[] = []; // Usamos 'any[]' para permitir a conversão de data
   totalCostAll: number = 0;
   isLoading: boolean = true;
 
@@ -23,14 +21,15 @@ export class ReportsComponent implements OnInit {
   }
 
   loadReports(): void {
-    this.withdrawalService.getWithdrawalsReport().subscribe(data => { // Chamada de função corrigida
-        // CORRIGIDO: Conversão de data para objeto Date, como no componente do cliente
-        this.withdrawals = data.map(w => ({
-            ...w,
-            withdrawalDate: new Date(w.withdrawalDate) as any
-        })); 
+    this.withdrawalService.getWithdrawalsReport().subscribe(data => { 
+        this.withdrawals = data.map(w => {
+            const dateStringUTC = w.withdrawalDate + 'Z';
+            return {
+                ...w,
+                withdrawalDate: new Date(dateStringUTC) as any
+            };
+        }); 
 
-        // CORRIGIDO: Adicionando tipagem para os parâmetros do reduce
       this.totalCostAll = data.reduce((total: number, w: ReportWithdrawal) => total + w.totalCost, 0); 
       this.isLoading = false;
     });
