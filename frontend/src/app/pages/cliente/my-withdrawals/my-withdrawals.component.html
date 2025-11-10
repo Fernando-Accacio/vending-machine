@@ -9,11 +9,10 @@
         Você ainda não realizou nenhuma retirada.
     </div>
 
-    <div *ngIf="!isLoading && history.length > 0">
+<div *ngIf="!isLoading && history.length > 0">
         <div *ngFor="let withdrawal of history" class="withdrawal-card">
             <div class="withdrawal-header">
                 <h3>Retirada #{{ withdrawal.id }}</h3>
-                <!-- CORREÇÃO FINAL: Usa 'America/Sao_Paulo' para forçar a exibição no fuso GMT-3 -->
                 <span class="date">{{ withdrawal.withdrawalDate | date: 'dd/MM/yyyy HH:mm':'America/Sao_Paulo' }}</span>
             </div>
             
@@ -31,3 +30,4 @@
         </div>
     </div>
 </div>
+

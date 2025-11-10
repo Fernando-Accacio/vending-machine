@@ -19,10 +19,8 @@
         <tbody>
             <tr *ngFor="let w of withdrawals">
                 <td>{{ w.id }}</td>
-                <!-- CORREÇÃO FINAL: Usa 'America/Sao_Paulo' para forçar a exibição no fuso GMT-3 -->
                 <td>{{ w.withdrawalDate | date:'dd/MM/yyyy HH:mm':'America/Sao_Paulo' }}</td> 
                 <td>{{ w.user.name }} ({{ w.user.documento }})</td>
-                
                 <td>
                     <ul>
                         <li *ngFor="let item of w.items">
