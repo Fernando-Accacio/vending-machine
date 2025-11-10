@@ -2,50 +2,80 @@ import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router, RouterModule } from '@angular/router';
-import { UserService } from '../../services/user.service';
+// Ajuste o caminho conforme a localização real do seu UserService
+import { UserService } from '../../services/user.service'; 
+// 🚨 NOVO: Importe o serviço de autenticação para verificar o perfil
+import { AuthenticateService } from '../../services/auth/authenticate.service'; 
 
 @Component({
-  selector: 'app-change-password',
-  standalone: true,
-  imports: [CommonModule, FormsModule, RouterModule],
-  templateUrl: './change-password.component.html',
-  styleUrls: ['./change-password.component.css']
+  selector: 'app-change-password',
+  standalone: true,
+  imports: [CommonModule, FormsModule, RouterModule],
+  templateUrl: './change-password.component.html',
+  styleUrls: ['./change-password.component.css']
 })
 export class ChangePasswordComponent {
 
-  passwords = {
-    oldPassword: '',
-    newPassword: '',
-    confirmNewPassword: ''
-  };
+  passwords = {
+    oldPassword: '',
+    newPassword: '',
+    confirmNewPassword: ''
+  };
 
-  constructor(
-    private userService: UserService,
-    private router: Router
-  ) {}
+  constructor(
+    private userService: UserService,
+    private router: Router,
+    // 🚨 NOVO: Injetar o serviço de autenticação
+    private authService: AuthenticateService 
+  ) {}
 
-  changePassword(): void {
-    if (this.passwords.newPassword !== this.passwords.confirmNewPassword) {
-      alert('A "Nova Senha" e a "Confirmação" não conferem.');
-      return;
-    }
-
-    const request = {
-      oldPassword: this.passwords.oldPassword,
-      newPassword: this.passwords.newPassword
-    };
-
-    // --- CORREÇÃO AQUI ---
-    this.userService.changePassword(request).subscribe({
-      next: (response) => {
-        // 'response' agora é o texto "Senha alterada com sucesso!"
-        alert(response); 
-        this.router.navigate(['/']); // Volta para a página principal
-      },
-      error: (err) => {
-        // 'err.error' agora é o texto "A senha antiga está incorreta."
-        alert(`Erro: ${err.error}`);
-      }
-    });
+  /**
+   * Determina e navega para a rota correta com base no perfil do usuário.
+   * Gerente -> /itens
+   * Cliente/Outros -> /
+   */
+  private navigateBasedOnRole(): void {
+    // ⚠️ ATENÇÃO: Substitua 'getRole' e o valor 'gerente' pelo que seu authService usa.
+    const userRole = this.authService.getRole(); 
+    
+    if (userRole === 'GERENTE') {
+      // Redireciona para a tela de Itens (Gerenciamento)
+      this.router.navigate(['/itens']); 
+    } else {
+      // Redireciona para a tela de Cardápio/Home (Cliente)
+      this.router.navigate(['/']); 
+    }
+  }
+  
+  /**
+   * Método para o botão "Voltar". Redireciona condicionalmente.
+   */
+  goBack(): void {
+      this.navigateBasedOnRole();
   }
+
+
+  changePassword(): void {
+    if (this.passwords.newPassword !== this.passwords.confirmNewPassword) {
+      alert('A "Nova Senha" e a "Confirmação" não conferem.');
+      return;
+    }
+
+    const request = {
+      oldPassword: this.passwords.oldPassword,
+      newPassword: this.passwords.newPassword
+    };
+
+    // --- Chamada à API e Redirecionamento Condicional ---
+    this.userService.changePassword(request).subscribe({
+      next: (response) => {
+        alert(response); 
+        // Chama o método de navegação condicional após sucesso
+        this.navigateBasedOnRole(); 
+      },
+      error: (err) => {
+        alert(`Erro: ${err.error}`);
+      }
+    });
+  }
 }

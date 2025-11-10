@@ -1,33 +1,47 @@
-<h2>{{ isEdit ? 'Editar Prato' : 'Adicionar Prato' }}</h2>
+    <a class="back-arrow-link" (click)="goBack()">
+        <!-- Ajuste o ícone: Se você usa Font Awesome, use <i class="fas fa-arrow-left"></i> -->
+        <!-- Se você usa o SVG (como na versão anterior), mantenha o SVG, mas remova o estilo do CSS que você mandou,
+             pois a tag <i> não está sendo usada. Vou manter o SVG, que é o mais comum no Angular Standalone. -->
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-right: 5px;">
+            <path d="m12 19-7-7 7-7"/><path d="M19 12H5"/>
+        </svg>
+        Voltar
+    </a>
 
 <div class="form-wrapper">
-  <form (ngSubmit)="saveDish()">
+    <!-- ATUALIZAÇÃO: Usando a classe 'back-arrow-link' e o ícone com a tag <i> (se for Font Awesome) ou SVG -->
+    <!-- Fim do link Voltar -->
+    
+    <form (ngSubmit)="saveDish()">
 
-    <div class="form-container">
-      
-      <div class="form-group">
-        <label for="name">Nome:</label>
-        <input type="text" id="name" [(ngModel)]="dish.name" name="name" required>
-      </div>
+        <div class="form-container">
 
-      <div class="form-group">
-        <label for="description">Descrição:</label>
-        <input type="text" id="description" [(ngModel)]="dish.description" name="description" required>
-      </div>
+          <h2>{{ isEdit ? 'Editar Prato' : 'Adicionar Prato' }}</h2>
 
-      <div class="form-group">
-        <label for="custo">Custo:</label>
-        <input type="number" id="custo" [(ngModel)]="dish.custo" name="custo" required>
-      </div>
-      
-      <div class="form-group">
-        <label for="tempoReposicao">Tempo de Reposição (min):</label>
-        <input type="number" id="tempoReposicao" [(ngModel)]="dish.tempoReposicao" name="tempoReposicao" required>
-      </div>
+            
+            <div class="form-group">
+                <label for="name">Nome:</label>
+                <input type="text" id="name" [(ngModel)]="dish.name" name="name" required>
+            </div>
 
-    </div>
+            <div class="form-group">
+                <label for="description">Descrição:</label>
+                <input type="text" id="description" [(ngModel)]="dish.description" name="description" required>
+            </div>
 
-    <button class="adicionar" type="submit">{{ isEdit ? 'Atualizar' : 'Adicionar' }}</button>
-  
-  </form>
+            <div class="form-group">
+                <label for="custo">Custo:</label>
+                <input type="number" id="custo" [(ngModel)]="dish.custo" name="custo" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="tempoReposicao">Tempo de Reposição (min):</label>
+                <input type="number" id="tempoReposicao" [(ngModel)]="dish.tempoReposicao" name="tempoReposicao" required>
+            </div>
+
+        </div>
+
+        <button class="adicionar" type="submit">{{ isEdit ? 'Atualizar' : 'Adicionar' }}</button>
+    
+    </form>
 </div>

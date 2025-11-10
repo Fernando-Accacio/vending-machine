@@ -1,6 +1,6 @@
 package com.ibeus.Comanda.Digital.model;
 
-import com.fasterxml.jackson.annotation.JsonFormat; // <-- 1. IMPORTAÇÃO NOVA
+import com.fasterxml.jackson.annotation.JsonFormat; // Importação necessária para o @JsonFormat
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -23,9 +23,8 @@ public class Withdrawal {
     @Column(name = "total_cost")
     private Double totalCost;
 
-    // --- CORREÇÃO DA DATA ---
     @Column(name = "withdrawal_date")
-    // 2. ANOTAÇÃO NOVA: Força o Java a enviar a data como "2025-11-07T18:42:42"
+    // GARANTIDO: Força o formato ISO 8601 para que o Angular saiba como decodificar a string.
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss")
     private LocalDateTime withdrawalDate;
     
