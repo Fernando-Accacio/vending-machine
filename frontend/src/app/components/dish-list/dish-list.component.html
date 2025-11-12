@@ -22,10 +22,12 @@
           <td>{{ dish.description }}</td>
           <td>R$ {{ dish.custo.toFixed(2) }}</td>
           <td>{{ dish.tempoReposicao || 0 }} min</td>
-          <td>
-            <button class="delete" (click)="deleteDish(dish.id!)">Deletar</button>
-            <a class="edit" [routerLink]="['/edit-item', dish.id]">Editar</a>
-          </td>
+<td>
+          <div class="action-buttons-container">
+            <button class="delete" (click)="deleteDish(dish.id!)">Deletar</button>
+            <a class="edit" [routerLink]="['/edit-item', dish.id]">Editar</a>
+          </div>
+        </td>
         </tr>
       </tbody>
     </table>
