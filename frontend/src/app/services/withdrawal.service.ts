@@ -21,7 +21,8 @@ export interface WithdrawalItem {
     dish: Dish; 
 }
 
-export interface Withdrawal { 
+export interface Withdrawal {
+displayIndex: any; 
     id: number;
     totalCost: number;
     withdrawalDate: string;

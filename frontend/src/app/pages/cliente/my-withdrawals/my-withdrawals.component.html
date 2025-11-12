@@ -10,14 +10,15 @@
     </div>
 
 <div *ngIf="!isLoading && history.length > 0">
+        <!-- O *ngFor deve ser mantido -->
         <div *ngFor="let withdrawal of history" class="withdrawal-card">
             <div class="withdrawal-header">
-                <h3>Retirada #{{ withdrawal.id }}</h3>
+                <!-- CORREÇÃO AQUI: Usando o displayIndex em vez do ID do banco -->
+                <h3>Retirada #{{ withdrawal.displayIndex }}</h3> 
                 <span class="date">{{ withdrawal.withdrawalDate | date: 'dd/MM/yyyy HH:mm':'America/Sao_Paulo' }}</span>
             </div>
             
             <div class="withdrawal-details">
-                <!-- Mantendo o filtro currency que estava na conversa anterior -->
                 <p><strong>Custo Total:</strong> R$ {{ withdrawal.totalCost | number: '1.2-2' }}</p> 
                 
                 <h4>Itens:</h4>
@@ -30,4 +31,3 @@
         </div>
     </div>
 </div>
-

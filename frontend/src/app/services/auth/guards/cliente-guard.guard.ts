@@ -6,10 +6,27 @@ export const clienteGuardGuard: CanActivateFn = (route, state) => {
   const authService = inject(AuthenticateService);
   const router = inject(Router);
 
-  const role = authService.getRole();
-  if (role === 'cliente' || role === 'gerente') {
-    return true;
+  // 1. CHECAGEM GERAL DE AUTENTICAÇÃO (Token Válido)
+  if (!authService.isAuthenticated()) {
+    authService.logout(); 
+    router.navigateByUrl('/login'); 
+    return false;
   }
-  router.navigate(['/login']);
+
+  // 2. CHECAGEM DE AUTORIZAÇÃO (Role)
+  const role = authService.getRole();
+  
+  // Padroniza a Role para MAIÚSCULAS antes de comparar para evitar erro de Case Sensitivity
+  const standardizedRole = role ? role.toUpperCase() : null; 
+
+  // As roles autorizadas são 'CLIENTE' (Maiúsculo) OU 'GERENTE' (Maiúsculo)
+  if (standardizedRole === 'CLIENTE' || standardizedRole === 'GERENTE') {
+    return true; // Acesso permitido
+  }
+
+  // 3. SE ESTÁ AUTENTICADO MAS SEM ROLE CORRETA
+  console.warn(`Acesso negado para a role: ${role}. Redirecionando para o cardápio.`);
+  
+  router.navigateByUrl('/'); 
   return false;
 };
