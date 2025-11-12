@@ -1,10 +1,14 @@
-# Ignora logs e arquivos de sistema
+# ==========================================================
+# 🧹 IGNORAR LOGS E ARQUIVOS DE SISTEMA
+# ==========================================================
 *.log
-npm-debug.log*
+npm-debug.log
 .DS_Store
 Thumbs.db
 
-# Ignora arquivos de IDE
+# ==========================================================
+# 🧠 IGNORAR ARQUIVOS DE IDE
+# ==========================================================
 .vscode/
 .idea/
 *.iml
@@ -12,7 +16,9 @@ Thumbs.db
 *.classpath
 .settings/
 
-# --- FRONT-END (Angular / Node.js) ---
+# ==========================================================
+# 💻 FRONT-END (Angular / Node.js)
+# ==========================================================
 
 # Pasta de dependências (OBRIGATÓRIO)
 frontend/node_modules/
@@ -24,14 +30,27 @@ frontend/build/
 # Cache do Angular
 frontend/.angular/cache/
 
-# --- BACK-END (Java / Maven) ---
+# ==========================================================
+# ☕ BACK-END (Java / Maven)
+# ==========================================================
 
 # Pasta de build (OBRIGATÓRIO)
 backend/target/
 
-# Arquivos gerados pelo Maven
+# Arquivos gerados pelo Maven (Correto)
 backend/pom.xml.tag
 backend/pom.xml.releaseBackup
 backend/pom.xml.versionsBackup
 backend/release.properties
 backend/dependency-reduced-pom.xml
+
+# ==========================================================
+# 🚨 REGRAS DE SEGURANÇA ADICIONADAS
+# ==========================================================
+
+# ⚠️ CRÍTICO: Arquivos de Configuração Local com Segredos
+# Estes arquivos contêm senhas/chaves e NUNCA devem ser versionados.
+
+backend/src/main/resources/application-local.properties
+backend/src/main/resources/*.local
+backend/.env
