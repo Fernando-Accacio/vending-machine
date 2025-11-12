@@ -31,15 +31,6 @@
 .back-arrow-link:hover {
     color: #000; 
 }
-
-/* O container principal que vai alinhar os campos */
-.form-container {
-    display: flex;       /* Usa flexbox para alinhar */
-    flex-wrap: wrap;     /* Faz os campos quebrarem a linha em telas pequenas */
-    gap: 15px 20px;      /* 15px de espaço entre linhas, 20px entre colunas */
-    margin-bottom: 20px; /* Espaço antes do botão */
-}
-
 /* Container do formulário em si - Estilo card */
 .form-wrapper {
     /* Centraliza o card do formulário */
@@ -58,6 +49,7 @@
 /* Estilo para o título */
 h2 {
     text-align: center;
+    margin-bottom: 2rem;
     max-width: 400px; /* Igual ao .form-wrapper e .back-arrow-link */
     margin: 0 auto 2rem; /* Centraliza horizontalmente e ajusta as margens */
     font-size: 1.8rem;
@@ -76,22 +68,6 @@ h2 {
     
     flex: 1 1 300px;        
     min-width: 250px;      /* Largura mínima antes de quebrar a linha */
-}
-
-/* Estilo do Label */
-label {
-    font-weight: bold;
-    font-size: 0.9em;
-    color: #333;
-}
-
-/* Estilo do Input */
-input[type="text"],
-input[type="number"] {
-    padding: 10px 12px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    font-size: 1em;
 }
 
 /* Estilo do Botão Adicionar/Atualizar */

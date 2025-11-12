@@ -24,16 +24,12 @@ html, body {
 
 .app-container {
   width: 100%;
-  max-width: 900px;
-  margin: 0 auto;
+  max-width: 100%;
+  margin: 0;
   padding: 0;
   background-color: var(--card-background);
   min-height: 100vh;
-  box-shadow: 0 10px 25px rgba(0,0,0,0.05);
-}
-
-.main-content {
-  padding: 20px;
+  box-shadow: none;
 }
 
 /* --- ESTILOS GLOBAIS DE FORMULÁRIO --- */
@@ -82,7 +78,7 @@ html, body {
   transition: all 0.2s ease;
   text-align: center;
   text-decoration: none;
-  margin: 4px;
+  margin: 4px 0;
   min-width: 140px;
   box-sizing: border-box;
 }
@@ -129,7 +125,6 @@ html, body {
   box-sizing: border-box;
 }
 
-/* E também de .auth-buttons */
 .auth-buttons .nav-button,
 .auth-buttons button {
   min-width: 130px;
@@ -173,7 +168,7 @@ html, body {
   justify-content: space-between;
   gap: 12px;
   box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
 }
 
 .header-left {
@@ -368,29 +363,565 @@ a:hover {
   text-decoration: underline;
 }
 
-/* Responsividade para telas menores */
-@media (max-width: 768px) {
-  .header {
+/* --- ESTILOS GERAIS DO HAMBÚRGUER --- */
+
+/* Esconde a navegação móvel por padrão */
+.mobile-menu {
+    display: none; 
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh; /* Altura total da tela */
+    background-color: rgba(0, 0, 0, 0.95); 
+    z-index: 999; 
     flex-direction: column;
-    align-items: stretch;
-    gap: 10px;
-  }
-  
-  .header-center {
-    order: 2;
-    width: 100%;
-  }
-  
-  .header-nav {
-    order: 3;
-    width: 100%;
+    align-items: center;
     justify-content: center;
-  }
-  
-  .header button,
-  .header-center button,
-  .header-nav button {
-    flex: 1;
-    min-width: 100px;
-  }
+    padding: 20px;
+    box-sizing: border-box;
+    overflow-y: auto;
+    transition: opacity 0.3s ease;
+    opacity: 0;
+    pointer-events: none; /* Não interage quando invisível */
 }
+
+/* Mostra o menu quando a classe 'active' é adicionada (pelo Angular) */
+.mobile-menu.active {
+    display: flex;
+    opacity: 1;
+    pointer-events: all;
+}
+
+.mobile-menu-inner {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    max-width: 380px;
+    padding: 20px;
+    background-color: var(--primary-color-dark);
+    border-radius: 12px;
+}
+
+.mobile-menu-title {
+    font-size: 20px;
+    font-weight: 700;
+    color: white;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.mobile-menu .nav-button,
+.mobile-menu .danger-btn {
+    width: 100%;
+    margin: 6px 0;
+    padding: 14px 20px;
+    font-size: 15px;
+    background-color: var(--primary-color); 
+    color: white;
+}
+
+.mobile-auth-section {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.mobile-user-info {
+    background: none;
+    color: rgba(255, 255, 255, 0.8);
+    font-size: 13px;
+    margin-bottom: 10px;
+}
+
+.menu-divider {
+    width: 100%;
+    border: 0;
+    border-top: 1px solid rgba(255, 255, 255, 0.3);
+    margin: 20px 0;
+}
+
+/* Estilo do Botão do Hambúrguer */
+.menu-toggle {
+    display: none; /* Escondido em desktop */
+    background: none;
+    border: none;
+    font-size: 28px; /* Tamanho maior para o ícone */
+    font-weight: bold;
+    color: white;
+    cursor: pointer;
+    padding: 0;
+    line-height: 1; 
+    margin-left: 15px;
+    z-index: 1000;
+}
+
+.header .logo {
+  font-size: 1.25em;
+  font-weight: 600;
+  color: white;
+  margin: 0;
+  padding: 0;
+}
+
+.nav-wrapper {
+  flex-grow: 1;
+  display: flex;
+  justify-content: center;
+}
+
+.nav-container {
+  display: flex;
+  gap: 8px;
+}
+
+.nav-button:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+  color: white;
+}
+
+.nav-button.active {
+  background-color: white;
+  color: var(--primary-color);
+  font-weight: 600;
+}
+
+.back-btn {
+  background: none;
+  border: none;
+  color: white;
+  font-size: 20px;
+  padding: 0 10px 0 0;
+  cursor: pointer;
+  margin-right: 10px;
+}
+
+/* --- ESTILOS AUTH E USER INFO --- */
+.auth-btn {
+  display: flex;
+  align-items: center;
+  gap: 10px; /* Espaço entre os botões e a info do usuário */
+}
+
+/* Novo container para os botões de ação (Mudar Senha e Sair) */
+.auth-buttons {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.user-info .user-name {
+  font-weight: 700;
+}
+
+.user-info .user-role {
+  font-size: 0.9em;
+  opacity: 0.8;
+}
+
+/* Botão de Login (quando deslogado) */
+.auth-btn .login-btn {
+  background-color: white;
+  color: var(--primary-color-dark);
+  font-weight: 600;
+}
+
+.auth-btn .login-btn:hover {
+  background-color: #f3f4f6;
+}
+
+/* Botão Mudar Senha (logado) */
+.auth-btn .change-pass-btn {
+  color: white;
+  background-color: var(--primary-color-dark);
+}
+
+.auth-btn .change-pass-btn:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+/* Botão Sair (logado) */
+.auth-btn .logout-btn {
+  background-color: var(--danger-color); /* Vermelho */
+  color: white;
+  font-weight: 600;
+}
+
+.auth-btn .logout-btn:hover {
+  background-color: #dc2626;
+}
+
+/* A barra "SISTEMA DE GESTÃO SOCIAL" */
+.status-bar {
+  background-color: #374151;
+  color: white;
+  text-align: center;
+  padding: 4px;
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.5px;
+}
+
+/* --- MEDIA QUERY PARA MOBILE (CORRIGIDO) --- */
+
+@media (max-width: 768px) {
+    /* 0. Reset Básico */
+    * {
+        box-sizing: border-box; /* Garante que padding não afete a largura total */
+    }
+
+    html, body {
+        margin: 0;
+        padding: 0;
+        overflow-x: hidden; /* Previne scroll horizontal no nível da página */
+    }
+
+    /* 2. Ajustes no Cabeçalho */
+    .header {
+        display: flex;
+        flex-direction: row;
+        /* justify-content: space-between; <-- REMOVIDO: A lógica agora fica no .header-left */
+        align-items: center;
+        padding: 12px 15px;
+        gap: 0;
+
+        width: 100%; 
+        box-sizing: border-box; /* Garante que o padding não quebre o layout */
+        flex-wrap: nowrap;
+    }
+
+    .desktop-nav,
+    .header-center,
+    .header-nav,
+    .auth-buttons {
+        display: none !important;
+    }
+
+    .menu-toggle {
+        display: flex; 
+        /* margin-left: auto; <-- REMOVIDO: Não é mais necessário, o pai .header-left vai cuidar disso */
+    }
+    
+    .header-left {
+        display: flex; /* <-- ADICIONADO */
+        width: 100%; /* <-- ADICIONADO */
+        justify-content: space-between; /* <-- ADICIONADO */
+        align-items: center; /* <-- ADICIONADO */
+        gap: 8px;
+        /* flex: 1; */ /* REMOVIDO - Isso permite que o space-between jogue o menu para a direita */
+    }
+
+    .header-title {
+        font-size: 12px; /* AJUSTADO: Era 16px */
+    }
+
+    .header-subtitle {
+        font-size: 11px;
+    }
+
+    .back-button {
+        font-size: 20px;
+        padding: 2px 4px;
+    }
+
+    /* 3. Ajustes do Conteúdo Principal */
+    .main-content {
+        padding: 20px;
+        max-width: 900px;
+        margin: 0 auto;
+        box-sizing: border-box;
+        width: 100%;
+    }
+
+    /* 4. Título da página */
+    .page-title {
+        font-size: 22px;
+        margin: 15px 0 12px 0;
+        padding: 0 10px;
+        text-align: center;
+    }
+
+    .page-header {
+        font-size: 13px;
+        padding: 10px 15px;
+    }
+
+    /* 5. Remover Scroll Horizontal (CORRIGIDO) */
+    .main-content > div { /* Regra mantida para divs filhas, se houver */
+        width: 100%;
+        overflow-x: hidden !important; 
+    }
+    /* 6. Transformar Tabela em Cards Verticais */
+    table {
+        width: 100% !important;
+        border: none !important;
+        display: block !important;
+    }
+
+    /* REGRA CRUCIAL: Esconder o cabeçalho da tabela. 
+       ESTA É A OUTRA REGRA IMPORTANTE.
+    */
+    table thead {
+        display: none !important; 
+    }
+
+
+    /* <-- ALTERAÇÃO/RESTAURAÇÃO IMPORTANTE --> */
+    /* Esta regra esconde o container do cabeçalho da tabela, que é separado dos cards.
+       Eu havia removido isso por engano na última sugestão.
+    */
+    .table-container {
+        display: none !important;
+    }
+    
+    /* Regra de reforço para esconder o thead (mantida por segurança) */
+    .table-container table thead {
+         display: none !important; 
+    }
+
+    table tbody {
+        display: block !important;
+        width: 100%;
+    }
+
+    table tr {
+        display: block !important;
+        margin-bottom: 15px;
+        padding: 15px;
+        background-color: var(--card-background);
+        border: 1px solid var(--border-color);
+        border-radius: 8px;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.08);
+    }
+
+    table td {
+        display: block !important;
+        width: 100% !important;
+        padding: 8px 0 !important;
+        border: none !important;
+        text-align: left !important;
+        font-size: 14px !important;
+        white-space: normal !important;
+        word-wrap: break-word;
+    }
+
+    /* Labels usando nth-child */
+    table td:nth-child(1)::before {
+        content: "ID: ";
+        display: inline; 
+        margin-right: 5px;
+        font-weight: 600;
+        color: var(--text-color-light);
+        font-size: 12px;
+    }
+
+    /* Ajuste para os outros labels ficarem em bloco */
+    table td:nth-child(2)::before,
+    table td:nth-child(3)::before,
+    table td:nth-child(4)::before,
+    table td:nth-child(5)::before,
+    table td:nth-child(6)::before {
+        font-weight: 600;
+        color: var(--text-color);
+        display: block;
+        margin-bottom: 4px;
+        font-size: 12px;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        color: var(--text-color-light);
+    }
+
+    table td:nth-child(2)::before {
+        content: "Nome: ";
+    }
+
+    table td:nth-child(3)::before {
+        content: "Descrição: ";
+    }
+
+    table td:nth-child(4)::before {
+        content: "Custo (R$): ";
+    }
+
+    table td:nth-child(5)::before {
+        content: "Tempo Reposição: ";
+    }
+
+    table td:nth-child(6)::before {
+        content: "Ações: ";
+    }
+
+    /* Botões de Ação */
+    table td:last-child {
+        display: flex !important;
+        gap: 8px;
+        flex-wrap: wrap;
+        padding-top: 12px !important;
+        margin-top: 8px;
+        border-top: 1px solid var(--border-color);
+    }
+
+    table td:last-child::before {
+        width: 100%;
+        margin-bottom: 8px;
+    }
+
+    table td button {
+        min-width: 100px !important;
+        padding: 10px 16px !important;
+        margin: 0 !important;
+    }
+
+    /* 7. Botões Principais */
+    .primary-btn,
+    .adicionar,
+    .confirm-button,
+    .novo-item-btn,
+    .newDish, /* <-- ADICIONADO AQUI para ficar 100% */
+    .danger-btn {
+        justify-content: center;
+        align-items: center;
+        width: 100%;
+        margin: 8px 0;
+        padding: 12px 20px;
+        font-size: 15px;
+    }
+
+    .newDish {
+        flex: 1;
+        min-width: 100px !important;
+        padding: 10px 16px !important;
+        margin: 0 !important;
+        font-size: 14px;
+        font-size: 15px;
+    }
+
+    /* 8. Formulários */
+    .form-group {
+        margin-bottom: 1rem;
+    }
+
+    .form-group label {
+        font-size: 14px;
+    }
+
+    .form-group input,
+    .form-group textarea {
+        font-size: 15px;
+        padding: 10px;
+    }
+
+    /* 9. Container de Mudança de Senha */
+    .change-password-container {
+        margin: 1rem 15px 2rem;
+        padding: 20px;
+    }
+
+    .back-arrow-link {
+        padding: 0 15px;
+        margin: 1rem auto 0;
+    }
+
+    /* 10. Menu Mobile - Ajustes de Estilo */
+    .mobile-menu {
+        background-color: rgba(0, 0, 0, 0.98);
+        backdrop-filter: blur(10px);
+        width: 100vw;
+        height: 100vh;
+        position: fixed;
+        top: 0;
+        left: 0;
+        z-index: 1000;
+    }
+
+    .mobile-menu-inner {
+        width: 85%;
+        max-width: 320px; /* Limite máximo de largura */
+        padding: 30px 20px;
+        background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-color-dark) 100%);
+        box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+        /* Assumindo que o menu é 'slide-in' da direita:
+           position: absolute;
+           right: 0;
+           height: 100%; 
+        */
+    }
+
+    .mobile-menu-title {
+        font-size: 20px;
+        margin-bottom: 20px;
+        font-weight: 700;
+        letter-spacing: 0.5px;
+    }
+
+    .mobile-menu .nav-button {
+        width: 100%;
+        margin: 8px 0;
+        padding: 14px 20px;
+        font-size: 15px;
+        font-weight: 600;
+        background-color: rgba(255, 255, 255, 0.15);
+        color: white;
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        border-radius: 8px;
+        transition: all 0.3s ease;
+    }
+
+    .mobile-menu .nav-button:hover,
+    .mobile-menu .nav-button:active {
+        background-color: rgba(255, 255, 255, 0.25);
+        transform: translateX(5px);
+    }
+
+    .mobile-menu .danger-btn {
+        background-color: var(--danger-color);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+
+    .mobile-menu .danger-btn:hover,
+    .mobile-menu .danger-btn:active {
+        background-color: var(--danger-hover);
+    }
+
+    .mobile-auth-section {
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 8px;
+    }
+
+    .mobile-user-info {
+        background: rgba(255, 255, 255, 0.1);
+        padding: 12px 16px;
+        border-radius: 8px;
+        color: white;
+        font-size: 14px;
+        font-weight: 500;
+        margin-bottom: 10px;
+        width: 100%;
+        text-align: center;
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        
+        /* CORRIGIDO: Permite que o texto longo quebre a linha */
+        word-wrap: break-word;
+        white-space: normal;
+        line-height: 1.4; /* Melhora a legibilidade do texto quebrado */
+    }
+
+    .menu-divider {
+        width: 100%;
+        border: 0;
+        border-top: 2px solid rgba(255, 255, 255, 0.2);
+        margin: 20px 0;
+    }
+
+    /* 11. Cards (se houver) */
+    .card {
+        margin: 10px 0;
+        padding: 15px;
+    }
+}
+

@@ -26,10 +26,15 @@ import java.util.Arrays;
 public class SecurityConfig {
 
     private final JwtAuthenticationFilter jwtAuthenticationFilter;
-    
+    private final JwtAuthEntryPoint jwtAuthEntryPoint; // INJEÇÃO DO NOVO COMPONENTE
+
     @Autowired
-    public SecurityConfig(JwtAuthenticationFilter jwtAuthenticationFilter) {
+    public SecurityConfig(
+        JwtAuthenticationFilter jwtAuthenticationFilter,
+        JwtAuthEntryPoint jwtAuthEntryPoint // Adicionado aqui
+    ) {
         this.jwtAuthenticationFilter = jwtAuthenticationFilter;
+        this.jwtAuthEntryPoint = jwtAuthEntryPoint;
     }
 
     @Bean
@@ -42,31 +47,46 @@ public class SecurityConfig {
         http
             .cors(cors -> cors.configurationSource(corsConfigurationSource()))
             .csrf(csrf -> csrf.disable())
+            
+            // NOVO: Desativa o login padrão e o basic, que causam redirecionamento
+            .httpBasic(basic -> basic.disable())
+            .formLogin(form -> form.disable())
+
             .sessionManagement(session -> session
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+            
+            // NOVO: Configura o handler para retornar 401 em caso de falha de autenticação
+            .exceptionHandling(exceptions -> exceptions
+                .authenticationEntryPoint(jwtAuthEntryPoint)
+            )
             
             .authorizeHttpRequests(authorize -> authorize
                 // --- ROTAS PÚBLICAS GERAIS ---
                 .requestMatchers(
-                    "/",                        
-                    "/error",                   
-                    "/api-docs/**",             
-                    "/swagger-ui/**",           
-                    "/swagger-ui.html"          
+                    "/",
+                    "/error",
+                    "/api-docs/**",
+                    "/swagger-ui/**",
+                    "/swagger-ui.html"
                 ).permitAll()
                 
                 // Endpoints públicos (login e registro)
                 .requestMatchers("/auth/**").permitAll()
                 // Cardápio (GET /dishes) é público
-                .requestMatchers(HttpMethod.GET, "/dishes").permitAll() 
-                
+                .requestMatchers(HttpMethod.GET, "/dishes").permitAll()
+
                 // Rotas que exigem autenticação
-                .requestMatchers("/users/change-password").authenticated() 
+                .requestMatchers("/users/change-password").authenticated()
                 .requestMatchers(HttpMethod.POST, "/withdrawals").authenticated()
+
+                // ROTA CLIENTE: Historico de retiradas (GET /withdrawals/history)
+                .requestMatchers(HttpMethod.GET, "/withdrawals/history").authenticated() // ROTA QUE ESTAVA TE CAUSANDO PROBLEMAS
+                
+                // ROTA GERENTE: Relatorio de retiradas
                 .requestMatchers(HttpMethod.GET, "/withdrawals").hasAuthority("GERENTE")
                 
                 // Todo o resto precisa de autenticação (token JWT)
-                .anyRequest().authenticated() 
+                .anyRequest().authenticated()
             );
         
         http.addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
@@ -85,14 +105,14 @@ public class SecurityConfig {
         
         // CORREÇÃO: DOMÍNIOS ESPECÍFICOS E ALLOW_CREDENTIALS
         configuration.setAllowedOrigins(Arrays.asList(
-            "https://vending-social.vercel.app", 
-            "http://localhost:4200" 
-        )); 
+            "https://vending-social.vercel.app",
+            "http://localhost:4200"
+        ));
         
         configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
         configuration.setAllowedHeaders(Arrays.asList("Authorization", "Content-Type"));
-        configuration.setAllowCredentials(true); 
-        configuration.setExposedHeaders(Arrays.asList("Authorization", "Content-Type")); // Mantido do seu código original
+        configuration.setAllowCredentials(true);
+        configuration.setExposedHeaders(Arrays.asList("Authorization", "Content-Type"));
         
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", configuration);

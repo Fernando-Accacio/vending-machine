@@ -19,6 +19,9 @@ export class AppComponent {
   isCliente = false;
   isEntregador = false;
   
+  // NOVO: Propriedade para controlar se o menu móvel está aberto
+  isMenuOpen = false; 
+  
   // --- PROPRIEDADES DO USUÁRIO ---
   userName: string | null = null; 
   userEmail: string | null = null;
@@ -31,7 +34,7 @@ export class AppComponent {
     // 4. "Escuta" o estado de autenticação
     this.authService.authState$.subscribe(state => {
       this.isAuthenticated = state.isAuthenticated;
-      this.isGerente = state.role === 'GERENTE'; // <-- CORRIGIDO AQUI
+      this.isGerente = state.role === 'GERENTE'; 
       this.isCliente = state.role === 'cliente';
       this.isEntregador = state.role === 'entregador';
 
@@ -55,7 +58,14 @@ export class AppComponent {
       } else {
         this.showHeader = true;
       }
+      // NOVO: Fecha o menu móvel sempre que a navegação é completada
+      this.isMenuOpen = false;
     });
+  }
+
+  // NOVO: Função para abrir/fechar o menu móvel
+  toggleMenu(): void {
+    this.isMenuOpen = !this.isMenuOpen;
   }
 
   logout(): void {

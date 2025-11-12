@@ -1,17 +1,19 @@
 .container {
+  margin-top: 2rem;
   display: flex;
   flex-wrap: wrap;
   gap: 20px;
 }
 
 .dishes-container {
-  /* --- MUDANÇA AQUI --- */
-  flex: 3; /* Ocupa 3/4 do espaço */
+  margin-bottom: 2rem;
+  margin-left: 2rem;
+  flex: 2;
   min-width: 300px;
 }
 
 .cart-container {
-  /* --- MUDANÇA AQUI --- */
+  margin-right: 2rem;
   flex: 1; /* Ocupa 1/4 do espaço */
   min-width: 250px;
   background-color: var(--card-background);
@@ -27,6 +29,10 @@ h2 {
   margin-top: 0;
   border-bottom: 2px solid var(--border-color);
   padding-bottom: 10px;
+
+  /* --- LINHAS ADICIONADAS --- */
+  text-align: center;
+  margin-bottom: 2rem;
 }
 
 .dishes-grid {
