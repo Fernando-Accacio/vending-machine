@@ -1,30 +1,36 @@
-<h2>Gerenciamento de Itens</h2>
+<div class="main-content">
+  <!-- 1. Título principal da página -->
+  <h2 class="page-title">Gerenciamento de Itens</h2>
 
-<div>
-  <table>
-    <tr>
-      <th>ID</th>
-      <th>Nome</th>
-      <th>Descrição</th>
-      <th>Custo (R$)</th>
-      <th>Tempo Reposição (min)</th>
-      <th>Ações</th>
-    </tr>
+  <!-- 2. Tabela com estrutura semântica corrigida (thead e tbody) -->
+  <div class="table-container">
+    <table>
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Nome</th>
+          <th>Descrição</th>
+          <th>Custo (R$)</th>
+          <th>Tempo Reposição (min)</th>
+          <th>Ações</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let dish of dishes">
+          <td>{{ dish.id }}</td>
+          <td>{{ dish.name }}</td>
+          <td>{{ dish.description }}</td>
+          <td>R$ {{ dish.custo.toFixed(2) }}</td>
+          <td>{{ dish.tempoReposicao || 0 }} min</td>
+          <td>
+            <button class="delete" (click)="deleteDish(dish.id!)">Deletar</button>
+            <a class="edit" [routerLink]="['/edit-item', dish.id]">Editar</a>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
 
-    <tr *ngFor="let dish of dishes">
-      <td>{{ dish.id }}</td>
-      <td>{{ dish.name }}</td>
-      <td>{{ dish.description }}</td>
-      <td>R$ {{ dish.custo.toFixed(2) }}</td>
-      <td>{{ dish.tempoReposicao || 0 }} min</td>
-      <td>
-        <button class="delete" (click)="deleteDish(dish.id!)">Deletar</button>
-        
-        <a class="edit" [routerLink]="['/edit-item', dish.id]">Editar</a>
-      </td>
-    </tr>
-  </table>
-  
+  <!-- O botão "NOVO ITEM" pode ficar fora do wrapper da tabela se for um elemento de layout separado -->
   <a class="newDish" routerLink="/add-item">NOVO ITEM</a>
-
 </div>

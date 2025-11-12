@@ -32,6 +32,15 @@ html, body {
   box-shadow: none;
 }
 
+/* --- ESTILOS PARA CONTEÚDO PRINCIPAL (CENTRALIZAÇÃO E ESPAÇAMENTO 4REM) --- */
+.main-content {
+  max-width: 1360px; /* Limite de largura para o desktop */
+  margin: 0 auto; /* Centraliza o conteúdo horizontalmente */
+  padding: 40px 4rem 40px 4rem; /* ADICIONADO: Padding de 40px (2.5rem) no topo e na base */
+  box-sizing: border-box;
+  width: 100%;
+}
+
 /* --- ESTILOS GLOBAIS DE FORMULÁRIO --- */
 .form-group {
   margin-bottom: 1.25rem;
@@ -301,12 +310,42 @@ html, body {
   letter-spacing: 0.3px;
 }
 
+/* styles.css - Regra .page-title CORRIGIDA (Padronização Completa) */
 .page-title {
-  font-size: 28px;
-  font-weight: 700;
+  /* Tamanho: Mantém 1.8rem (Se ainda parecer maior, tente 1.7rem) */
+  font-size: 1.8rem; 
+  
+  /* PESO: O mais importante. Forçar o mesmo peso do H2. */
+  font-weight: 600;  
+  
+  /* Adicione !important *apenas* se o problema de peso persistir no H1 */
+  /* font-weight: 600 !important; */ 
+
   color: var(--text-color);
-  margin: 24px 0 16px 0;
-  padding: 0 20px;
+  margin: 1.5rem 0 2rem 0; 
+  border-bottom: 2px solid var(--border-color); 
+  padding-bottom: 10px;                         
+  text-align: left;
+  padding-left: 0;
+  padding-right: 0;
+}
+
+/* styles.css - Regra h2 genérica (Padroniza os H2) */
+h2 {
+    font-size: 1.8rem; 
+    font-weight: 600; /* Garante que o H2 esteja no mesmo peso */
+    color: var(--text-color);
+  
+  /* Alinhamento: Mude para 'left' para padronizar com as imagens */
+  text-align: left; 
+  
+  /* Espaçamento: 1.5rem topo, 2rem embaixo */
+  margin-top: 1.5rem; 
+  margin-bottom: 2rem;
+  
+  /* Linha e Espaçamento */
+  border-bottom: 2px solid var(--border-color);
+  padding-bottom: 10px;
 }
 
 /* --- ESTILOS PARA PÁGINA DE MUDAR SENHA --- */
@@ -339,12 +378,11 @@ html, body {
   box-shadow: 0 4px 12px rgba(0,0,0,0.05);
 }
 
-h2 {
-  text-align: center;
+.change-password-container h2 { /* Regra mais específica para o h2 interno */
   margin-top: 0;
   margin-bottom: 2rem;
-  font-size: 1.8rem;
-  color: var(--text-color);
+  border-bottom: none;
+  padding-bottom: 0;
 }
 
 .adicionar {
@@ -564,6 +602,85 @@ a:hover {
   letter-spacing: 0.5px;
 }
 
+/* --- ESTILOS DE TABELA (ADICIONADO) --- */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 30px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+}
+
+th, td {
+  border: 1px solid var(--border-color);
+  padding: 12px;
+  text-align: left;
+  vertical-align: middle;
+  /* Margens removidas pois são inválidas para TH e TD */
+}
+
+thead th {
+  background-color: #f9fafb; /* Gray 50 */
+  color: var(--text-color-light);
+  font-weight: 600;
+}
+
+tbody tr:nth-child(even) {
+  background-color: #fdfdfd;
+}
+
+/* Botões de Ação na Tabela */
+td:last-child {
+  display: flex;
+  gap: 10px;
+  border-bottom: none; /* Remove borda dupla */
+  border-left: none;
+  border-right: none;
+}
+
+.delete, .edit {
+  padding: 8px 12px;
+  border: none;
+  border-radius: 6px;
+  color: white;
+  cursor: pointer;
+  text-decoration: none;
+  font-size: 14px;
+}
+
+.delete {
+  background-color: var(--danger-color);
+}
+.delete:hover {
+  background-color: #dc2626;
+}
+
+.edit {
+  background-color: #2563eb; /* Blue 600 */
+}
+.edit:hover {
+  background-color: #1d4ed8; /* Blue 700 */
+}
+
+/* Botão "NOVO ITEM" (newDish) - ADICIONADO */
+.newDish {
+  padding: 14px 20px;
+  border: none;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: 600;
+  color: white;
+  background-color: var(--secondary-color); /* Verde */
+  cursor: pointer;
+  transition: background-color 0.2s;
+  text-decoration: none;
+  display: inline-block;
+  margin-top: 20px; /* Adiciona um espaço acima do botão */
+}
+.newDish:hover {
+  background-color: #059669; /* Verde mais escuro */
+}
+
+
 /* --- MEDIA QUERY PARA MOBILE (CORRIGIDO) --- */
 
 @media (max-width: 768px) {
@@ -582,7 +699,6 @@ a:hover {
     .header {
         display: flex;
         flex-direction: row;
-        /* justify-content: space-between; <-- REMOVIDO: A lógica agora fica no .header-left */
         align-items: center;
         padding: 12px 15px;
         gap: 0;
@@ -601,7 +717,6 @@ a:hover {
 
     .menu-toggle {
         display: flex; 
-        /* margin-left: auto; <-- REMOVIDO: Não é mais necessário, o pai .header-left vai cuidar disso */
     }
     
     .header-left {
@@ -610,7 +725,6 @@ a:hover {
         justify-content: space-between; /* <-- ADICIONADO */
         align-items: center; /* <-- ADICIONADO */
         gap: 8px;
-        /* flex: 1; */ /* REMOVIDO - Isso permite que o space-between jogue o menu para a direita */
     }
 
     .header-title {
@@ -627,9 +741,10 @@ a:hover {
     }
 
     /* 3. Ajustes do Conteúdo Principal */
+    /* Sobrescreve a regra de 4rem para usar um padding menor em mobile */
     .main-content {
-        padding: 20px;
-        max-width: 900px;
+        padding: 15px 15px; /* MODIFICADO: Mantém o padding de 15px em cima e nas laterais */
+        max-width: 100%;
         margin: 0 auto;
         box-sizing: border-box;
         width: 100%;
@@ -660,25 +775,20 @@ a:hover {
         display: block !important;
     }
 
-    /* REGRA CRUCIAL: Esconder o cabeçalho da tabela. 
-       ESTA É A OUTRA REGRA IMPORTANTE.
-    */
+    /* REGRA CRUCIAL: Esconder o cabeçalho da tabela. */
     table thead {
         display: none !important; 
     }
 
 
-    /* <-- ALTERAÇÃO/RESTAURAÇÃO IMPORTANTE --> */
-    /* Esta regra esconde o container do cabeçalho da tabela, que é separado dos cards.
-       Eu havia removido isso por engano na última sugestão.
-    */
+    /* Esconde o container do cabeçalho da tabela */
     .table-container {
         display: none !important;
     }
     
     /* Regra de reforço para esconder o thead (mantida por segurança) */
     .table-container table thead {
-         display: none !important; 
+          display: none !important; 
     }
 
     table tbody {
@@ -734,26 +844,26 @@ a:hover {
     }
 
     table td:nth-child(2)::before {
-        content: "Nome: ";
+        content: "Data: "; /* Novo label para o relatório */
     }
 
     table td:nth-child(3)::before {
-        content: "Descrição: ";
+        content: "Usuário (Documento): "; /* Novo label para o relatório */
     }
 
     table td:nth-child(4)::before {
-        content: "Custo (R$): ";
+        content: "Itens Retirados: "; /* Novo label para o relatório */
     }
 
     table td:nth-child(5)::before {
-        content: "Tempo Reposição: ";
+        content: "Custo Total: "; /* Novo label para o relatório */
     }
 
     table td:nth-child(6)::before {
-        content: "Ações: ";
+        content: "Ações: "; /* Mantido, mas provavelmente não usado no relatório */
     }
-
-    /* Botões de Ação */
+    
+    /* Ações de Botões (Delete/Edit) */
     table td:last-child {
         display: flex !important;
         gap: 8px;
@@ -779,7 +889,7 @@ a:hover {
     .adicionar,
     .confirm-button,
     .novo-item-btn,
-    .newDish, /* <-- ADICIONADO AQUI para ficar 100% */
+    .newDish, 
     .danger-btn {
         justify-content: center;
         align-items: center;
@@ -842,11 +952,6 @@ a:hover {
         padding: 30px 20px;
         background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-color-dark) 100%);
         box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
-        /* Assumindo que o menu é 'slide-in' da direita:
-           position: absolute;
-           right: 0;
-           height: 100%; 
-        */
     }
 
     .mobile-menu-title {
@@ -925,3 +1030,93 @@ a:hover {
     }
 }
 
+/* --- ESTILOS DE RELATÓRIO (MODIFICADO/ADICIONADO) --- */
+.report-container {
+  padding: 0; /* O padding já vem do main-content */
+  font-family: 'Roboto', sans-serif;
+  max-width: 1200px;
+  margin: 0 auto 30px auto; /* Centraliza o container e adiciona margem inferior */
+}
+
+h2 {
+  text-align: left; /* Título principal do relatório */
+  margin-top: 0; /* A margin do topo virá do .main-content */
+  margin-bottom: 25px;
+  color: var(--text-color);
+  border-bottom: 2px solid var(--border-color);
+  padding-bottom: 10px;
+  font-size: 1.8rem;
+}
+
+.summary-card {
+  background-color: var(--card-background);
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  padding: 20px;
+  text-align: center;
+  margin-bottom: 30px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.03);
+}
+
+.summary-card h3 {
+  margin-top: 0;
+  color: var(--text-color-light);
+  font-size: 1.1rem;
+}
+
+.summary-card .total-cost {
+  font-size: 2.5em;
+  font-weight: 700;
+  color: var(--danger-color);
+}
+
+.report-table {
+  width: 100%;
+  border-collapse: collapse;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+  border-radius: 12px; /* Arredonda a tabela inteira */
+  overflow: hidden; /* Garante que o radius funcione */
+  border: 1px solid var(--border-color);
+}
+
+.report-table thead {
+  background-color: #f9fafb; /* Gray 50 */
+}
+
+.report-table th, .report-table td {
+  border-bottom: 1px solid var(--border-color);
+  padding: 14px 16px;
+  text-align: left;
+  vertical-align: top;
+}
+
+.report-table th {
+  color: var(--text-color-light);
+  font-weight: 600;
+  text-transform: uppercase;
+  font-size: 0.8rem;
+  letter-spacing: 0.5px;
+}
+
+.report-table tbody tr:nth-child(even) {
+  background-color: #fdfdfd;
+}
+
+.report-table tbody tr:hover {
+  background-color: #f3f4f6; /* Gray 100 (fundo do app) */
+}
+
+.report-table td ul {
+  padding-left: 20px;
+  margin: 0;
+  list-style-type: disc; /* Garante que os pontos apareçam */
+}
+
+.report-table td li {
+  margin-bottom: 8px;
+  color: var(--text-color-light);
+  font-size: 0.9rem;
+}
+.report-table td li:last-child {
+  margin-bottom: 0;
+}
