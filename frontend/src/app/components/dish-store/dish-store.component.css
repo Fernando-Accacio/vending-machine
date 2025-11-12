@@ -1,7 +1,7 @@
 .container {
   display: flex;
   flex-wrap: wrap;
-  gap: 100px;
+  gap: 200px;
 }
 
 .dishes-container {

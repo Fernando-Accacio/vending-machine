@@ -501,7 +501,7 @@ a:hover {
   font-weight: 600;
   color: white;
   margin: 0;
-  padding: 0;
+  padding-left: 20px;
 }
 
 .nav-wrapper {
@@ -540,6 +540,7 @@ a:hover {
 .auth-btn {
   display: flex;
   align-items: center;
+  margin-right: 20px;
   gap: 10px; /* Espaço entre os botões e a info do usuário */
 }
 
