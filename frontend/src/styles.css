@@ -32,13 +32,21 @@ html, body {
   box-shadow: none;
 }
 
-/* --- ESTILOS PARA CONTEÚDO PRINCIPAL (CENTRALIZAÇÃO E ESPAÇAMENTO 4REM) --- */
+/* ISSO É O QUE VOCÊ PRECISA: */
 .main-content {
-  max-width: 1360px; /* Limite de largura para o desktop */
-  margin: 0 auto; /* Centraliza o conteúdo horizontalmente */
-  padding: 15px 4rem 40px 4rem; /* ADICIONADO: Padding de 40px (2.5rem) no topo e na base */
+  max-width: 1360px;
+  margin: 0 auto;
+  /* 70px (header) + 15px (padding original) = 85px no topo */
+  padding: 85px 4rem 40px 4rem;
   box-sizing: border-box;
   width: 100%;
+}
+
+.logo-img {
+  max-height: 40px; 
+  
+  width: auto;
+  display: block;
 }
 
 /* --- ESTILOS GLOBAIS DE FORMULÁRIO --- */
@@ -115,11 +123,13 @@ html, body {
   box-sizing: border-box;
 }
 
-/* Estilos herdados de .nav-button */
+/* --- CORREÇÃO DE VISIBILIDADE DO LINK INATIVO --- */
+
 .nav-button {
   background: none;
   border: none;
-  color: rgba(255, 255, 255, 0.85);
+  color: var(--text-color); /* <-- MUDANÇA AQUI: Usa a cor escura principal */
+  opacity: 0.90; /* <-- ADIÇÃO: Deixa levemente transparente */
   padding: 8px 16px;
   border-radius: 6px;
   font-size: 14px;
@@ -131,6 +141,19 @@ html, body {
   display: inline-block;
   text-align: center;
   box-sizing: border-box;
+}
+
+.nav-button:hover {
+  background-color: rgba(0, 0, 0, 0.05);
+  color: var(--primary-color);
+  opacity: 1; /* <-- ADIÇÃO: Opacidade total no hover */
+}
+
+.nav-button.active {
+  background: none;
+  color: var(--primary-color);
+  font-weight: 600;
+  opacity: 1; /* <-- ADIÇÃO: Opacidade total quando ativo */
 }
 
 .auth-buttons .nav-button,
@@ -151,8 +174,6 @@ html, body {
     align-items: center !important;
     justify-content: center !important;
     text-align: center !important;
-    background-color: rgba(255, 255, 255, 0.15) !important;
-    color: white !important;
     line-height: 1.2 !important;
 }
 
@@ -165,17 +186,52 @@ html, body {
   box-shadow: 0 4px 12px rgba(239, 68, 68, 0.3);
 }
 
-/* --- ESTILOS DO CABEÇALHO --- */
+/* --- ESTILOS DO CABEÇALHO (COM EFEITO GLASSMORPHISM) --- */
 .header {
-  background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-color-dark) 100%);
-  color: white;
-  padding: 14px 20px; /* Ajustado para 20px para melhor simetria */
+  /* Estilos do header antigo (glass) */
+  background-color: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+  position: fixed;
+  top: 0;
+  z-index: 10;
+  width: 100%;
+  height: 70px; /* Altura fixa do header antigo */
+  padding: 0 30px; /* Padding horizontal do header antigo */
+  box-sizing: border-box;
+
+  /* Estilos do header novo (flex layout) */
+  color: var(--text-color); /* MUITO IMPORTANTE: Cor padrão do texto agora é escura */
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 12px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
   flex-wrap: nowrap;
+}
+
+/* --- AJUSTES DE COR PARA O HEADER GLASS --- */
+
+/* Título, Subtítulo e Botão Voltar */
+.header-title,
+.header-subtitle,
+.back-button {
+  color: var(--text-color); /* Muda de 'white' para a cor de texto padrão */
+}
+
+.header-subtitle {
+  opacity: 1; /* Remove a opacidade que só funcionava bem no roxo */
+  color: var(--text-color-light);
+}
+
+.back-button:hover {
+  opacity: 0.7; /* Mantém um hover sutil */
+}
+
+/* Ícone do Menu Hambúrguer (se estiver usando) */
+.menu-toggle {
+  color: var(--text-color);
 }
 
 .header-left {
@@ -238,7 +294,7 @@ html, body {
 .header-center button,
 .header-nav button {
   padding: 10px 18px;
-  font-size: 14px;
+  font-size: 25px;
   font-weight: 600;
   border: none;
   border-radius: 6px;
@@ -284,11 +340,13 @@ html, body {
 }
 
 .user-info {
+  background-color: var(--background-color); /* Usa o cinza de fundo do site */
+  color: var(--text-color-light);
+  /* O resto (padding, gap, etc.) pode continuar igual */
   display: flex;
   align-items: center;
   gap: 6px;
   padding: 8px 12px;
-  background-color: rgba(255, 255, 255, 0.15);
   border-radius: 6px;
   font-size: 13px;
   font-weight: 500;
@@ -405,7 +463,6 @@ a:hover {
     border: none;
     font-size: 28px; /* Tamanho maior para o ícone */
     font-weight: bold;
-    color: white;
     cursor: pointer;
     padding: 0;
     line-height: 1; 
@@ -416,7 +473,7 @@ a:hover {
 .header .logo {
   font-size: 1.25em;
   font-weight: 600;
-  color: white;
+  color: var(--text-color) !important; /* Força a cor escura */
   margin: 0;
   padding-left: 0; /* CORREÇÃO: Remove o padding fixo */
 }
@@ -431,18 +488,6 @@ a:hover {
   display: flex;
   gap: 8px;
 }
-
-.nav-button:hover {
-  background-color: rgba(255, 255, 255, 0.1);
-  color: white;
-}
-
-.nav-button.active {
-  background-color: white;
-  color: var(--primary-color);
-  font-weight: 600;
-}
-
 .back-btn {
   background: none;
   border: none;
@@ -471,32 +516,52 @@ a:hover {
 
 .user-info .user-name {
   font-weight: 700;
+  color: var(--text-color); /* Cor de texto principal (escura) */
 }
 
 .user-info .user-role {
   font-size: 0.9em;
-  opacity: 0.8;
+  opacity: 1; /* Remove opacidade antiga */
+  color: var(--text-color-light); /* Cor de texto secundária (cinza) */
 }
 
 /* Botão de Login (quando deslogado) */
 .auth-btn .login-btn {
-  background-color: white;
-  color: var(--primary-color-dark);
+  background-color: var(--primary-color);
+  color: white;
   font-weight: 600;
 }
 
 .auth-btn .login-btn:hover {
-  background-color: #f3f4f6;
+  background-color: var(--primary-hover);
 }
 
-/* Botão Mudar Senha (logado) */
+/* ISSO É O QUE VOCÊ PRECISA: */
 .auth-btn .change-pass-btn {
-  color: white;
-  background-color: var(--primary-color-dark);
+  color: var(--text-color) !important; /* <--- ADICIONE ISSO */
+  background-color: var(--border-color) !important; /* <--- E ISSO (para garantir) */
 }
 
 .auth-btn .change-pass-btn:hover {
-  background-color: rgba(255, 255, 255, 0.1);
+  background-color: #d1d5db; /* Um cinza um pouco mais escuro */
+}
+
+/* Botões primários dentro do header (ex: "Nova Retirada") */
+.header .primary-btn {
+  background-color: var(--primary-color);
+  color: white;
+  margin: 0;
+}
+
+.header .primary-btn:hover {
+  background-color: var(--primary-hover);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+}
+
+/* Botão primário ATIVO (se houver) */
+.header .primary-btn.active {
+  background-color: var(--primary-hover); /* Um pouco mais escuro para diferenciar */
+  color: white;
 }
 
 /* Botão Sair (logado) */
@@ -645,7 +710,6 @@ td:last-child {
 .mobile-menu {
     display: none;
 }
-
 
 @media (max-width: 768px) {
   /* 0. Reset Básico */
@@ -952,39 +1016,29 @@ td:last-child {
     visibility: visible;
   }
 
-    .mobile-menu-close {
-    position: absolute;
-    top: 25px;
-    left: 15px;
-    background: none;
-    border: none;
-    color: white;
-    font-size: 28px;
-    font-weight: bold;
-    line-height: 1;
-    padding: 5px;
-    cursor: pointer;
-    opacity: 0.8;
-    transition: opacity 0.2s;
-    z-index: 10;
-  }
-
   .mobile-menu-close:hover {
     opacity: 1;
   }
 
-  .mobile-menu-inner {
-    width: 85%;
-    max-width: 320px;
-    padding: 30px 20px;
-    background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-color-dark) 100%);
-    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
-    border-radius: 12px;
-    margin-right: 10px;
-    transform: translateX(100%);
-    opacity: 0;
-    transition: transform 0.3s 0.1s ease-out, opacity 0.2s 0.1s ease-out;
-  }
+.mobile-menu-inner {
+  /* --- EFEITOS COPIADOS DO SEU .header --- */
+  background-color: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  border: 1px solid rgba(0, 0, 0, 0.08); /* (Usei 'border' em vez de 'border-bottom') */
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+  /* --- FIM DOS EFEITOS --- */
+  
+  /* Layout e Animação (Mantidos) */
+  width: 85%;
+  max-width: 320px;
+  padding: 30px 20px;
+  border-radius: 12px;
+  margin-right: 10px;
+  transform: translateX(100%);
+  opacity: 0;
+  transition: transform 0.3s 0.1s ease-out, opacity 0.2s 0.1s ease-out;
+}
 
   .mobile-menu.active .mobile-menu-inner {
     transform: translateX(0);
@@ -997,7 +1051,7 @@ td:last-child {
   left: 15px;
   background: none;
   border: none;
-  color: white;
+  color: var(--text-color-light); /* 1. COR DA SETA CORRIGIDA */
   font-size: 22px;
   font-weight: bold;
   line-height: 1;
@@ -1008,114 +1062,128 @@ td:last-child {
   transform: translateY(-50%);
   z-index: 10;
 }
-
-  .mobile-menu-close:hover {
-    opacity: 1;
-  }
-
-  .mobile-menu-title {
-    font-size: 20px;
-    margin-bottom: 20px;
-    font-weight: 700;
-    letter-spacing: 0.5px;
-    margin-top: 0;
-    color: white;
-    text-align: center;
-  }
-
-  .mobile-menu .nav-button {
-    width: 100%;
-    margin: 8px 0;
-    padding: 14px 20px;
-    font-size: 15px;
-    font-weight: 600;
-    background-color: rgba(255, 255, 255, 0.15);
-    color: white;
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    border-radius: 8px;
-    transition: all 0.3s ease;
-  }
-
-  .mobile-menu .nav-button:hover,
-  .mobile-menu .nav-button:active {
-    background-color: rgba(255, 255, 255, 0.25);
-  }
-
-  .mobile-menu .danger-btn {
-    background-color: var(--danger-color);
-    border: 1px solid rgba(255, 255, 255, 0.2);
-  }
-
-  .mobile-menu .danger-btn:hover,
-  .mobile-menu .danger-btn:active {
-    background-color: var(--danger-hover);
-  }
-
-  .mobile-auth-section {
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 8px;
-  }
-
-  .mobile-user-info {
-    background: rgba(255, 255, 255, 0.1);
-    padding: 12px 16px;
-    border-radius: 8px;
-    color: white;
-    font-size: 14px;
-    font-weight: 500;
-    margin-bottom: 10px;
-    width: 100%;
-    text-align: center;
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    word-wrap: break-word;
-    white-space: normal;
-    line-height: 1.4;
-  }
-
-  .menu-divider {
-    width: 100%;
-    border: 0;
-    border-top: 2px solid rgba(255, 255, 255, 0.2);
-    margin: 20px 0;
-  }
-
-  .mobile-menu-title {
-    font-size: 20px;
-    margin-bottom: 20px;
-    font-weight: 700;
-    letter-spacing: 0.5px;
-  }
-
-  .mobile-menu .nav-button {
-    width: 100%;
-    margin: 8px 0;
-    padding: 14px 20px;
-    font-size: 15px;
-    font-weight: 600;
-    background-color: rgba(255, 255, 255, 0.15);
-    color: white;
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    border-radius: 8px;
-    transition: all 0.3s ease;
-  }
-
-  .mobile-menu .nav-button:hover,
-  .mobile-menu .nav-button:active {
-    background-color: rgba(255, 255, 255, 0.25);
+.mobile-menu-close:hover {
+  opacity: 1;
 }
 
-  .mobile-menu .danger-btn {
-    background-color: var(--danger-color);
-    border: 1px solid rgba(255, 255, 255, 0.2);
-  }
+.mobile-menu-title {
+  font-size: 20px;
+  margin-bottom: 20px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  margin-top: 0;
+  color: var(--text-color);
+  text-align: center;
+}
 
-  .mobile-menu .danger-btn:hover,
-  .mobile-menu .danger-btn:active {
-    background-color: var(--danger-hover);
-  }
+.mobile-menu .danger-btn:hover,
+.mobile-menu .danger-btn:active {
+  background-color: var(--danger-hover) !important;
+}
+
+  .mobile-menu .nav-button:focus,
+.mobile-menu .nav-button:active {
+  outline: none;
+  background-color: #e0e0e0; /* Efeito de clique */
+}
+
+/* 5. BOTÕES DE NAVEGAÇÃO DO MENU */
+
+/* 2. CORREÇÃO DOS BOTÕES INATIVOS (DUPLICADO) */
+/* --- CORREÇÃO 3: BOTÃO "MUDAR SENHA" E INATIVOS COM BORDA SUAVE --- */
+.mobile-menu .nav-button {
+  width: 100%;
+  margin: 8px 0;
+  padding: 14px 20px;
+  font-size: 15px;
+  font-weight: 500; /* Peso do desktop inativo */
+  background-color: transparent; /* <-- MUDANÇA: Fundo transparente */
+  color: var(--text-color);
+  opacity: 0.90; /* <-- Adicionado para igualar ao desktop */
+  border: none;
+  border-radius: 8px;
+  transition: all 0.3s ease;
+  text-align: center;
+  text-decoration: none; /* Garantir que não tenha sublinhado */
+}
+
+/* No hover, o fundo pode ficar um pouco mais escuro, se desejar */
+.mobile-menu .nav-button:hover,
+.mobile-menu .nav-button:active {
+  background-color: rgba(0, 0, 0, 0.05); /* <-- Hover igual ao desktop */
+  color: var(--primary-color);
+  opacity: 1;
+}
+
+/* ADICIONE ESTA NOVA REGRA - Estilo do Botão ATIVO (página atual) */
+/* 1. ESTILO DO BOTÃO ATIVO (AGORA COM SUBLINHADO) */
+.mobile-menu .nav-button.active {
+  background-color: transparent !important;
+  color: var(--primary-color) !important;
+  font-weight: 700;
+  
+  /* ADICIONADO DE VOLTA A SEU PEDIDO */
+  text-decoration: underline !important; 
+  text-decoration-thickness: 2px;
+}
+
+.mobile-menu .nav-button.active:hover {
+  background-color: var(--primary-hover);
+}
+
+.mobile-menu .change-pass-btn {
+  background-color: var(--border-color) !important; /* <-- Fundo igual ao desktop */
+  color: var(--text-color) !important;
+  font-weight: 600;
+  opacity: 1;
+}
+
+.mobile-menu .change-pass-btn:hover,
+.mobile-menu .change-pass-btn:active {
+  background-color: #d1d5db !important; /* <-- Hover igual ao desktop */
+  color: var(--text-color) !important;
+}
+
+.change-pass-btn {
+  color: var(--text-color);
+}
+
+.auth-btn .change-pass-btn {
+    color: var(--text-color) !important;
+    background-color: var(--border-color) !important;
+}
+
+/* --- CORREÇÃO 4: NOME EM NEGRITO --- */
+.mobile-user-info strong { /* Se for uma tag <strong> */
+  font-weight: 700; /* Negrito */
+  color: var(--text-color); /* Cor mais escura para o nome */
+}
+
+/* Se for uma classe, digamos, <span class="user-name">Gerente</span> */
+.mobile-user-info .user-name {
+  font-weight: 700;
+  color: var(--text-color);
+}
+
+.mobile-user-info .user-role {
+  font-weight: 500;
+}
+
+.user-role {
+    margin-left: 4px;
+}
+
+.mobile-menu .danger-btn {
+  background-color: var(--danger-color) !important;
+  color: white !important;
+  font-weight: 600;
+  border: none;
+}
+
+.mobile-menu .danger-btn:focus,
+.mobile-menu .danger-btn:active {
+  outline: none; /* 4. REMOVE A "BORDA INTERNA" AO CLICAR */
+}
 
   .mobile-auth-section {
     width: 100%;
@@ -1125,29 +1193,27 @@ td:last-child {
     gap: 8px;
   }
 
-  .mobile-user-info {
-    background: rgba(255, 255, 255, 0.1);
-    padding: 12px 16px;
-    border-radius: 8px;
-    color: white;
-    font-size: 14px;
-    font-weight: 500;
-    margin-bottom: 10px;
-    width: 100%;
-    text-align: center;
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    word-wrap: break-word;
-    white-space: normal;
-    line-height: 1.4;
-  }
+/* 3. CORREÇÃO DO "CONECTADO COMO..." (DUPLICADO) */
+.mobile-user-info {
+  display: block !important;
+  background: var(--background-color);
+  color: var(--text-color-light); /* Cor base cinza */
+  border: none; /* 3. REMOVE A BORDA EXTERNA */
+  padding: 12px 16px;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 500;
+  margin-bottom: 10px;
+  width: 100%;
+  text-align: center !important;  word-wrap: break-word;
+  white-space: normal;
+  line-height: 1.4;
+}
 
-  .menu-divider {
-    width: 100%;
-    border: 0;
-    border-top: 2px solid rgba(255, 255, 255, 0.2);
-    margin: 20px 0;
-  }
-
-  /* 11. Cards (Este bloco foi removido pois foi unificado com o Bloco 6) */
-
+.menu-divider {
+  width: 100%;
+  border: 0;
+  border-top: 1px solid var(--border-color);
+  margin: 20px 0;
+}
 }

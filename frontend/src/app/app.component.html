@@ -1,10 +1,8 @@
 <div class="app-container">
 <div *ngIf="showHeader">
 <header class="header">
-<!-- HEADER ESQUERDO: Logo e Ícone Hambúrguer -->
 <div class="header-left">
-<p class="logo">Vending Social</p>
-<!-- BOTÃO HAMBÚRGUER: Visível apenas em mobile (via CSS) -->
+<img src="assets/logo.png" alt="Vending Social Logo" class="logo-img">
 <button class="menu-toggle" (click)="toggleMenu()" aria-label="Toggle menu">
 <span *ngIf="!isMenuOpen">☰</span>
 <span *ngIf="isMenuOpen">X</span>
@@ -86,9 +84,11 @@
             
             <!-- Links de Autenticação/Usuário (Mobile) -->
             <div class="mobile-auth-section">
-                <div class="user-info mobile-user-info" *ngIf="isAuthenticated && userName">
-                    Conectado como: {{ userName }} ({{ isGerente ? 'Gerente' : (isEntregador ? 'Entregador' : 'Cliente') }})
-                </div>
+            <div class="user-info mobile-user-info" *ngIf="isAuthenticated && userName">
+                Olá, 
+                <span class="user-name">{{ userName }}</span>
+                <span class="user-role">({{ isGerente ? 'Gerente' : (isEntregador ? 'Entregador' : 'Cliente') }})</span>
+            </div>
                 <a *ngIf="isAuthenticated" routerLink="/change-password" class="nav-button change-pass-btn" routerLinkActive="active" (click)="toggleMenu()">Mudar Senha</a>
                 <button *ngIf="isAuthenticated" class="nav-button logout-btn danger-btn" (click)="logout()">Sair</button>
                 <a *ngIf="!isAuthenticated" routerLink="/login" class="nav-button login-btn" routerLinkActive="active" (click)="toggleMenu()">Login</a>
