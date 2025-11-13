@@ -60,6 +60,8 @@
     <nav class="mobile-menu" [class.active]="isMenuOpen" (click)="toggleMenu()"> 
         <!-- Adiciona um div interno para prevenir o fechamento acidental ao clicar nos itens -->
         <div class="mobile-menu-inner" (click)="$event.stopPropagation()"> 
+
+            <button class="mobile-menu-close" (click)="toggleMenu()" aria-label="Fechar menu">&larr;</button>
             
             <p class="mobile-menu-title">Navegação Principal</p>
 
