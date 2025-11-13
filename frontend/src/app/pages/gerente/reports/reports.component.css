@@ -7,8 +7,8 @@
 
 h2 {
   text-align: left;
-  margin-top: 0;
   margin-bottom: 25px;
+  margin-top: 25px;
   color: var(--text-color);
   border-bottom: 2px solid var(--border-color);
   padding-bottom: 10px;
@@ -84,4 +84,136 @@ h2 {
 }
 .report-table td li:last-child {
   margin-bottom: 0;
+}
+
+@media (max-width: 768px) {
+  /* FIX: Adiciona a regra do h2 dentro da media query para garantir a centralização */
+  h2 {
+    text-align: center;
+  }
+  
+  .report-table {
+    border: 0; /* Remove a borda da "tabela" */
+    box-shadow: none; /* Remove a sombra da "tabela" */
+    border-radius: 0;
+    overflow: visible;
+  }
+
+  .report-table thead {
+    /* Esconde o cabeçalho no mobile */
+    display: none;
+  }
+
+  .report-table tbody tr {
+    /* Transforma a LINHA em um CARD */
+    display: block;
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    margin-bottom: 20px;
+    background-color: var(--card-background);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
+    overflow: hidden; /* Para conter os cantos dos TDs */
+  }
+
+  /* Remove o fundo zebrado no mobile, pois cada linha é um card */
+  .report-table tbody tr:nth-child(even) {
+    background-color: var(--card-background);
+  }
+
+  .report-table tbody tr:hover {
+    background-color: var(--card-background); /* Desativa hover no mobile */
+  }
+
+  .report-table td {
+    /* FIX: Alterado para Flexbox para alinhar label e valor */
+    display: flex;
+    justify-content: space-between; /* Joga o label (::before) para a esquerda e o valor (texto) para a direita */
+    align-items: center; /* Alinha verticalmente */
+    flex-wrap: wrap; /* Permite que o conteúdo quebre a linha se for muito longo */
+    
+    text-align: right; /* Alinha o VALOR (texto do <td>) à direita */
+    font-size: 0.95rem;
+    border-bottom: 1px dotted var(--border-color);
+    padding: 14px 16px;
+    vertical-align: middle;
+    color: var(--text-color);
+  }
+
+  /* Exceção para a linha "Nenhum registro" */
+  .report-table tbody tr.no-records-row {
+    display: table-row; /* Faz a linha voltar ao normal */
+    border: 0;
+    box-shadow: none;
+    background-color: transparent;
+  }
+
+  .report-table tbody tr.no-records-row td {
+    display: table-cell; /* Faz a célula voltar ao normal */
+    text-align: center;
+    padding: 20px;
+    border: 0;
+  }
+
+  .report-table td:last-child {
+    border-bottom: 0; /* Remove a borda da última célula */
+  }
+
+  /* Regra para a célula da linha de "Nenhum registro" não ter o ::before */
+  .report-table tr.no-records-row td::before {
+    display: none;
+  }
+  
+  .report-table td::before {
+    /* Adiciona o "label" (Ex: "ID:", "DATA:") */
+    /* Pega o valor do atributo 'data-label' do HTML */
+    content: attr(data-label);
+    /* float: left; */ /* REMOVIDO - Não usamos mais float */
+    font-weight: 600;
+    color: var(--text-color-light); /* Deixa o label mais claro */
+    text-transform: uppercase;
+    font-size: 0.8rem;
+    margin-right: 10px;
+    text-align: left; /* Garante que o label esteja alinhado à esquerda */
+  }
+
+  /* --- INÍCIO DOS AJUSTES PARA A LISTA DE ITENS --- */
+  .report-table td[data-label="Itens Retirados"] {
+    display: block; /* OVERRIDE: Esta célula especial não será flex, volta a ser bloco */
+    text-align: left; /* Alinha o conteúdo da célula à esquerda */
+    padding-bottom: 8px; /* Adiciona um respiro no final */
+  }
+  
+  .report-table td[data-label="Itens Retirados"]::before {
+    /* Ajusta o label "Itens Retirados" para ficar no topo e à esquerda */
+    float: none; /* Remove o float para que o label ocupe a largura total */
+    display: block; /* Faz o label se comportar como um bloco */
+    text-align: left; /* Garante que o label esteja à esquerda */
+    margin-bottom: 8px; /* Espaço entre o label e a lista */
+    padding-bottom: 0;
+  }
+
+  .report-table td[data-label="Itens Retirados"] ul {
+    padding-left: 20px; /* FIX: Adiciona padding para a bolinha aparecer */
+    margin: 0; /* Remove a margem padrão da ul */
+    list-style-position: outside; /* FIX: 'outside' é mais padrão para listas */
+  }
+
+  .report-table td[data-label="Itens Retirados"] li {
+    margin-bottom: 6px; /* Ajusta o espaçamento entre os itens da lista */
+    padding-left: 0; /* REMOVIDO: O padding agora está na <ul> */
+    text-align: left; /* Garante que o texto do item esteja à esquerda */
+    /* FIX: Garante que a cor do texto seja a correta (herdada) */
+    color: var(--text-color); 
+    font-size: 0.9rem; /* Ajusta o tamanho da fonte */
+  }
+  .report-table td[data-label="Itens Retirados"] li::before {
+    /* Garante que não haja data-label indesejado nos itens da lista */
+    content: none; 
+  }
+
+    .report-container h2 {
+    text-align: center;   /* Garante a centralização */
+    margin-top: 30px;     /* ADICIONADO: Espaço padrão acima do título */
+    line-height: 1.3;     /* ADICIONADO: Espaçamento padrão entre linhas */
+  }
 }

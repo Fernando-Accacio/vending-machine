@@ -92,3 +92,10 @@ h2 {
     color: #dc2626;
     border: 1px solid #f99;
 }
+
+@media (max-width: 768px) {
+  .withdrawals-history-container h2 {
+    text-align: center;
+    line-height: 1.3;
+  }
+}

@@ -103,3 +103,11 @@ h2 {
         padding: 0 15px; /* Ajusta o padding do link para telas pequenas */
     }
 }
+
+@media (max-width: 768px) {
+      h2 {
+    margin-top: 15px;
+    line-height: 1.3;
+  }
+
+}

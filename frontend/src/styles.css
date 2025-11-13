@@ -36,7 +36,7 @@ html, body {
 .main-content {
   max-width: 1360px; /* Limite de largura para o desktop */
   margin: 0 auto; /* Centraliza o conteúdo horizontalmente */
-  padding: 40px 4rem 40px 4rem; /* ADICIONADO: Padding de 40px (2.5rem) no topo e na base */
+  padding: 15px 4rem 40px 4rem; /* ADICIONADO: Padding de 40px (2.5rem) no topo e na base */
   box-sizing: border-box;
   width: 100%;
 }
@@ -568,7 +568,6 @@ td:last-child {
 /* Se você usar um container para os botões */
 .action-buttons-container {
   display: inline-flex;
-  gap: 10px;
   align-items: center;
   justify-content: center;
 }
@@ -587,7 +586,6 @@ td:last-child {
   transition: all 0.2s ease;
   vertical-align: middle;
   line-height: 1.5;
-  /* REMOVI o padding e min-width daqui */
 }
 
 .delete {
@@ -608,8 +606,9 @@ td:last-child {
 /* Tamanho fixo para ambos os botões */
 .action-buttons-container .delete,
 .action-buttons-container .edit {
-  width: 90px;              /* Largura fixa */
-  padding: 10px 12px;       /* Padding único aqui */
+  width: 90px;
+  padding: 10px 12px;  
+  margin: 0 !important;
 }
 
 /* Botão "NOVO ITEM" (newDish) - ADICIONADO */
@@ -648,7 +647,6 @@ td:last-child {
 }
 
 
-/* --- MEDIA QUERY PARA MOBILE (CORRIGIDO) --- */
 @media (max-width: 768px) {
   /* 0. Reset Básico */
   * {
@@ -738,7 +736,7 @@ td:last-child {
     overflow-x: hidden !important;
   }
 
-  /* 6. Transformar Tabela em Cards Verticais */
+  /* 6. Transformar Tabela em Cards Verticais (ESTILO FLEX) */
   .table-container table {
     width: 100% !important;
     border: none !important;
@@ -757,33 +755,33 @@ td:last-child {
   .table-container table tr {
     display: block !important;
     margin-bottom: 15px;
-    padding: 15px;
+    padding: 0;
     background-color: var(--card-background);
     border: 1px solid var(--border-color);
     border-radius: 8px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);
+    overflow: hidden;
   }
 
   .table-container table td {
-    display: block !important;
+    display: flex !important;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-between !important;
+    align-items: center !important;
     width: 100% !important;
-    padding: 8px 0 !important;
-    border: none !important;
-    text-align: left !important;
+    padding: 14px 16px !important;
+    border-bottom: 1px dotted var(--border-color) !important;
+    border-top: none !important;
+    border-left: none !important;
+    border-right: none !important;
+    text-align: right !important;
     font-size: 14px !important;
     white-space: normal !important;
     word-wrap: break-word;
   }
 
-  .table-container table td:nth-child(1)::before {
-    content: "ID: ";
-    display: inline;
-    margin-right: 5px;
-    font-weight: 600;
-    color: var(--text-color-light);
-    font-size: 12px;
-  }
-
+  .table-container table td:nth-child(1)::before,
   .table-container table td:nth-child(2)::before,
   .table-container table td:nth-child(3)::before,
   .table-container table td:nth-child(4)::before,
@@ -791,51 +789,67 @@ td:last-child {
   .table-container table td:nth-child(6)::before {
     font-weight: 600;
     color: var(--text-color-light);
-    display: block;
-    margin-bottom: 4px;
+    display: inline !important;
+    margin-bottom: 0;
+    margin-right: 10px;
     font-size: 12px;
     text-transform: uppercase;
     letter-spacing: 0.5px;
+    text-align: left !important;
   }
 
+  .table-container table td:nth-child(1)::before {
+    content: "ID: ";
+  }
   .table-container table td:nth-child(2)::before {
     content: "Nome: ";
   }
-
   .table-container table td:nth-child(3)::before {
     content: "Descrição: ";
   }
-
   .table-container table td:nth-child(4)::before {
     content: "Custo (R$): ";
   }
-
   .table-container table td:nth-child(5)::before {
     content: "Tempo Reposição (min): ";
   }
-
   .table-container table td:nth-child(6)::before {
     content: "Ações: ";
   }
 
+  .table-container table td:nth-child(6)::before {
+    display: block !important;
+    width: 100% !important;
+    margin-bottom: 8px !important;
+    text-align: left !important;
+  }
+
   .table-container table td:last-child {
     display: flex !important;
-    gap: 8px;
-    flex-wrap: wrap;
-    padding-top: 12px !important;
-    margin-top: 8px;
-    border-top: 1px solid var(--border-color);
+    text-align: left !important;
+    flex-direction: column !important; /* ADICIONADO: Empilha os itens verticalmente */
+    justify-content: flex-start !important; /* ADICIONADO: Alinha ao topo */
+    align-items: flex-start !important; /* ADICIONADO: Alinha à esquerda */
+    padding: 14px 16px !important;
+    border-bottom: none !important;
   }
 
-  .table-container table td:last-child::before {
-    width: 100%;
-    margin-bottom: 8px;
+  .table-container table td:last-child .action-buttons-container {
+    display: flex !important;
+    flex-direction: row !important;
+    justify-content: flex-start !important;
   }
 
-  .table-container table td button {
-    min-width: 100px !important;
-    padding: 10px 16px !important;
+  .table-container table td button,
+  .table-container table td .delete,
+  .table-container table td .edit {
+    flex: none !important;
+    width: auto !important;
+    min-width: 0 !important;
+    padding: 12px 16px !important;
     margin: 0 !important;
+    white-space: nowrap !important;
+    font-size: 14px !important;
   }
 
   /* 13. AJUSTE "MINHAS RETIRADAS" (MOBILE) */
@@ -866,7 +880,6 @@ td:last-child {
   .danger-btn {
     justify-content: center;
     align-items: center;
-    width: 100%;
     margin: 8px 0;
     padding: 12px 20px;
     font-size: 15px;
@@ -879,6 +892,12 @@ td:last-child {
     margin: 0 !important;
     font-size: 15px;
   }
+
+  .novo-item-btn {
+  width: fit-content;
+  margin-left: auto;
+  margin-right: auto;
+}
 
   /* 8. Formulários */
   .form-group {
@@ -906,17 +925,12 @@ td:last-child {
     margin: 1rem auto 0;
   }
 
-  
 /* --- ESTILOS GERAIS DO HAMBÚRGUER --- */
 
 /* 10. Menu Mobile (COM AJUSTES DE TRANSIÇÃO E FUNDO) */
-   .mobile-menu {
-    /* AJUSTE 1: Mudei o fundo para ser mais translúcido (0.6 de opacidade).
-      O '0.98' que estava antes era quase preto sólido, por isso o blur não aparecia.
-      Agora, o fundo da página ficará visível e borrado.
-    */
+  .mobile-menu {
     background-color: rgba(0, 0, 0, 0.6);
-    backdrop-filter: blur(8px); /* Um leve blur no conteúdo atrás */
+    backdrop-filter: blur(8px);
     width: 100vw;
     height: 100vh;
     position: fixed;
@@ -940,12 +954,12 @@ td:last-child {
 
     .mobile-menu-close {
     position: absolute;
-    top: 25px; /* Ajusta para alinhar verticalmente com o título */
-    left: 15px; /* Mude para 'right: 20px;' se preferir no canto direito */
+    top: 25px;
+    left: 15px;
     background: none;
     border: none;
     color: white;
-    font-size: 28px; /* Tamanho da seta */
+    font-size: 28px;
     font-weight: bold;
     line-height: 1;
     padding: 5px;
@@ -965,29 +979,16 @@ td:last-child {
     padding: 30px 20px;
     background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-color-dark) 100%);
     box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
-    border-radius: 12px; /* Adicionei um leve arredondamento */
-    /* MUDANÇA: Adiciona uma margem à direita para não colar na borda */
+    border-radius: 12px;
     margin-right: 10px;
-
-    /* AJUSTE 4: Este é o estado inicial da caixinha azul (o menu em si).
-      Ela começa FORA da tela, à direita.
-    */
     transform: translateX(100%);
     opacity: 0;
-    /* AJUSTE 5: A transição da caixinha. 
-      Note o '0.1s' de delay, para dar tempo do fundo escuro aparecer primeiro.
-      Ajustei para animar o 'transform' (a posição).
-    */
     transition: transform 0.3s 0.1s ease-out, opacity 0.2s 0.1s ease-out;
   }
 
-  /* AJUSTE 6: Este é o estado final da caixinha azul.
-    Quando o menu principal (.mobile-menu) estiver ativo, a caixinha
-    interna (.mobile-menu-inner) vai deslizar para a posição '0' (no lugar).
-  */
   .mobile-menu.active .mobile-menu-inner {
-    transform: translateX(0); /* Volta para a posição original */
-    opacity: 1; /* Fica visível */
+    transform: translateX(0);
+    opacity: 1;
   }
 
 .mobile-menu-close {
@@ -997,7 +998,7 @@ td:last-child {
   background: none;
   border: none;
   color: white;
-  font-size: 28px;
+  font-size: 22px;
   font-weight: bold;
   line-height: 1;
   padding: 5px;
@@ -1018,8 +1019,8 @@ td:last-child {
     font-weight: 700;
     letter-spacing: 0.5px;
     margin-top: 0;
-    color: white; /* Garantindo a cor */
-    text-align: center; /* Centralizando */
+    color: white;
+    text-align: center;
   }
 
   .mobile-menu .nav-button {
@@ -1104,7 +1105,7 @@ td:last-child {
   .mobile-menu .nav-button:hover,
   .mobile-menu .nav-button:active {
     background-color: rgba(255, 255, 255, 0.25);
-  }
+}
 
   .mobile-menu .danger-btn {
     background-color: var(--danger-color);
@@ -1147,9 +1148,6 @@ td:last-child {
     margin: 20px 0;
   }
 
-  /* 11. Cards */
-  .card {
-    margin: 10px 0;
-    padding: 15px;
-  }
+  /* 11. Cards (Este bloco foi removido pois foi unificado com o Bloco 6) */
+
 }

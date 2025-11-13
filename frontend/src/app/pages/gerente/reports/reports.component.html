@@ -1,45 +1,42 @@
 <div class="report-container">
-<h2>Relatório de Retiradas (ONGs)</h2>
+    <h2>Relatório de Retiradas (ONGs)</h2>
 
-<div class="summary-card">
-    <h3>Custo Total para Cobrança</h3>
-    <p class="total-cost">R$ {{ totalCostAll.toFixed(2) }}</p>
-</div>
+    <div class="summary-card">
+        <h3>Custo Total para Cobrança</h3>
+        <p class="total-cost">R$ {{ totalCostAll.toFixed(2) }}</p>
+    </div>
 
-<table class="report-table">
-    <thead>
-        <tr>
-            <!-- CORREÇÃO AQUI: Título da Coluna -->
-            <th>ID</th> 
-            <th>Data</th>
-            <th>Usuário (Documento)</th>
-            <th>Itens Retirados</th>
-            <th>Custo Total</th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr *ngFor="let w of withdrawals">
-            <!-- CORREÇÃO AQUI: Usando o displayIndex no corpo da tabela -->
-            <td>{{ w.displayIndex }}</td>
-            <td>{{ w.withdrawalDate | date:'dd/MM/yyyy HH:mm':'America/Sao_Paulo' }}</td> 
-            <td>{{ w.user.name }} ({{ w.user.documento }})</td>
-            <td>
-                <ul>
-                    <li *ngFor="let item of w.items">
-                        {{ item.quantity }}x {{ item.dish.name }} 
-                        (Custo unitário: R$ {{ item.costAtTime.toFixed(2) }})
-                    </li>
-                </ul>
-            </td>
+    <table class="report-table">
+        <thead>
+            <tr>
+                <th>ID</th> 
+                <th>Data</th>
+                <th>Usuário (Documento)</th>
+                <th>Itens Retirados</th>
+                <th>Custo Total</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let w of withdrawals">
+                <td data-label="ID">{{ w.displayIndex }}</td>
+                <td data-label="Data">{{ w.withdrawalDate | date:'dd/MM/yyyy HH:mm':'America/Sao_Paulo' }}</td> 
+                <td data-label="Usuário (Documento)">{{ w.user.name }} ({{ w.user.documento }})</td>
+                
+                <td data-label="Itens Retirados">
+                    <ul>
+                        <li *ngFor="let item of w.items">
+                            {{ item.quantity }}x {{ item.dish.name }} 
+                            (Custo unitário: R$ {{ item.costAtTime.toFixed(2) }})
+                        </li>
+                    </ul>
+                </td>
+                
+                <td data-label="Custo Total"><strong>R$ {{ w.totalCost.toFixed(2) }}</strong></td>
+            </tr>
             
-            <td><strong>R$ {{ w.totalCost.toFixed(2) }}</strong></td>
-        </tr>
-        
-        <tr *ngIf="withdrawals.length === 0">
-            <td colspan="5">Nenhum registro de retirada encontrado.</td>
-        </tr>
-    </tbody>
-</table>
-
-
+            <tr *ngIf="withdrawals.length === 0" class="no-records-row">
+                <td colspan="5">Nenhum registro de retirada encontrado.</td>
+            </tr>
+        </tbody>
+    </table>
 </div>

@@ -12,6 +12,7 @@
 }
 
 .cart-container {
+  margin-top: 25px;
   margin-right: 0;
   flex: 1; /* Ocupa 1/4 do espaço */
   min-width: 250px;
@@ -25,7 +26,7 @@
 }
 
 h2 {
-  margin-top: 0;
+  margin-top: 25px;
   border-bottom: 2px solid var(--border-color);
   padding-bottom: 10px;
 
@@ -180,7 +181,6 @@ h2 {
   }
 
   .cart-container {
-    /* Reseta o posicionamento 'sticky' que é desnecessário no mobile */
     position: static; 
     top: auto;
     width: 100%; /* Garante que ocupe a largura total */
