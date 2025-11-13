@@ -591,6 +591,12 @@ a:hover {
   background-color: #dc2626;
 }
 
+.auth-buttons .change-pass-btn.active {
+    background-color: white !important;
+    color: var(--primary-color) !important;
+    font-weight: 600 !important;
+}
+
 .status-bar {
   background-color: #374151;
   color: white;
