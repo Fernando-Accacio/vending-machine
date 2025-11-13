@@ -94,7 +94,6 @@ html, body {
 
 .primary-btn:hover, .adicionar:hover, .confirm-button:hover {
   background-color: var(--primary-hover);
-  transform: translateY(-1px);
   box-shadow: 0 4px 12px rgba(79, 70, 229, 0.3);
 }
 
@@ -163,7 +162,6 @@ html, body {
 
 .danger-btn:hover {
   background-color: var(--danger-hover);
-  transform: translateY(-1px);
   box-shadow: 0 4px 12px rgba(239, 68, 68, 0.3);
 }
 
@@ -171,12 +169,12 @@ html, body {
 .header {
   background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-color-dark) 100%);
   color: white;
-  padding: 14px 16px;
+  padding: 14px 20px; /* Ajustado para 20px para melhor simetria */
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 12px;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
   flex-wrap: nowrap;
 }
 
@@ -184,7 +182,9 @@ html, body {
   display: flex;
   align-items: center;
   gap: 12px;
-  flex-shrink: 0;
+  flex: 1; /* NOVO: Ocupa 1/3 do espaço disponível */
+  justify-content: flex-start; /* NOVO: Alinha o logo à esquerda */
+  min-width: 0;
 }
 
 .back-button {
@@ -262,7 +262,6 @@ html, body {
 .header-center .primary-btn:hover,
 .header-nav .primary-btn:hover {
   background-color: rgba(255, 255, 255, 0.3);
-  transform: translateY(-1px);
   box-shadow: 0 2px 8px rgba(0,0,0,0.15);
 }
 
@@ -282,7 +281,6 @@ html, body {
 .header .danger-btn:hover,
 .header-nav .danger-btn:hover {
   background-color: var(--danger-hover);
-  transform: translateY(-1px);
   box-shadow: 0 2px 8px rgba(0,0,0,0.15);
 }
 
@@ -501,11 +499,11 @@ a:hover {
   font-weight: 600;
   color: white;
   margin: 0;
-  padding-left: 20px;
+  padding-left: 0; /* CORREÇÃO: Remove o padding fixo */
 }
 
 .nav-wrapper {
-  flex-grow: 1;
+  flex-grow: 1; /* Ocupa 1/3 do espaço central restante */
   display: flex;
   justify-content: center;
 }
@@ -536,12 +534,13 @@ a:hover {
   margin-right: 10px;
 }
 
-/* --- ESTILOS AUTH E USER INFO --- */
 .auth-btn {
   display: flex;
   align-items: center;
-  margin-right: 20px;
-  gap: 10px; /* Espaço entre os botões e a info do usuário */
+  flex: 1; /* NOVO: Ocupa 1/3 do espaço disponível, garantindo simetria */
+  justify-content: flex-end; /* NOVO: Alinha o conteúdo (Login) à direita */
+  margin-right: 0; /* CORREÇÃO: Remove o margin-right fixo que causava assimetria */
+  gap: 10px;
 }
 
 /* Novo container para os botões de ação (Mudar Senha e Sair) */
@@ -592,12 +591,11 @@ a:hover {
   background-color: #dc2626;
 }
 
-/* A barra "SISTEMA DE GESTÃO SOCIAL" */
 .status-bar {
   background-color: #374151;
   color: white;
   text-align: center;
-  padding: 4px;
+  padding: 6px 4px; /* AJUSTE: Aumentei o padding vertical de 4px para 6px */
   font-size: 12px;
   font-weight: 500;
   letter-spacing: 0.5px;
@@ -986,7 +984,6 @@ td:last-child {
   .mobile-menu .nav-button:hover,
   .mobile-menu .nav-button:active {
     background-color: rgba(255, 255, 255, 0.25);
-    transform: translateX(5px);
   }
 
   .mobile-menu .danger-btn {
