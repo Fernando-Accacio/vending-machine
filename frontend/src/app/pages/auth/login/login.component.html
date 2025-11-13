@@ -4,6 +4,12 @@
 
 <div class="login-container">
   <h2>Login</h2>
+
+  <!-- Sistema de Mensagem -->
+  <div *ngIf="message.text" class="alert" [ngClass]="{'alert-success': message.type === 'success', 'alert-error': message.type === 'error'}">
+    {{ message.text }}
+  </div>
+
   <div>
     <form (ngSubmit)="login()">
       
@@ -12,8 +18,14 @@
         <input type="text" id="documento" [(ngModel)]="user.documento" name="documento" required>
       </div>
       
-      <div class="form-group">
-        <label for="password">Senha:</label> <input type="password" id="password" [(ngModel)]="user.password" name="password" required>
+      <!-- CAMPO SENHA - CORREÇÃO DA LÓGICA DO OLHINHO -->
+      <div class="form-group form-group-password">
+        <label for="password">Senha:</label> 
+        <input [type]="passwordFieldType" id="password" [(ngModel)]="user.password" name="password" required>
+        <button type="button" class="password-toggle" (click)="togglePasswordVisibility()">
+          <!-- Corrigido: Se type='password' (escondida), mostra 'fa-eye-slash' (olho fechado) -->
+          <i class="fas" [ngClass]="{'fa-eye-slash': passwordFieldType === 'password', 'fa-eye': passwordFieldType === 'text'}"></i>
+        </button>
       </div>
       
       <button class="adicionar" type="submit">Entrar</button>

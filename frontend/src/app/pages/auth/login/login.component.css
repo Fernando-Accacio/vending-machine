@@ -16,7 +16,7 @@
   margin-right: 5px;
 }
 
-/* 2. O resto do CSS (que você já tinha, mas agora vai funcionar) */
+/* 2. Estilos do Container */
 .login-container {
   max-width: 400px;
   margin: 1rem auto 4rem; /* Margem menor no topo por causa da seta */
@@ -48,4 +48,54 @@ h2 {
 .register-link a {
   font-weight: 600;
   color: var(--primary-color);
+}
+
+/* --- ESTILOS DO OLHINHO --- */
+.form-group-password {
+  /* O input-group precisa ser relativo para que o botão 'olhinho' seja absoluto dentro dele */
+  position: relative;
+}
+
+.form-group-password input {
+  /* Garante que o input ocupe todo o espaço e tenha padding extra para não cobrir o ícone */
+  padding-right: 2.5rem !important; /* Aumenta o padding do input */
+}
+
+.password-toggle {
+  position: absolute;
+  top: 50%; /* Centraliza verticalmente */
+  right: 0.75rem; /* Posição à direita */
+  transform: translateY(20%); /* Ajuste fino */
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: var(--text-color-light);
+  font-size: 1rem;
+  padding: 0.25rem;
+}
+
+.password-toggle:hover {
+  color: var(--text-color);
+}
+
+/* --- ESTILOS DO ALERT --- */
+.alert {
+  padding: 10px;
+  margin-bottom: 1rem;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  text-align: center;
+}
+
+.alert-error {
+  background-color: #ffe0e0; /* light red */
+  color: #c0392b; /* dark red */
+  border: 1px solid #c0392b;
+}
+
+.alert-success {
+  background-color: #e0fff0; /* light green */
+  color: #27ae60; /* dark green */
+  border: 1px solid #27ae60;
 }
