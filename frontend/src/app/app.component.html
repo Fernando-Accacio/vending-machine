@@ -1,115 +1,104 @@
 <div class="app-container">
-<div *ngIf="showHeader">
-<header class="header">
-<div class="header-left">
-<a [routerLink]="isGerente ? '/itens' : (isEntregador ? '/entregas' : '/')">
-    <img src="assets/logo.png" alt="Vending Social Logo" class="logo-img">
-</a>
-<button class="menu-toggle" (click)="toggleMenu()" aria-label="Toggle menu">
-<span *ngIf="!isMenuOpen">☰</span>
-<span *ngIf="isMenuOpen">X</span>
-</button>
-</div>
-
-        <!-- NAVEGAÇÃO CENTRAL (Desktop) -->
-        <!-- Classe 'desktop-nav' deve ser escondida em mobile via CSS -->
-        <div class="nav-wrapper desktop-nav">
-            <!-- Links do Cliente/Padrão -->
-            <div class="nav-container" *ngIf="isCliente || (!isGerente && !isEntregador)">
-                <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}" class="nav-button">Cardápio</a>
-                <a *ngIf="isAuthenticated" routerLink="/minhas-retiradas" routerLinkActive="active" class="nav-button">Minhas Retiradas</a>
-            </div>
-            
-            <!-- Links do Gerente -->
-            <div class="nav-container" *ngIf="isGerente">
-                <a routerLink="/itens" routerLinkActive="active" class="nav-button">Itens</a>
-                <a routerLink="/relatorios" routerLinkActive="active" class="nav-button">Relatórios</a>
-            </div>
-            
-            <!-- Links do Entregador -->
-            <div class="nav-container" *ngIf="isEntregador">
-                <a routerLink="/entregas" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}" class="nav-button">Pedidos</a>
-            </div>
+    
+    <div *ngIf="isLoadingGlobal" class="loading-overlay">
+        <div class="spinner"></div>
         </div>
-
-        <!-- BOTÕES DE AUTENTICAÇÃO (Desktop) -->
-        <!-- Classe 'desktop-nav' deve ser escondida em mobile via CSS -->
-        <div class="auth-btn desktop-nav"> 
-            <div class="user-info" *ngIf="isAuthenticated && userName">
-                Olá, 
-                <span class="user-name">{{ userName }}</span>
-                <span class="user-role">({{ isGerente ? 'Gerente' : (isEntregador ? 'Entregador' : 'Cliente') }})</span>
-            </div>
-            
-            <div class="auth-buttons" *ngIf="isAuthenticated">
-                <a routerLink="/change-password" routerLinkActive="active" class="nav-button change-pass-btn">
-                    Mudar Senha e usuário
+    <div *ngIf="showHeader">
+        <header class="header">
+            <div class="header-left">
+                <a [routerLink]="isGerente ? '/itens' : (isEntregador ? '/entregas' : '/')">
+                    <img src="assets/logo.png" alt="Vending Social Logo" class="logo-img">
                 </a>
-                
-                <button class="nav-button logout-btn danger-btn" (click)="logout()">
-                    Sair
+                <button class="menu-toggle" (click)="toggleMenu()" aria-label="Toggle menu">
+                    <span *ngIf="!isMenuOpen">☰</span>
+                    <span *ngIf="isMenuOpen">X</span>
                 </button>
             </div>
 
-            <a *ngIf="!isAuthenticated" routerLink="/login" routerLinkActive="active" class="nav-button login-btn">Login</a>
-        </div>
-    </header>
+            <div class="nav-wrapper desktop-nav">
+                <div class="nav-container" *ngIf="isCliente || (!isGerente && !isEntregador)">
+                    <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}" class="nav-button">Cardápio</a>
+                    <a *ngIf="isAuthenticated" routerLink="/minhas-retiradas" routerLinkActive="active" class="nav-button">Minhas Retiradas</a>
+                </div>
 
-    <!-- MENU MÓVEL COMPLETO: Visível quando isMenuOpen é true -->
-    <!-- O click no nav fecha o menu ao tocar fora dos botões (no overlay) -->
-    <nav class="mobile-menu" [class.active]="isMenuOpen" (click)="toggleMenu()"> 
-        <!-- Adiciona um div interno para prevenir o fechamento acidental ao clicar nos itens -->
-        <div class="mobile-menu-inner" (click)="$event.stopPropagation()"> 
+                <div class="nav-container" *ngIf="isGerente">
+                    <a routerLink="/itens" routerLinkActive="active" class="nav-button">Itens</a>
+                    <a routerLink="/relatorios" routerLinkActive="active" class="nav-button">Relatórios</a>
+                </div>
 
-            <button class="mobile-menu-close" (click)="toggleMenu()" aria-label="Fechar menu">&larr;</button>
-            
-            <p class="mobile-menu-title">Navegação Principal</p>
-
-            <!-- User Info no topo do mobile -->
-            <div class="user-info mobile-user-info" *ngIf="isAuthenticated && userName">
-                Olá, 
-                <span class="user-name">{{ userName }}</span>
-                <span class="user-role">({{ isGerente ? 'Gerente' : (isEntregador ? 'Entregador' : 'Cliente') }})</span>
+                <div class="nav-container" *ngIf="isEntregador">
+                    <a routerLink="/entregas" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}" class="nav-button">Pedidos</a>
+                </div>
             </div>
 
-            <hr *ngIf="isAuthenticated" class="menu-divider">
+            <div class="auth-btn desktop-nav">
+                <div class="user-info" *ngIf="isAuthenticated && userName">
+                    Olá,
+                    <span class="user-name">{{ userName }}</span>
+                    <span class="user-role">({{ isGerente ? 'Gerente' : (isEntregador ? 'Entregador' : 'Cliente') }})</span>
+                </div>
 
-            <!-- Links do Cliente/Padrão -->
-            <ng-container *ngIf="isCliente || (!isGerente && !isEntregador)">
-                <a routerLink="/" class="nav-button" routerLinkActive="active" (click)="toggleMenu()">Cardápio</a>
-                <a *ngIf="isAuthenticated" routerLink="/minhas-retiradas" class="nav-button" routerLinkActive="active" (click)="toggleMenu()">Minhas Retiradas</a>
-            </ng-container>
+                <div class="auth-buttons" *ngIf="isAuthenticated">
+                    <a routerLink="/change-password" routerLinkActive="active" class="nav-button change-pass-btn">
+                        Mudar Senha e usuário
+                    </a>
 
-            <!-- Links do Gerente -->
-            <ng-container *ngIf="isGerente">
-                <a routerLink="/itens" class="nav-button" routerLinkActive="active" (click)="toggleMenu()">Gerenciamento de Itens</a>
-                <a routerLink="/relatorios" class="nav-button" routerLinkActive="active" (click)="toggleMenu()">Relatórios</a>
-            </ng-container>
+                    <button class="nav-button logout-btn danger-btn" (click)="logout()">
+                        Sair
+                    </button>
+                </div>
 
-            <!-- Links do Entregador -->
-            <ng-container *ngIf="isEntregador">
-                <a routerLink="/entregas" class="nav-button" routerLinkActive="active" (click)="toggleMenu()">Pedidos de Entrega</a>
-            </ng-container>
-            
-            <hr *ngIf="isAuthenticated" class="menu-divider">
-            
-            <!-- Links de Autenticação/Usuário (Mobile) -->
-            <div class="mobile-auth-section">
-                <a *ngIf="isAuthenticated" routerLink="/change-password" class="nav-button change-pass-btn" routerLinkActive="active" (click)="toggleMenu()">Mudar Senha e usuário</a>
-                <button *ngIf="isAuthenticated" class="nav-button logout-btn danger-btn" (click)="logout()">Sair</button>
-                <a *ngIf="!isAuthenticated" routerLink="/login" class="nav-button login-btn" routerLinkActive="active" (click)="toggleMenu()">Login</a>
+                <a *ngIf="!isAuthenticated" routerLink="/login" routerLinkActive="active" class="nav-button login-btn">Login</a>
             </div>
+        </header>
+
+        <nav class="mobile-menu" [class.active]="isMenuOpen" (click)="toggleMenu()">
+            <div class="mobile-menu-inner" (click)="$event.stopPropagation()">
+
+                <button class="mobile-menu-close" (click)="toggleMenu()" aria-label="Fechar menu">&larr;</button>
+
+                <p class="mobile-menu-title">Navegação Principal</p>
+
+                <div class="user-info mobile-user-info" *ngIf="isAuthenticated && userName">
+                    Olá,
+                    <span class="user-name">{{ userName }}</span>
+                    <span class="user-role">({{ isGerente ? 'Gerente' : (isEntregador ? 'Entregador' : 'Cliente') }})</span>
+                </div>
+
+                <hr *ngIf="isAuthenticated" class="menu-divider">
+
+                <ng-container *ngIf="isCliente || (!isGerente && !isEntregador)">
+                    <a routerLink="/" class="nav-button" routerLinkActive="active" (click)="toggleMenu()">Cardápio</a>
+                    <a *ngIf="isAuthenticated" routerLink="/minhas-retiradas" class="nav-button" routerLinkActive="active" (click)="toggleMenu()">Minhas Retiradas</a>
+                </ng-container>
+
+                <ng-container *ngIf="isGerente">
+                    <a routerLink="/itens" class="nav-button" routerLinkActive="active" (click)="toggleMenu()">Gerenciamento de Itens</a>
+                    <a routerLink="/relatorios" class="nav-button" routerLinkActive="active" (click)="toggleMenu()">Relatórios</a>
+                </ng-container>
+
+                <ng-container *ngIf="isEntregador">
+                    <a routerLink="/entregas" class="nav-button" routerLinkActive="active" (click)="toggleMenu()">Pedidos de Entrega</a>
+                </ng-container>
+
+                <hr *ngIf="isAuthenticated" class="menu-divider">
+
+                <div class="mobile-auth-section">
+                    <a *ngIf="isAuthenticated" routerLink="/change-password" class="nav-button change-pass-btn" routerLinkActive="active" (click)="toggleMenu()">Mudar Senha e usuário</a>
+                    <button *ngIf="isAuthenticated" class="nav-button logout-btn danger-btn" (click)="logout()">Sair</button>
+                    <a *ngIf="!isAuthenticated" routerLink="/login" class="nav-button login-btn" routerLinkActive="active" (click)="toggleMenu()">Login</a>
+                </div>
+            </div>
+        </nav>
+
+        <div class="status-bar">
+            Sistema de Gestão Social
         </div>
-    </nav>
-    
-    <div class="status-bar">
-          Sistema de Gestão Social
     </div>
-</div>
 
-<main class="main-content">
-    <router-outlet></router-outlet>
-</main>
+    <main class="main-content">
+        <router-outlet></router-outlet>
+    </main>
 
 
 </div>

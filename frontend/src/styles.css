@@ -22,6 +22,44 @@ html, body {
   color: var(--text-color);
 }
 
+/* 1. O OVERLAY QUE COBRE A TELA TODA */
+.loading-overlay {
+    /* Posição Fixa para cobrir toda a viewport */
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    
+    /* Fundo semi-transparente (branco suave, como o header) */
+    background-color: rgba(255, 255, 255, 0.95);
+    
+    /* Z-Index muito alto para garantir que fique acima de todos os outros elementos */
+    z-index: 9999;
+    
+    /* Centraliza o spinner */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* 2. O SPINNER (Ícone de Carregamento) */
+.spinner {
+    /* Exemplo simples de um spinner giratório */
+    border: 5px solid #f3f3f3; /* Cinza claro */
+    border-top: 5px solid var(--primary-color); /* A cor primária (roxo/azul) */
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    animation: spin 1s linear infinite; /* Aplica a animação */
+}
+
+/* A animação de giro */
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
 .app-container {
   width: 100%;
   max-width: 100%;
