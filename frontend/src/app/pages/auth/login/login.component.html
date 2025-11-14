@@ -24,10 +24,14 @@
       
       <div class="form-group form-group-password">
         <label for="password">Senha:</label> 
-        <input [type]="passwordFieldType" id="password" [(ngModel)]="user.password" name="password" required>
-        <button type="button" class="password-toggle" (click)="togglePasswordVisibility()">
-          <i class="fas" [ngClass]="{'fa-eye-slash': passwordFieldType === 'password', 'fa-eye': passwordFieldType === 'text'}"></i>
-        </button>
+        
+        <div class="input-wrapper">
+          <input [type]="passwordFieldType" id="password" [(ngModel)]="user.password" name="password" required>
+          <button type="button" class="password-toggle" (click)="togglePasswordVisibility()">
+            <i class="fas" [ngClass]="{'fa-eye-slash': passwordFieldType === 'password', 'fa-eye': passwordFieldType === 'text'}"></i>
+          </button>
+        </div>
+
       </div>
       
       <button class="adicionar" type="submit">Entrar</button>

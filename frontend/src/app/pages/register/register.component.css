@@ -51,9 +51,10 @@ h2 {
   color: var(--primary-color);
 }
 
-/* --- ESTILOS DO OLHINHO --- */
-.form-group-password {
-  /* O input-group precisa ser relativo para que o botão 'olhinho' seja absoluto dentro dele */
+/* --- ESTILOS DO OLHINHO (CORRIGIDO) --- */
+
+/* O novo wrapper será o container relativo */
+.input-wrapper {
   position: relative;
 }
 
@@ -66,7 +67,10 @@ h2 {
   position: absolute;
   top: 50%; /* Centraliza verticalmente */
   right: 0.75rem; /* Posição à direita */
-  transform: translateY(20%); /* Ajuste fino */
+  
+  /* ESTA É A CORREÇÃO: Centraliza perfeitamente */
+  transform: translateY(-50%); 
+  
   background: none;
   border: none;
   cursor: pointer;
