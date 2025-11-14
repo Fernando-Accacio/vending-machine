@@ -4,45 +4,51 @@ import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 
 @Component({
-  selector: 'app-dish-list',
-  templateUrl: './dish-list.component.html',
-  styleUrls: ['./dish-list.component.css'],
-  standalone: true,
-  imports: [CommonModule, RouterModule]
+  selector: 'app-dish-list',
+  templateUrl: './dish-list.component.html',
+  styleUrls: ['./dish-list.component.css'],
+  standalone: true,
+  imports: [CommonModule, RouterModule]
 })
 export class DishListComponent implements OnInit {
-  dishes: Dish[] = [];
+  dishes: Dish[] = [];
+  public isLoading: boolean = true; // -> NOVO (Começa em true)
 
-  constructor(private dishService: DishService) {}
+  constructor(private dishService: DishService) {}
 
-  ngOnInit(): void {
-    this.loadDishes();
-  }
+  ngOnInit(): void {
+    this.loadDishes();
+  }
 
-  loadDishes() {
-    this.dishService.getDishes().subscribe((data: Dish[]) => {
-      this.dishes = data;
-    });
-  }
+  loadDishes() {
+    this.isLoading = true; // -> NOVO (Garante o loading em re-carregamentos)
+    
+    this.dishService.getDishes().subscribe({ // -> MUDANÇA (para objeto)
+      next: (data: Dish[]) => {
+        this.dishes = data;
+        this.isLoading = false; // -> NOVO (Desliga no sucesso)
+      },
+      error: (err) => { // -> NOVO
+        console.error("Erro ao carregar itens:", err);
+        this.isLoading = false; // -> NOVO (Desliga no erro)
+      }
+    });
+  }
 
-  // --- CORREÇÃO: ADICIONANDO O POP-UP DE CONFIRMAÇÃO ---
-  deleteDish(id: number) {
-    // ⚠️ Importante: Não use window.confirm() em produção, mas para testes é rápido.
-    // Em um app de verdade, usaria um modal.
+  deleteDish(id: number) {
     const shouldDelete = confirm("Tem certeza que deseja apagar este item? Esta ação fará um 'soft delete' do item.");
 
     if (shouldDelete) {
         this.dishService.deleteDish(id).subscribe({
             next: () => {
                 alert('Prato deletado com sucesso!');
-                this.loadDishes();
+                this.loadDishes(); // Isso vai reativar o loading
             },
             error: (error) => {
-                // A mensagem de erro sugere que a exclusão falha se o prato estiver vinculado.
                 alert('Não é possível excluir o prato. Se ele estiver vinculado a um pedido, ele será marcado como Inativo.');
                 console.error('Erro ao excluir o prato:', error);
             },
         });
     }
-  }
+  }
 }

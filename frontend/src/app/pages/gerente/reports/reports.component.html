@@ -1,4 +1,8 @@
-<div class="report-container">
+<div *ngIf="isLoading" class="container-loading">
+  <p>Carregando relatórios... Por favor, aguarde.</p>
+</div>
+
+<div class="report-container" *ngIf="!isLoading">
     <h2>Relatório de Retiradas (ONGs)</h2>
 
     <div class="summary-card">

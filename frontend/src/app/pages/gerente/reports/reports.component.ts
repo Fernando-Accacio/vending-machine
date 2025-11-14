@@ -1,8 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { WithdrawalService, ReportWithdrawal } from '../../../services/withdrawal.service'; 
-import { CommonModule, DatePipe, DecimalPipe } from '@angular/common'; // Adicionamos Pipes aqui
+import { CommonModule, DatePipe, DecimalPipe } from '@angular/common'; 
 
-// Interface para o componente de relatório, adicionando o campo de numeração de tela
 interface DisplayReportWithdrawal extends ReportWithdrawal {
   displayIndex: number;
 }
@@ -10,16 +9,16 @@ interface DisplayReportWithdrawal extends ReportWithdrawal {
 @Component({
   selector: 'app-reports',
   standalone: true,
-  // Importamos os Pipes para uso no template
   imports: [CommonModule, DatePipe, DecimalPipe], 
   templateUrl: './reports.component.html',
   styleUrls: ['./reports.component.css']
 })
 export class ReportsComponent implements OnInit {
-  // Usamos a interface correta para tipagem e para incluir o displayIndex
   withdrawals: DisplayReportWithdrawal[] = []; 
   totalCostAll: number = 0;
-  isLoading: boolean = true;
+  
+  // A variável já existia, apenas garantimos que está em 'true'
+  isLoading: boolean = true; 
 
   constructor(private withdrawalService: WithdrawalService) {}
 
@@ -28,22 +27,26 @@ export class ReportsComponent implements OnInit {
   }
 
   loadReports(): void {
-    this.withdrawalService.getWithdrawalsReport().subscribe(data => { 
-      // --- CORREÇÃO AQUI: Adiciona o displayIndex (começa em 1) ---
-      this.withdrawals = data.map((w, index) => {
+    this.isLoading = true; // -> Garante o loading
+
+    this.withdrawalService.getWithdrawalsReport().subscribe({ // -> MUDANÇA (para objeto)
+      next: (data) => {
+        this.withdrawals = data.map((w, index) => {
           const dateStringUTC = w.withdrawalDate + 'Z';
           return {
-              ...w,
-              withdrawalDate: new Date(dateStringUTC) as any,
-              // Adiciona o índice de exibição
-              displayIndex: index + 1 
-          } as DisplayReportWithdrawal; // Força a nova tipagem
-      }); 
-      // -----------------------------------------------------------
+            ...w,
+            withdrawalDate: new Date(dateStringUTC) as any,
+            displayIndex: index + 1 
+          } as DisplayReportWithdrawal;
+        }); 
 
-      // Garante que o cálculo do custo total usa o array original
-      this.totalCostAll = data.reduce((total: number, w: ReportWithdrawal) => total + w.totalCost, 0); 
-      this.isLoading = false;
+        this.totalCostAll = data.reduce((total: number, w: ReportWithdrawal) => total + w.totalCost, 0); 
+        this.isLoading = false; // -> Desliga no sucesso
+      },
+      error: (err) => { // -> NOVO
+        console.error("Erro ao carregar relatórios:", err);
+        this.isLoading = false; // -> Desliga no erro
+      }
     });
   }
 }
