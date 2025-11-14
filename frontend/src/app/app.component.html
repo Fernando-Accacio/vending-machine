@@ -2,7 +2,9 @@
 <div *ngIf="showHeader">
 <header class="header">
 <div class="header-left">
-<img src="assets/logo.png" alt="Vending Social Logo" class="logo-img">
+<a [routerLink]="isGerente ? '/itens' : (isEntregador ? '/entregas' : '/')">
+    <img src="assets/logo.png" alt="Vending Social Logo" class="logo-img">
+</a>
 <button class="menu-toggle" (click)="toggleMenu()" aria-label="Toggle menu">
 <span *ngIf="!isMenuOpen">☰</span>
 <span *ngIf="isMenuOpen">X</span>
@@ -63,6 +65,15 @@
             
             <p class="mobile-menu-title">Navegação Principal</p>
 
+            <!-- User Info no topo do mobile -->
+            <div class="user-info mobile-user-info" *ngIf="isAuthenticated && userName">
+                Olá, 
+                <span class="user-name">{{ userName }}</span>
+                <span class="user-role">({{ isGerente ? 'Gerente' : (isEntregador ? 'Entregador' : 'Cliente') }})</span>
+            </div>
+
+            <hr *ngIf="isAuthenticated" class="menu-divider">
+
             <!-- Links do Cliente/Padrão -->
             <ng-container *ngIf="isCliente || (!isGerente && !isEntregador)">
                 <a routerLink="/" class="nav-button" routerLinkActive="active" (click)="toggleMenu()">Cardápio</a>
@@ -84,11 +95,6 @@
             
             <!-- Links de Autenticação/Usuário (Mobile) -->
             <div class="mobile-auth-section">
-            <div class="user-info mobile-user-info" *ngIf="isAuthenticated && userName">
-                Olá, 
-                <span class="user-name">{{ userName }}</span>
-                <span class="user-role">({{ isGerente ? 'Gerente' : (isEntregador ? 'Entregador' : 'Cliente') }})</span>
-            </div>
                 <a *ngIf="isAuthenticated" routerLink="/change-password" class="nav-button change-pass-btn" routerLinkActive="active" (click)="toggleMenu()">Mudar Senha e usuário</a>
                 <button *ngIf="isAuthenticated" class="nav-button logout-btn danger-btn" (click)="logout()">Sair</button>
                 <a *ngIf="!isAuthenticated" routerLink="/login" class="nav-button login-btn" routerLinkActive="active" (click)="toggleMenu()">Login</a>
