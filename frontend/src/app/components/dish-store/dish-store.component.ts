@@ -5,7 +5,9 @@ import { Router } from '@angular/router';
 
 // --- NOVAS IMPORTAÇÕES ---
 import { AuthenticateService } from '../../services/auth/authenticate.service';
-import { WithdrawalService, CartItemDto, WithdrawalRequest } from '../../services/withdrawal.service'; // O novo serviço
+import { WithdrawalService, CartItemDto, WithdrawalRequest } from '../../services/withdrawal.service';
+// NOVO: Importe o LoadingService
+import { LoadingService } from '../../services/loading/loading.service'; 
 
 interface CartItem extends Dish {
   quantity: number;
@@ -30,8 +32,10 @@ export class DishStoreComponent implements OnInit {
   constructor(
     private dishService: DishService, 
     private router: Router,
-    private authService: AuthenticateService, // Injetamos o serviço de Auth
-    private withdrawalService: WithdrawalService // Injetamos o novo serviço
+    private authService: AuthenticateService, 
+    private withdrawalService: WithdrawalService,
+    // NOVO: Injete o LoadingService
+    private loadingService: LoadingService 
   ) {}
 
   ngOnInit(): void {
@@ -40,11 +44,24 @@ export class DishStoreComponent implements OnInit {
   }
 
   loadDishes(): void {
-    this.dishService.getDishes().subscribe((data: Dish[]) => {
-      this.dishes = data;
+    // 1. ATIVA O LOADING antes da busca de dados
+    this.loadingService.show();
+
+    this.dishService.getDishes().subscribe({
+        next: (data: Dish[]) => {
+            this.dishes = data;
+        },
+        error: (err) => {
+            console.error('Erro ao carregar pratos:', err);
+        },
+        complete: () => {
+            // 2. DESATIVA O LOADING, independentemente do resultado
+            this.loadingService.hide();
+        }
     });
   }
 
+  // ... (o restante dos métodos permanece o mesmo)
   addToCart(dish: Dish): void {
     const existingItem = this.cart.find(item => item.id === dish.id);
     if (existingItem) {
@@ -78,27 +95,19 @@ export class DishStoreComponent implements OnInit {
     }, 0);
 
     if (this.cart.length > 0) {
-        this.totalLeadTime = TEMPO_FIXO_MAQUINA + leadTimeVariavel;
+      this.totalLeadTime = TEMPO_FIXO_MAQUINA + leadTimeVariavel;
     } else {
-        this.totalLeadTime = 0; 
+      this.totalLeadTime = 0; 
     }
   }
 
-  //
-  // --- FUNÇÃO CHECKOUT TOTALMENTE REESCRITA ---
-  //
-checkout(): void {
-    
-    // 1. Checa se o usuário está logado (usando o método mais robusto)
+  checkout(): void {
     if (!this.authService.isAuthenticated()) {
       alert('Você precisa estar logado para finalizar uma retirada!');
-      
-      // Manda para a rota de login que definimos no app.config.ts
       this.router.navigate(['/login']); 
       return;
     }
     
-    // Se estiver autenticado, pegamos o email. Se for null (o que não deveria ser), tratamos.
     const email = this.authService.getEmail(); 
     if (!email) {
         alert('Erro de autenticação: Email não encontrado no token. Tente fazer login novamente.');
@@ -106,35 +115,34 @@ checkout(): void {
         return;
     }
 
-
-    // 2. Transforma o carrinho (front-end) no formato que o back-end espera (DTO)
     const cartDto: CartItemDto[] = this.cart.map(item => ({
       dishId: item.id,
       quantity: item.quantity
     }));
 
-    // 3. Monta o objeto final da requisição
     const request: WithdrawalRequest = {
       email: email,
       cart: cartDto
     };
 
-    // 4. Chama o novo serviço para salvar no banco
+    // 3. ATIVA LOADING antes do checkout (opcional, mas recomendado)
+    this.loadingService.show();
+    
     this.withdrawalService.createWithdrawal(request).subscribe({
       next: (response) => {
-        // Sucesso!
         alert('Retirada registrada com sucesso!');
-        // Limpa o carrinho e navega
         this.cart = [];
         this.updateTotal();
-        localStorage.removeItem('cart'); // Limpa o carrinho antigo do localStorage
-        
-        this.router.navigate(['/']); // Manda para o cardápio
+        localStorage.removeItem('cart');
+        this.router.navigate(['/']);
       },
       error: (err) => {
-        // Erro!
         console.error('Falha ao registrar retirada', err);
         alert('Houve um erro ao registrar sua retirada. Tente novamente.');
+      },
+      complete: () => {
+        // 4. DESATIVA LOADING após o checkout
+        this.loadingService.hide();
       }
     });
   }

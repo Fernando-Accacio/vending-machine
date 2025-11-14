@@ -8,7 +8,7 @@ export class LoadingService {
   // BehaviorSubject para emitir o estado atual e o valor inicial (false)
   private loadingSubject: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
   
-  // Observable público para que outros componentes possam se inscrever
+  // Observable público para que os componentes (como AppComponent) possam se inscrever
   public isLoading$: Observable<boolean> = this.loadingSubject.asObservable();
 
   constructor() { }
