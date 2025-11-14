@@ -1,9 +1,8 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core'; // -> MUDANÇA AQUI
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { AuthenticateService } from '../../../services/auth/authenticate.service';
 import { Router, RouterModule } from '@angular/router'; 
-// NOVO: Importe o LoadingService
 import { LoadingService } from '../../../services/loading/loading.service';
 
 @Component({
@@ -17,22 +16,31 @@ import { LoadingService } from '../../../services/loading/loading.service';
   templateUrl: './login.component.html',
   styleUrl: './login.component.css'
 })
-export class LoginComponent {
+export class LoginComponent implements OnInit { // -> MUDANÇA AQUI
+  
+  public isLoadingLocal: boolean = true; // -> NOVO
   
   passwordFieldType: string = 'password';
   message: { text: string, type: 'success' | 'error' | null } = { text: '', type: null };
-  
+
   user = {
     documento: '',
     password: ''
   }
 
-  // NOVO: Injete o LoadingService
   constructor(
     private authService: AuthenticateService, 
     private router: Router,
     private loadingService: LoadingService 
   ) {}
+
+  // -> NOVO MÉTODO
+  ngOnInit(): void {
+    // Simula um carregamento muito rápido para consistência visual
+    setTimeout(() => {
+      this.isLoadingLocal = false;
+    }, 50); // 50ms é quase instantâneo
+  }
 
   togglePasswordVisibility(): void {
     this.passwordFieldType = this.passwordFieldType === 'password' ? 'text' : 'password';
@@ -46,7 +54,7 @@ export class LoginComponent {
   login() {
     this.message = { text: '', type: null }; 
     
-    // 1. ATIVA O LOADING
+    // ATIVA APENAS O LOADING GLOBAL (Correto para a ação de login)
     this.loadingService.show(); 
     
     this.authService.login(this.user.documento, this.user.password || '').subscribe({
@@ -77,10 +85,10 @@ export class LoginComponent {
       error: (error) => {
         this.showMessage('Documento e/ou senha inválidas!') 
         console.error('ERRO DE AUTENTICAÇÃO:', error);
+        this.loadingService.hide();
       },
       complete: () => {
-        // 2. DESATIVA O LOADING (executa após next ou error)
-        this.loadingService.hide(); 
+        this.loadingService.hide();
       }
     });
   }

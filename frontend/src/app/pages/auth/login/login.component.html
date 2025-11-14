@@ -1,16 +1,20 @@
-<a routerLink="/" class="back-arrow-link">
-  <i class="fas fa-arrow-left"></i> Voltar ao Cardápio
-</a>
+<div *ngIf="isLoadingLocal" class="container-loading">
+  <p>Carregando... Por favor, aguarde.</p>
+</div>
 
-<div class="login-container">
-  <h2>Login</h2>
+<div *ngIf="!isLoadingLocal">
 
-  <!-- Sistema de Mensagem -->
-  <div *ngIf="message.text" class="alert" [ngClass]="{'alert-success': message.type === 'success', 'alert-error': message.type === 'error'}">
-    {{ message.text }}
-  </div>
+  <a routerLink="/" class="back-arrow-link">
+    <i class="fas fa-arrow-left"></i> Voltar ao Cardápio
+  </a>
 
-  <div>
+  <div class="login-container">
+    <h2>Login</h2>
+
+    <div *ngIf="message.text" class="alert" [ngClass]="{'alert-success': message.type === 'success', 'alert-error': message.type === 'error'}">
+      {{ message.text }}
+    </div>
+
     <form (ngSubmit)="login()">
       
       <div class="form-group">
@@ -18,12 +22,10 @@
         <input type="text" id="documento" [(ngModel)]="user.documento" name="documento" required>
       </div>
       
-      <!-- CAMPO SENHA - CORREÇÃO DA LÓGICA DO OLHINHO -->
       <div class="form-group form-group-password">
         <label for="password">Senha:</label> 
         <input [type]="passwordFieldType" id="password" [(ngModel)]="user.password" name="password" required>
         <button type="button" class="password-toggle" (click)="togglePasswordVisibility()">
-          <!-- Corrigido: Se type='password' (escondida), mostra 'fa-eye-slash' (olho fechado) -->
           <i class="fas" [ngClass]="{'fa-eye-slash': passwordFieldType === 'password', 'fa-eye': passwordFieldType === 'text'}"></i>
         </button>
       </div>

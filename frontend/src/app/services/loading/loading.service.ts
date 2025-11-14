@@ -11,6 +11,11 @@ export class LoadingService {
   // Observable público para que os componentes (como AppComponent) possam se inscrever
   public isLoading$: Observable<boolean> = this.loadingSubject.asObservable();
 
+  // --- LÓGICA ATUALIZADA ---
+  // Flag para rastrear o primeiro carregamento (cold start)
+  private _isFirstLoad: boolean = true;
+  // --- FIM DA ATUALIZAÇÃO ---
+
   constructor() { }
 
   // Método para exibir a tela de carregamento
@@ -21,5 +26,21 @@ export class LoadingService {
   // Método para esconder a tela de carregamento
   hide(): void {
     this.loadingSubject.next(false);
+  }
+
+  // --- NOVOS MÉTODOS ADICIONADOS ---
+
+  /**
+   * Verifica se é o primeiro carregamento (cold start)
+   */
+  isFirstLoad(): boolean {
+    return this._isFirstLoad;
+  }
+
+  /**
+   * Marca o primeiro carregamento como concluído
+   */
+  completeFirstLoad() {
+    this._isFirstLoad = false;
   }
 }

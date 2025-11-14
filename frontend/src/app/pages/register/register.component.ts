@@ -1,92 +1,89 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core'; // -> MUDANÇA AQUI
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router, RouterModule } from '@angular/router';
 import { AuthenticateService } from '../../services/auth/authenticate.service';
-// NOVO: Importe o LoadingService (Ajuste o caminho se necessário)
 import { LoadingService } from '../../services/loading/loading.service';
 
 @Component({
-  selector: 'app-register',
-  standalone: true,
-  imports: [CommonModule, FormsModule, RouterModule],
-  templateUrl: './register.component.html',
-  styleUrls: ['./register.component.css']
+  selector: 'app-register',
+  standalone: true,
+  imports: [CommonModule, FormsModule, RouterModule],
+  templateUrl: './register.component.html',
+  styleUrls: ['./register.component.css']
 })
-export class RegisterComponent {
-  
-  // Variáveis para controlar o tipo do input (o "olhinho")
-  passwordFieldType: string = 'password';
-  confirmPasswordFieldType: string = 'password';
+export class RegisterComponent implements OnInit { // -> MUDANÇA AQUI
+  
+  public isLoadingLocal: boolean = true; // -> NOVO
 
-  // Sistema de Mensagens (Substituindo alert())
-  message: { text: string, type: 'success' | 'error' | null } = { text: '', type: null };
-  
-  // Nosso "molde" para o formulário
-  registerData = {
-    name: '',
-    email: '',
-    documento: '',
-    phoneNumber: '',
-    password: '',
-    confirmPassword: ''
-  };
+  passwordFieldType: string = 'password';
+  confirmPasswordFieldType: string = 'password';
+  message: { text: string, type: 'success' | 'error' | null } = { text: '', type: null };
 
-  constructor(
-    private authService: AuthenticateService,
-    private router: Router,
-    // NOVO: Injete o LoadingService
+  registerData = {
+    name: '',
+    email: '',
+    documento: '',
+    phoneNumber: '',
+    password: '',
+    confirmPassword: ''
+  };
+
+  constructor(
+    private authService: AuthenticateService,
+    private router: Router,
     private loadingService: LoadingService 
-  ) {}
+  ) {}
 
-  // Função para alternar a visibilidade da Senha
-  togglePasswordVisibility(): void {
-    this.passwordFieldType = this.passwordFieldType === 'password' ? 'text' : 'password';
-  }
+  // -> NOVO MÉTODO
+  ngOnInit(): void {
+    // Simula um carregamento muito rápido para consistência visual
+    setTimeout(() => {
+      this.isLoadingLocal = false;
+    }, 50);
+  }
 
-  // Função para alternar a visibilidade da Confirmação de Senha
-  toggleConfirmPasswordVisibility(): void {
-    this.confirmPasswordFieldType = this.confirmPasswordFieldType === 'password' ? 'text' : 'password';
-  }
+  togglePasswordVisibility(): void {
+    this.passwordFieldType = this.passwordFieldType === 'password' ? 'text' : 'password';
+  }
 
-  // Novo método para exibir a mensagem na tela
-  showMessage(text: string, type: 'success' | 'error' = 'error'): void {
-    this.message = { text, type };
-    setTimeout(() => this.message = { text: '', type: null }, 5000); // Limpa após 5 segundos
-  }
+  toggleConfirmPasswordVisibility(): void {
+    this.confirmPasswordFieldType = this.confirmPasswordFieldType === 'password' ? 'text' : 'password';
+  }
 
-  register(): void {
-    this.message = { text: '', type: null }; // Limpa mensagens anteriores
+  showMessage(text: string, type: 'success' | 'error' = 'error'): void {
+    this.message = { text, type };
+    setTimeout(() => this.message = { text: '', type: null }, 5000);
+  }
 
-    // 1. Checa se as senhas são iguais
-    if (this.registerData.password !== this.registerData.confirmPassword) {
-      this.showMessage('As senhas não conferem!');
-      return;
-    }
-    
-    // 2. Tira o 'confirmPassword' (o back-end não precisa dele)
-    const { confirmPassword, ...requestData } = this.registerData;
+  register(): void {
+    this.message = { text: '', type: null };
 
-    // 3. ATIVA O LOADING antes da chamada à API
+    if (this.registerData.password !== this.registerData.confirmPassword) {
+      this.showMessage('As senhas não conferem!');
+      return;
+    }
+    
+    const { confirmPassword, ...requestData } = this.registerData;
+
+    // ATIVA APENAS O LOADING GLOBAL (Correto para a ação de registro)
     this.loadingService.show(); 
 
-    // 4. Chama o "mensageiro" (AuthService)
-    this.authService.register(requestData).subscribe({
-      next: (response) => {
-        this.showMessage('Usuário registrado com sucesso! Por favor, faça o login.', 'success');
-        setTimeout(() => {
-          this.router.navigate(['/login']); // Redireciona para o login
-        }, 2000);
-      },
-      error: (err) => {
-        console.error('Erro no registro', err);
-        // Pega a mensagem de erro que o back-end enviou (ex: "Usuário já cadastrado")
-        this.showMessage(`Erro ao registrar: ${err.error.message || err.statusText}`);
-      },
+    this.authService.register(requestData).subscribe({
+      next: (response) => {
+        this.showMessage('Usuário registrado com sucesso! Por favor, faça o login.', 'success');
+        setTimeout(() => {
+          this.router.navigate(['/login']);
+        }, 2000);
+      },
+      error: (err) => {
+        console.error('Erro no registro', err);
+        this.showMessage(`Erro ao registrar: ${err.error.message || err.statusText}`);
+        this.loadingService.hide();
+      },
       complete: () => {
-        // 5. DESATIVA O LOADING (executa após next ou error)
         this.loadingService.hide();
       }
-    });
-  }
+    });
+  }
 }

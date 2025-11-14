@@ -1,16 +1,20 @@
-<a routerLink="/login" class="back-arrow-link">
-  <i class="fas fa-arrow-left"></i> Voltar ao Login
-</a>
+<div *ngIf="isLoadingLocal" class="container-loading">
+  <p>Carregando... Por favor, aguarde.</p>
+</div>
 
-<div class="container">
-  <h2>Registrar Novo Usuário</h2>
+<div *ngIf="!isLoadingLocal">
 
-  <!-- Sistema de Mensagem -->
-  <div *ngIf="message.text" class="alert" [ngClass]="{'alert-success': message.type === 'success', 'alert-error': message.type === 'error'}">
-    {{ message.text }}
-  </div>
+  <a routerLink="/login" class="back-arrow-link">
+    <i class="fas fa-arrow-left"></i> Voltar ao Login
+  </a>
 
-  <div>
+  <div class="container">
+    <h2>Registrar Novo Usuário</h2>
+
+    <div *ngIf="message.text" class="alert" [ngClass]="{'alert-success': message.type === 'success', 'alert-error': message.type === 'error'}">
+      {{ message.text }}
+    </div>
+
     <form (ngSubmit)="register()">
       
       <div class="form-group">
@@ -33,22 +37,18 @@
         <input type="text" id="phoneNumber" [(ngModel)]="registerData.phoneNumber" name="phoneNumber">
       </div>
 
-      <!-- CAMPO SENHA - CORREÇÃO DA LÓGICA DO OLHINHO -->
       <div class="form-group form-group-password">
         <label for="password">Senha:</label>
         <input [type]="passwordFieldType" id="password" [(ngModel)]="registerData.password" name="password" required>
         <button type="button" class="password-toggle" (click)="togglePasswordVisibility()">
-          <!-- Corrigido: Se type='password' (escondida), mostra 'fa-eye-slash' (olho fechado) -->
           <i class="fas" [ngClass]="{'fa-eye-slash': passwordFieldType === 'password', 'fa-eye': passwordFieldType === 'text'}"></i>
         </button>
       </div>
       
-      <!-- CAMPO CONFIRMAR SENHA - CORREÇÃO DA LÓGICA DO OLHINHO -->
       <div class="form-group form-group-password">
         <label for="confirmPassword">Confirmar Senha:</label>
         <input [type]="confirmPasswordFieldType" id="confirmPassword" [(ngModel)]="registerData.confirmPassword" name="confirmPassword" required>
         <button type="button" class="password-toggle" (click)="toggleConfirmPasswordVisibility()">
-          <!-- Corrigido: Se type='password' (escondida), mostra 'fa-eye-slash' (olho fechado) -->
           <i class="fas" [ngClass]="{'fa-eye-slash': confirmPasswordFieldType === 'password', 'fa-eye': confirmPasswordFieldType === 'text'}"></i>
         </button>
       </div>

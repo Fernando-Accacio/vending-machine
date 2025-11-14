@@ -28,6 +28,9 @@ export class DishStoreComponent implements OnInit {
   totalAmount: number = 0;
   totalLeadTime: number = 0; 
 
+  // --- NOVO ---
+  public isLoadingLocal: boolean = false; // Flag de loading local
+
   // --- CONSTRUTOR ATUALIZADO ---
   constructor(
     private dishService: DishService, 
@@ -39,13 +42,21 @@ export class DishStoreComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.loadDishes();
+    this.loadDishes(); // A lógica foi movida para dentro do loadDishes()
     this.updateTotal(); 
   }
 
   loadDishes(): void {
-    // 1. ATIVA O LOADING antes da busca de dados
-    this.loadingService.show();
+    // 1. ATIVA O LOADING LOCAL (SEMPRE)
+    this.isLoadingLocal = true; 
+
+    // 2. LÓGICA DE DECISÃO (A GRANDE MUDANÇA)
+    if (this.loadingService.isFirstLoad()) {
+      // É o COLD START. Ativa o OVERLAY GLOBAL.
+      this.loadingService.show();
+    }
+    // Se não for o firstLoad, ele só vai mostrar o isLoadingLocal,
+    // que é o comportamento correto para navegação (ex: "Voltar do Login")
 
     this.dishService.getDishes().subscribe({
         next: (data: Dish[]) => {
@@ -53,10 +64,21 @@ export class DishStoreComponent implements OnInit {
         },
         error: (err) => {
             console.error('Erro ao carregar pratos:', err);
+            
+            // 3. DESATIVA OS LOADINGS (em caso de erro)
+            if (this.loadingService.isFirstLoad()) {
+              this.loadingService.hide(); // Desliga o global (se estiver ligado)
+            }
+            this.isLoadingLocal = false; // Desliga o local
+            this.loadingService.completeFirstLoad(); // Marca como concluído (mesmo com erro)
         },
         complete: () => {
-            // 2. DESATIVA O LOADING, independentemente do resultado
-            this.loadingService.hide();
+            // 4. DESATIVA OS LOADINGS (em caso de sucesso)
+             if (this.loadingService.isFirstLoad()) {
+              this.loadingService.hide(); // Desliga o global (se estiver ligado)
+            }
+            this.isLoadingLocal = false; // Desliga o local
+            this.loadingService.completeFirstLoad(); // Marca como concluído
         }
     });
   }
@@ -125,7 +147,8 @@ export class DishStoreComponent implements OnInit {
       cart: cartDto
     };
 
-    // 3. ATIVA LOADING antes do checkout (opcional, mas recomendado)
+    // 3. ATIVA LOADING (Usando o global aqui é ok, pois é uma ação importante)
+    this.isLoadingLocal = true; // (Mantemos este por segurança)
     this.loadingService.show();
     
     this.withdrawalService.createWithdrawal(request).subscribe({
@@ -139,9 +162,13 @@ export class DishStoreComponent implements OnInit {
       error: (err) => {
         console.error('Falha ao registrar retirada', err);
         alert('Houve um erro ao registrar sua retirada. Tente novamente.');
+        // 4. DESATIVA LOADING (EM CASO DE ERRO)
+        this.isLoadingLocal = false; 
+        this.loadingService.hide();
       },
       complete: () => {
-        // 4. DESATIVA LOADING após o checkout
+        // 4. DESATIVA LOADING (EM CASO DE SUCESSO)
+        this.isLoadingLocal = false; 
         this.loadingService.hide();
       }
     });

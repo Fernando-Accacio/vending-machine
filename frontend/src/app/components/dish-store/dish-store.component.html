@@ -1,4 +1,17 @@
-<div class="container">
+<!-- 1. MENSAGEM DE LOADING LOCAL -->
+<!-- Isso agora vai aparecer rápido quando você "Voltar" do Login -->
+<div *ngIf="isLoadingLocal" class="container-loading">
+  <p>Carregando cardápio... Por favor, aguarde.</p>
+  
+  <!-- 
+    A mensagem de "30 segundos" foi removida daqui.
+    Ela agora vive no 'app.component.html' (o overlay global),
+    que é ativado pelo 'loadingService.show()' no 'isFirstLoad()'.
+  -->
+</div>
+
+<!-- 2. CONTEÚDO PRINCIPAL (Só mostra se NÃO estiver carregando) -->
+<div class="container" *ngIf="!isLoadingLocal">
   <div class="dishes-container">
     <h2>Cardápio</h2>
     <div class="dishes-grid">
