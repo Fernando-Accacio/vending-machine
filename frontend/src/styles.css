@@ -123,13 +123,8 @@ html, body {
   box-sizing: border-box;
 }
 
-/* --- CORREÇÃO DE VISIBILIDADE DO LINK INATIVO --- */
-
-/* --- CORREÇÃO DE VISIBILIDADE DO LINK INATIVO --- */
 .nav-button {
-  /* ... (código existente) ... */
   
-  /* ADICIONA FUNDO PADRÃO MUITO SUTIL para o estado inativo */
   background-color: rgba(240, 240, 240, 0.85); /* Cinza pálido */
   
   border: none;
