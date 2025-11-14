@@ -125,11 +125,16 @@ html, body {
 
 /* --- CORREÇÃO DE VISIBILIDADE DO LINK INATIVO --- */
 
+/* --- CORREÇÃO DE VISIBILIDADE DO LINK INATIVO --- */
 .nav-button {
-  background: none;
+  /* ... (código existente) ... */
+  
+  /* ADICIONA FUNDO PADRÃO MUITO SUTIL para o estado inativo */
+  background-color: rgba(240, 240, 240, 0.85); /* Cinza pálido */
+  
   border: none;
-  color: var(--text-color); /* <-- MUDANÇA AQUI: Usa a cor escura principal */
-  opacity: 0.90; /* <-- ADIÇÃO: Deixa levemente transparente */
+  color: var(--text-color);
+  opacity: 1; /* Retornamos para 1 para que o fundo seja visível */
   padding: 8px 16px;
   border-radius: 6px;
   font-size: 14px;
@@ -144,16 +149,21 @@ html, body {
 }
 
 .nav-button:hover {
-  background-color: rgba(0, 0, 0, 0.05);
+  /* Aumenta o contraste no hover */
+  background-color: rgba(240, 240, 240, 1.0); /* Branco mais sólido */
   color: var(--primary-color);
-  opacity: 1; /* <-- ADIÇÃO: Opacidade total no hover */
+  opacity: 1;
 }
 
+/* O botão ativo (Itens, na imagem) */
 .nav-button.active {
-  background: none;
+  /* Você pode manter o fundo branco puro para dar mais destaque ao ativo */
+  background-color: white; 
   color: var(--primary-color);
   font-weight: 600;
-  opacity: 1; /* <-- ADIÇÃO: Opacidade total quando ativo */
+  opacity: 1;
+  /* Adicione uma sombra sutil para dar um toque de elevação se desejar */
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05); 
 }
 
 .auth-buttons .nav-button,
@@ -1091,44 +1101,41 @@ td:last-child {
 
 /* 2. CORREÇÃO DOS BOTÕES INATIVOS (DUPLICADO) */
 /* --- CORREÇÃO 3: BOTÃO "MUDAR SENHA" E INATIVOS COM BORDA SUAVE --- */
-.mobile-menu .nav-button {
-  width: 100%;
-  margin: 8px 0;
-  padding: 14px 20px;
-  font-size: 15px;
-  font-weight: 500; /* Peso do desktop inativo */
-  background-color: transparent; /* <-- MUDANÇA: Fundo transparente */
-  color: var(--text-color);
-  opacity: 0.90; /* <-- Adicionado para igualar ao desktop */
-  border: none;
-  border-radius: 8px;
-  transition: all 0.3s ease;
-  text-align: center;
-  text-decoration: none; /* Garantir que não tenha sublinhado */
+.mobile-menu a.nav-button {
+    width: 100%;
+    margin: 8px 0;
+    padding: 14px 20px;
+    font-size: 15px;
+    font-weight: 500;
+    
+    background-color: rgba(240, 240, 240, 0.85); 
+
+    color: var(--text-color);
+    /* Remova a opacidade geral para não afetar o texto */
+    /* opacity: 0.90; */ 
+    
+    border: none;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+    text-align: center;
 }
 
-/* No hover, o fundo pode ficar um pouco mais escuro, se desejar */
-.mobile-menu .nav-button:hover,
-.mobile-menu .nav-button:active {
-  background-color: rgba(0, 0, 0, 0.05); /* <-- Hover igual ao desktop */
-  color: var(--primary-color);
-  opacity: 1;
+/* Efeito ao passar o mouse ou tocar (para indicar interação) */
+.mobile-menu a.nav-button:hover,
+.mobile-menu a.nav-button:active {
+    /* Deixa o botão um pouco mais opaco ao interagir */
+    background-color: rgba(240, 240, 240, 1.0); 
 }
 
 /* ADICIONE ESTA NOVA REGRA - Estilo do Botão ATIVO (página atual) */
 /* 1. ESTILO DO BOTÃO ATIVO (AGORA COM SUBLINHADO) */
 .mobile-menu .nav-button.active {
-  background-color: transparent !important;
+  background-color: white !important;
   color: var(--primary-color) !important;
   font-weight: 700;
   
-  /* ADICIONADO DE VOLTA A SEU PEDIDO */
   text-decoration: underline !important; 
   text-decoration-thickness: 2px;
-}
-
-.mobile-menu .nav-button.active:hover {
-  background-color: var(--primary-hover);
 }
 
 .mobile-menu .change-pass-btn {
@@ -1196,7 +1203,7 @@ td:last-child {
 /* 3. CORREÇÃO DO "CONECTADO COMO..." (DUPLICADO) */
 .mobile-user-info {
   display: block !important;
-  background: var(--background-color);
+  background: white;
   color: var(--text-color-light); /* Cor base cinza */
   border: none; /* 3. REMOVE A BORDA EXTERNA */
   padding: 12px 16px;
