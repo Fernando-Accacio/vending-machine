@@ -41,7 +41,7 @@
             
             <div class="auth-buttons" *ngIf="isAuthenticated">
                 <a routerLink="/change-password" routerLinkActive="active" class="nav-button change-pass-btn">
-                    Mudar Senha
+                    Mudar Senha e usuário
                 </a>
                 
                 <button class="nav-button logout-btn danger-btn" (click)="logout()">
@@ -89,7 +89,7 @@
                 <span class="user-name">{{ userName }}</span>
                 <span class="user-role">({{ isGerente ? 'Gerente' : (isEntregador ? 'Entregador' : 'Cliente') }})</span>
             </div>
-                <a *ngIf="isAuthenticated" routerLink="/change-password" class="nav-button change-pass-btn" routerLinkActive="active" (click)="toggleMenu()">Mudar Senha</a>
+                <a *ngIf="isAuthenticated" routerLink="/change-password" class="nav-button change-pass-btn" routerLinkActive="active" (click)="toggleMenu()">Mudar Senha e usuário</a>
                 <button *ngIf="isAuthenticated" class="nav-button logout-btn danger-btn" (click)="logout()">Sair</button>
                 <a *ngIf="!isAuthenticated" routerLink="/login" class="nav-button login-btn" routerLinkActive="active" (click)="toggleMenu()">Login</a>
             </div>
