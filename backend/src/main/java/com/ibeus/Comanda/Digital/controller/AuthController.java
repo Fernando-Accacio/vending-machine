@@ -25,6 +25,7 @@ public class AuthController {
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody LoginRequest loginRequest) {
         
+        // LINHA 28: A chamada correta ao método que foi restaurado no UserService.
         Optional<User> userOptional = this.userService.findByDocumentoAndPassword(loginRequest.getDocumento(), loginRequest.getPassword());
 
         if (userOptional.isEmpty()) {
@@ -33,6 +34,8 @@ public class AuthController {
 
         User user = userOptional.get();
 
+        // GERAÇÃO DO TOKEN: Certifique-se de que o JwtProvider use o nome (name) correto,
+        // pois ele pode ter sido alterado na tela de Alterar Credenciais.
         String token = tokenProvider.generateToken(user.getEmail(), user.getRole(), user.getName(), user.getPhoneNumber());
         return ResponseEntity.ok(new LoginResponse(token));
     }

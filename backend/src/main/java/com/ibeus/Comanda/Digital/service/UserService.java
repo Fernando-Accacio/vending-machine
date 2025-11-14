@@ -1,11 +1,11 @@
 package com.ibeus.Comanda.Digital.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.password.PasswordEncoder; 
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import com.ibeus.Comanda.Digital.model.User;
 import com.ibeus.Comanda.Digital.repository.UserRepository;
-import com.ibeus.Comanda.Digital.controller.AuthController.RegisterRequest; 
+import com.ibeus.Comanda.Digital.controller.AuthController.RegisterRequest;
 
 import java.util.NoSuchElementException;
 import java.util.Optional;
@@ -22,9 +22,10 @@ public class UserService {
         this.passwordEncoder = passwordEncoder;
     }
 
+    // --- Método de Registro ---
     @org.springframework.transaction.annotation.Transactional
     public User register(RegisterRequest request) {
-        if (userRepository.findByDocumento(request.getDocumento()).isPresent() || 
+        if (userRepository.findByDocumento(request.getDocumento()).isPresent() ||
             userRepository.findByEmail(request.getEmail()).isPresent()) {
             throw new RuntimeException("Usuário (documento ou email) já cadastrado.");
         }
@@ -37,22 +38,12 @@ public class UserService {
         
         user.setPassword(passwordEncoder.encode(request.getPassword()));
         
-        user.setRole("cliente"); 
+        user.setRole("cliente");
 
         return userRepository.save(user);
     }
 
-    // Método de login antigo (findByEmail) - não precisamos mais dele para login
-    public Optional<User> findByEmailAndPassword(String email, String password) {
-        User user = userRepository.findByEmail(email).orElseThrow(() -> new NoSuchElementException("Usuário não encontrado"));
-        // Esta lógica antiga de 'equals' está INSEGURA
-        if (password.equals(user.getPassword())) {  
-            return Optional.of(user);
-        }
-        return Optional.empty();
-    }
-    
-    // Método de login seguro
+    // --- MÉTODO DE LOGIN (findByDocumentoAndPassword) RESTAURADO/CORRIGIDO ---
     public Optional<User> findByDocumentoAndPassword(String documento, String password) {
         Optional<User> userOptional = userRepository.findByDocumento(documento);
 
@@ -66,6 +57,7 @@ public class UserService {
         return Optional.empty();
     }
 
+    // --- Métodos de Busca/CRUD ---
     public User findById(Long id) {
         return userRepository.findById(id).orElseThrow(() -> new RuntimeException("User not found"));
     }
@@ -104,21 +96,43 @@ public class UserService {
     }
 
     //
-    // --- MÉTODO NOVO ADICIONADO AQUI ---
+    // --- MÉTODO DE ALTERAÇÃO DE CREDENCIAIS (MODIFICADO) ---
     //
     @org.springframework.transaction.annotation.Transactional
-    public void changePassword(String userEmail, String oldPassword, String newPassword) {
+    public void changeCredentials(
+            String userEmail, 
+            String oldPassword, 
+            String newPassword,
+            String newUsername 
+    ) {
         // 1. Busca o usuário pelo email (que veio do token)
         User user = userRepository.findByEmail(userEmail)
                 .orElseThrow(() -> new RuntimeException("Usuário não encontrado."));
 
-        // 2. Verifica se a senha antiga está correta
+        // 2. Verifica se a senha antiga está correta (OBRIGATÓRIO para qualquer alteração)
         if (!passwordEncoder.matches(oldPassword, user.getPassword())) {
-            throw new RuntimeException("A senha antiga está incorreta.");
+            throw new RuntimeException("A senha atual está incorreta.");
         }
         
-        // 3. Criptografa e salva a nova senha
-        user.setPassword(passwordEncoder.encode(newPassword));
+        // 3. Lógica Opcional: Altera o nome de usuário
+        if (newUsername != null && !newUsername.trim().isEmpty()) {
+            user.setName(newUsername.trim());
+        }
+
+        // 4. Lógica Opcional: Altera a senha
+        if (newPassword != null && !newPassword.trim().isEmpty()) {
+             // 4.1. Validação de Senha (Opcional, mas boa prática: a nova senha não pode ser igual à antiga)
+             if (passwordEncoder.matches(newPassword, user.getPassword())) {
+                 throw new RuntimeException("A nova senha não pode ser igual à antiga.");
+             }
+            // 4.2. Criptografa e salva a nova senha
+            user.setPassword(passwordEncoder.encode(newPassword));
+        } else if ((newUsername == null || newUsername.trim().isEmpty())) {
+             // Se não mudou nem senha e nem nome de usuário, cancela
+             throw new RuntimeException("Nenhuma credencial para alterar (Nova Senha e Novo Nome de Usuário vazios).");
+        }
+        
+        // 5. Salva o usuário com as alterações feitas
         userRepository.save(user);
     }
 }

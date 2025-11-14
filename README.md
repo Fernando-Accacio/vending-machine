@@ -1,6 +1,3 @@
-Com certeza\! Aqui está o arquivo `README.md` completo, incluindo a arquitetura de pastas e as instruções de configuração do `env.ts` para ambientes local e de nuvem.
-
-```markdown
 # Vending Machine Social (Projeto de Formação Técnica)
 
 ![Status](https://img.shields.io/badge/status-CONCLU%C3%8DDO-brightgreen)

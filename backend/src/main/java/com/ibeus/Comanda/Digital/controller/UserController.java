@@ -4,45 +4,57 @@ import com.ibeus.Comanda.Digital.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.http.HttpStatus; // <<< Garanta que este import exista
 
-import java.security.Principal; // Importação para pegar o usuário logado
+import java.security.Principal;
 
 @RestController
-@RequestMapping("/users") // O endpoint base é /users
+@RequestMapping("/users")
 @CrossOrigin(origins = "http://localhost:4200")
 public class UserController {
 
     @Autowired
     private UserService userService;
 
-    // --- DTO (Molde) para a Requisição de Mudar Senha ---
+    // --- DTO (Molde) para a Requisição de Mudar Senha/Credenciais ---
     public static class ChangePasswordRequest {
         private String oldPassword;
         private String newPassword;
-        
-        // Getters
+        private String newUsername;
+
+        // Getters e Setters...
         public String getOldPassword() { return oldPassword; }
         public String getNewPassword() { return newPassword; }
+        public String getNewUsername() { return newUsername; }
+        
+        public void setOldPassword(String oldPassword) { this.oldPassword = oldPassword; }
+        public void setNewPassword(String newPassword) { this.newPassword = newPassword; }
+        public void setNewUsername(String newUsername) { this.newUsername = newUsername; }
     }
 
-    // --- ENDPOINT NOVO ---
+    // --- ENDPOINT COM STATUS HTTP CORRIGIDO ---
     @PostMapping("/change-password")
     public ResponseEntity<?> changePassword(
-            Principal principal, // 1. Pega o usuário logado (do token JWT)
+            Principal principal,
             @RequestBody ChangePasswordRequest request
     ) {
         try {
-            // 2. O 'principal.getName()' vai conter o EMAIL do usuário (que setamos no JwtProvider)
             String userEmail = principal.getName();
             
-            // 3. Chama o serviço para trocar a senha
-            userService.changePassword(userEmail, request.getOldPassword(), request.getNewPassword());
+            userService.changeCredentials(
+                userEmail, 
+                request.getOldPassword(), 
+                request.getNewPassword(),
+                request.getNewUsername()
+            );
             
-            return ResponseEntity.ok().body("Senha alterada com sucesso.");
+            // Caso de SUCESSO
+            return ResponseEntity.ok().body("Credenciais alteradas com sucesso. Por favor, faça login novamente.");
             
         } catch (RuntimeException e) {
-            // Pega erros como "A senha antiga está incorreta"
-            return ResponseEntity.badRequest().body(e.getMessage());
+            // Caso de ERRO DE VALIDAÇÃO (Senha Antiga Incorreta, Nova Senha = Antiga, etc.)
+            // RETORNA 400 BAD REQUEST, que o Frontend entende como erro.
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage()); // <<< CORREÇÃO AQUI
         }
     }
 }
