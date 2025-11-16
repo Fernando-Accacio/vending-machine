@@ -19,7 +19,6 @@
           <p class="real-cost">Custo real: R$ {{dish.custo.toFixed(2)}}</p>
           <p class="payable-cost">Valor a pagar: R$ 0,00</p>
         </div>
-        <p class="lead-time">Tempo Reposição: {{ dish.tempoReposicao || 0 }} min</p>
         <button (click)="addToCart(dish)" class="add-button">
           Adicionar à cesta
         </button>
