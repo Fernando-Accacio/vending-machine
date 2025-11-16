@@ -59,7 +59,7 @@ dish-app-java/
 │   └── app.config.ts     \# Configurações de rotas e injeção (Interceptors, Guards)
 └── angular.json          \# Configuração do Workspace Angular
 
-````
+Este repositório inclui a pasta screenshots/, contendo imagens de exemplo do site em funcionamento, e o arquivo schema.sql, que contém a exportação completa do banco de dados (estrutura e dados) para importação e teste local.
 
 ---
 
