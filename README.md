@@ -8,7 +8,9 @@
 
 Este projeto implementa um sistema Full-Stack de **Vending Machine Social**, simulando um modelo de **gestão social** onde os produtos retirados são registrados, contabilizados e o custo é rastreado para cobrança posterior de ONGs parceiras.
 
-Link do projeto hospedado na nuvem (Vercel): https://vending-social.vercel.app
+🌐 **Site em Produção:** [Acessar Site](https://vending-social.vercel.app/)  
+⚙️ **API em Produção:** [Acessar API](https://vending-machine-z87w.onrender.com)
+
 
 ---
 
