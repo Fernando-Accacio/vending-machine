@@ -12,7 +12,7 @@ Este projeto implementa um sistema Full-Stack de **Vending Machine Social**, sim
 O sistema foi estruturado para atender a todas as demandas de um projeto em produção, com divisões claras entre as responsabilidades de cada usuário.
 
 ### 👨‍💻 Lado do Cliente (Público)
-* **Cardápio e Carrinho:** Catálogo de itens e cálculo do total da retirada.
+* **Itens e Cesta:** Catálogo de itens e cálculo do total da retirada.
 * **Cálculo de Lead Time Dinâmico:** O carrinho calcula o tempo de retirada baseado na fórmula: `10 min (Fixo) + (Quantidade Solicitada × Tempo de Reposição do Item)`.
 * **Histórico de Retiradas:** Usuários logados podem ver seu histórico de pedidos (`/minhas-retiradas`).
 * **Autenticação Segura:** Registro e Login por Documento (CPF) e Senha, com proteção de rota para troca de senha.
