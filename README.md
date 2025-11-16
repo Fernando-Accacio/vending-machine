@@ -11,7 +11,6 @@ Este projeto implementa um sistema Full-Stack de **Vending Machine Social**, sim
 🌐 **Site em Produção:** [Acessar Site](https://vending-social.vercel.app/)  
 ⚙️ **API em Produção:** [Acessar API](https://vending-machine-z87w.onrender.com)
 
-
 ---
 
 ## ✅ Funcionalidades Principais
