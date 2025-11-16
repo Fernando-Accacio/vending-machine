@@ -26,7 +26,7 @@
 
                 <div class="nav-wrapper desktop-nav">
                     <div class="nav-container" *ngIf="isCliente || (!isGerente && !isEntregador)">
-                        <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}" class="nav-button">Cardápio</a>
+                        <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}" class="nav-button">Itens</a>
                         <a *ngIf="isAuthenticated" routerLink="/minhas-retiradas" routerLinkActive="active" class="nav-button">Minhas Retiradas</a>
                     </div>
 
@@ -77,8 +77,17 @@
                     <hr *ngIf="isAuthenticated" class="menu-divider">
 
                     <ng-container *ngIf="isCliente || (!isGerente && !isEntregador)">
-                        <a routerLink="/" class="nav-button" routerLinkActive="active" (click)="toggleMenu()">Cardápio</a>
-                        <a *ngIf="isAuthenticated" routerLink="/minhas-retiradas" class="nav-button" routerLinkActive="active" (click)="toggleMenu()">Minhas Retiradas</a>
+                        <a routerLink="/" 
+                        class="nav-button" 
+                        routerLinkActive="active" 
+                        [routerLinkActiveOptions]="{exact: true}" 
+                        (click)="toggleMenu()">Itens</a>
+
+                        <a *ngIf="isAuthenticated" 
+                        routerLink="/minhas-retiradas" 
+                        class="nav-button" 
+                        routerLinkActive="active" 
+                        (click)="toggleMenu()">Minhas Retiradas</a>
                     </ng-container>
 
                     <ng-container *ngIf="isGerente">

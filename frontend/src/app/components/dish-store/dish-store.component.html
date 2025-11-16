@@ -1,42 +1,46 @@
-<!-- 1. MENSAGEM DE LOADING LOCAL -->
-<!-- Isso agora vai aparecer rápido quando você "Voltar" do Login -->
 <div *ngIf="isLoadingLocal" class="container-loading">
-  <p>Carregando cardápio... Por favor, aguarde.</p>
-  
-  <!-- 
-    A mensagem de "30 segundos" foi removida daqui.
-    Ela agora vive no 'app.component.html' (o overlay global),
-    que é ativado pelo 'loadingService.show()' no 'isFirstLoad()'.
-  -->
+  <p>Carregando itens... Por favor, aguarde.</p>
 </div>
 
-<!-- 2. CONTEÚDO PRINCIPAL (Só mostra se NÃO estiver carregando) -->
 <div class="container" *ngIf="!isLoadingLocal">
   <div class="dishes-container">
-    <h2>Cardápio</h2>
-    <div class="dishes-grid">
+    <h2>Itens Disponíveis</h2>
+
+    <div *ngIf="dishes.length === 0" class="empty-message">
+      Nenhum item disponível no momento. Tente novamente mais tarde.
+    </div>
+
+    <div *ngIf="dishes.length > 0" class="dishes-grid">
       <div *ngFor="let dish of dishes" class="dish-card">
         <h3>{{dish.name}}</h3>
         <p>{{dish.description}}</p>
-        <p class="price">R$ {{dish.custo.toFixed(2)}}</p> 
+        
+        <div class="price-container">
+          <p class="real-cost">Custo real: R$ {{dish.custo.toFixed(2)}}</p>
+          <p class="payable-cost">Valor a pagar: R$ 0,00</p>
+        </div>
         <p class="lead-time">Tempo Reposição: {{ dish.tempoReposicao || 0 }} min</p>
         <button (click)="addToCart(dish)" class="add-button">
-          Adicionar ao carrinho
+          Adicionar à cesta
         </button>
       </div>
     </div>
   </div>
 
   <div class="cart-container">
-    <h2>Carrinho</h2>
+    <h2>Minha Cesta</h2>
     <div *ngIf="cart.length === 0" class="empty-cart">
-      Seu carrinho está vazio
+      Sua cesta está vazia
     </div>
     <div *ngIf="cart.length > 0">
       <div *ngFor="let item of cart" class="cart-item">
         <div class="item-info">
           <span>{{item.name}}</span>
-          <span>R$ {{item.custo.toFixed(2)}}</span>
+          
+          <div class="cart-item-price-details">
+            <span class="real-cost-cart">Custo real: R$ {{item.custo.toFixed(2)}}</span>
+            <span class="payable-cost-cart">Valor a pagar: R$ 0,00</span>
+          </div>
         </div>
         <div class="quantity-controls">
           <button (click)="removeFromCart(item)">-</button>
@@ -46,14 +50,15 @@
       </div>
 
       <div class="cart-total">
-        <strong>Total: R$ {{totalAmount.toFixed(2)}}</strong>
+        <strong class="real-cost-total">Custo total (ONG): R$ {{totalAmount.toFixed(2)}}</strong>
+        <strong class="payable-cost-total">Total a pagar: R$ 0,00</strong>
       </div>
       <div class="cart-lead-time" style="margin-top: 10px; text-align: right;">
         <strong>Tempo de Retirada: {{ totalLeadTime }} min</strong>
       </div>
 
       <button (click)="checkout()" class="checkout-button">
-        Finalizar
+        Confirmar Retirada
       </button>
     </div>
   </div>

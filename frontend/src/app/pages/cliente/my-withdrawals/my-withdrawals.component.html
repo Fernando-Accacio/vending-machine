@@ -10,23 +10,29 @@
     </div>
 
 <div *ngIf="!isLoading && history.length > 0">
-        <!-- O *ngFor deve ser mantido -->
         <div *ngFor="let withdrawal of history" class="withdrawal-card">
             <div class="withdrawal-header">
-                <!-- CORREÇÃO AQUI: Usando o displayIndex em vez do ID do banco -->
                 <h3>Retirada #{{ withdrawal.displayIndex }}</h3> 
                 <span class="date">{{ withdrawal.withdrawalDate | date: 'dd/MM/yyyy HH:mm':'America/Sao_Paulo' }}</span>
             </div>
             
             <div class="withdrawal-details">
-                <p><strong>Custo Total:</strong> R$ {{ withdrawal.totalCost | number: '1.2-2' }}</p> 
                 
+                <div class="cost-summary">
+                  <p class="real-cost-history">
+                    <strong>Custo Real (ONG):</strong> R$ {{ withdrawal.totalCost | number: '1.2-2' }}
+                  </p>
+                  <p class="payable-cost-history">
+                    <strong>Valor Pago:</strong> R$ 0,00
+                  </p>
+                </div>
                 <h4>Itens:</h4>
                 <ul>
                     <li *ngFor="let item of withdrawal.items">
-                        {{ item.quantity }}x {{ item.dish.name }} (R$ {{ item.costAtTime | number: '1.2-2' }})
+                        {{ item.quantity }}x {{ item.dish.name }} 
+                        <span class="item-cost-detail">(Custo unitário: R$ {{ item.costAtTime | number: '1.2-2' }})</span>
                     </li>
-                </ul>
+                    </ul>
             </div>
         </div>
     </div>

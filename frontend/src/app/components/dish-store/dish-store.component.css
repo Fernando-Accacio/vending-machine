@@ -61,8 +61,6 @@ h2 {
 
 .dish-card p {
   margin: 0 0 0.5rem 0;
-  color: var(--text-color-light);
-  font-size: 0.9rem;
   flex-grow: 1; 
 }
 
@@ -231,4 +229,98 @@ h2 {
 @keyframes spin {
   0% { transform: rotate(0deg); }
   100% { transform: rotate(360deg); }
+}
+
+/* Bloco de preço no card do item */
+.price-container {
+  margin-top: 10px;
+  border-top: 1px solid #eee; /* Linha sutil de separação */
+  padding-top: 10px;
+}
+
+/* Custo real (pequeno e cinza) */
+.real-cost {
+  font-size: 0.75rem; /* Pequeno */
+  color: #777; /* Suave */
+  margin: 0;
+  line-height: 1.2;
+}
+
+/* Valor a pagar (grande e verde) */
+.payable-cost {
+  font-size: 1.3rem; /* Grande, como pedido */
+  font-weight: bold;
+  color: #007b00; /* Verde para destacar a gratuidade */
+  margin: 4px 0 0 0;
+}
+
+/* --- Ajustes no Carrinho --- */
+
+/* Altera o item-info para empilhar nome e preços */
+.cart-item .item-info {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  flex-grow: 1;
+}
+
+.cart-item-price-details {
+  display: flex;
+  flex-direction: column;
+  margin-top: 5px; /* Espaço do nome do item */
+}
+
+.real-cost-cart {
+  font-size: 0.8rem;
+  color: #666;
+}
+
+.payable-cost-cart {
+  font-size: 0.9rem;
+  font-weight: bold;
+  color: #333;
+}
+
+.cart-total {
+  display: flex;
+  flex-direction: column; /* Empilha os totais */
+  align-items: flex-end; /* Alinha à direita */
+  margin-top: 15px;
+}
+
+.real-cost-total {
+  font-size: 0.9rem;
+  color: #555;
+  font-weight: normal;
+}
+
+.payable-cost-total {
+  font-size: 1.2rem;
+  font-weight: bold;
+  color: #000;
+  margin-top: 5px;
+}
+
+.checkout-button {
+  background-color: #007b00;
+}
+
+.checkout-button:hover {
+  background-color: #005a00;
+}
+
+.empty-message {
+  text-align: center; 
+
+  
+  padding: 40px 20px; 
+  margin-top: 20px;
+  
+  color: #777;
+  font-style: italic;
+  font-size: 1.1rem;
+  
+  background-color: #f9f9f9;
+  border: 1px dashed #ddd;
+  border-radius: 8px;
 }

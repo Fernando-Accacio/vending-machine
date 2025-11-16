@@ -1,6 +1,6 @@
 import { ApplicationConfig, importProvidersFrom } from '@angular/core';
 import { provideRouter, Routes } from '@angular/router';
-import { HttpClientModule, provideHttpClient, withInterceptors } from '@angular/common/http'; // Importações atualizadas
+import { HttpClientModule, provideHttpClient, withInterceptors } from '@angular/common/http';
 import { JwtModule } from '@auth0/angular-jwt';
 import { DishListComponent } from './components/dish-list/dish-list.component';
 import { DishFormComponent } from './components/dish-form/dish-form.component';
@@ -15,7 +15,7 @@ import { authGuard } from './services/auth/guards/auth-guard';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { clienteGuardGuard } from './services/auth/guards/cliente-guard.guard';
 import { gerenteGuardGuard } from './services/auth/guards/gerente-guard.guard';
-import { authInterceptor } from './services/auth/interceptors/auth.interceptor'; // Importa o interceptor
+import { authInterceptor } from './services/auth/interceptors/auth.interceptor';
 
 // --- DEFINIÇÃO DAS CONSTANTES DE DOMÍNIO PARA CLAREZA ---
 const API_DOMAIN = 'vending-machine-z87w.onrender.com'; 
@@ -52,15 +52,12 @@ export const appConfig: ApplicationConfig = {
     provideRouter(routes),
     provideAnimationsAsync(),
 
-    // 1. NOVO: Usar provideHttpClient e registrar o interceptor
     provideHttpClient(
-      withInterceptors([authInterceptor]) // <-- REGISTRO AQUI!
+      withInterceptors([authInterceptor])
     ),
     // ----------------------------------------------------
 
-    // 2. Módulo JWT para decodificação
     importProvidersFrom(
-      // HttpClientModule (não é mais estritamente necessário se usar provideHttpClient)
       JwtModule.forRoot({
         config: {
           tokenGetter: tokenGetter,

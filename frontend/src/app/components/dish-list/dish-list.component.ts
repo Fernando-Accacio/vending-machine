@@ -41,12 +41,12 @@ export class DishListComponent implements OnInit {
     if (shouldDelete) {
         this.dishService.deleteDish(id).subscribe({
             next: () => {
-                alert('Prato deletado com sucesso!');
+                alert('Item deletado com sucesso!');
                 this.loadDishes(); // Isso vai reativar o loading
             },
             error: (error) => {
-                alert('Não é possível excluir o prato. Se ele estiver vinculado a um pedido, ele será marcado como Inativo.');
-                console.error('Erro ao excluir o prato:', error);
+                alert('Não é possível excluir o item. Se ele estiver vinculado a um pedido, ele será marcado como Inativo.');
+                console.error('Erro ao excluir o item:', error);
             },
         });
     }

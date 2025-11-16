@@ -57,10 +57,10 @@ export class DishFormComponent implements OnInit {
                 next: () => {
                     // CORREÇÃO DE NAVEGAÇÃO: Volta para a tela de gerenciamento de itens do Gerente
                     this.router.navigate([this.GERENTE_LISTA_ITENS_ROUTE]); 
-                    console.log('Prato atualizado com sucesso!');
+                    console.log('Item atualizado com sucesso!');
                 },
                 error: (err) => {
-                    console.error('Erro ao atualizar prato:', err);
+                    console.error('Erro ao atualizar item:', err);
                 }
             });
         } else {
@@ -68,10 +68,10 @@ export class DishFormComponent implements OnInit {
                 next: () => {
                     // CORREÇÃO DE NAVEGAÇÃO: Volta para a tela de gerenciamento de itens do Gerente
                     this.router.navigate([this.GERENTE_LISTA_ITENS_ROUTE]);
-                    console.log('Prato registrado com sucesso!');
+                    console.log('Item registrado com sucesso!');
                 },
                 error: (err) => {
-                    console.error('Erro ao registrar prato:', err);
+                    console.error('Erro ao registrar item:', err);
                 }
             });
         }

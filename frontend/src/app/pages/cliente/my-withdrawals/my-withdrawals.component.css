@@ -50,11 +50,10 @@ h2 {
 
 /* Detalhes (Custo Total) */
 .withdrawal-details p {
-    font-size: 1.1em;
     font-weight: 600;
     color: var(--primary-color-dark, #38703c);
     margin-bottom: 15px;
-    display: block; /* Garante que o span abaixo use o espaço correto */
+    display: block;
 }
 
 /* Lista de Itens */
@@ -75,10 +74,9 @@ h2 {
     padding: 8px 15px;
     border-left: 4px solid var(--primary-color, #4CAF50);
     margin-bottom: 5px;
-    font-size: 0.95em;
+    font-size: 0.80em;
 }
 
-/* Mensagens de Estado (Loading, Erro, Vazio) */
 .loading, .error-message, .empty-message {
     text-align: center;
     padding: 30px;
@@ -91,6 +89,42 @@ h2 {
     background-color: #fdd;
     color: #dc2626;
     border: 1px solid #f99;
+}
+
+/* --- NOVOS ESTILOS (Histórico Vending Social) --- */
+
+/* Bloco que agrupa o custo real e o valor pago */
+.cost-summary {
+  margin-bottom: 15px; /* Espaço antes da lista de "Itens:" */
+  padding-bottom: 10px;
+  border-bottom: 1px solid #eee; /* Linha de separação */
+}
+
+/* Custo Real (ONG) - estilo mais discreto */
+.real-cost-history {
+  font-size: 0.90rem;
+  color: #555;
+  margin: 0;
+}
+
+.real-cost-history strong {
+  font-weight: 600; /* Um pouco menos forte que o bold normal */
+}
+
+/* Valor Pago - estilo principal, com destaque */
+.payable-cost-history {
+  font-size: 1.2rem; /* Tamanho maior */
+  color: #000;
+  font-weight: bold; /* Destaque total */
+  margin: 5px 0 0 0;
+}
+
+/* Detalhe de custo na lista de itens (li) */
+.item-cost-detail {
+  font-size: 0.9rem;
+  color: #777;
+  font-style: italic;
+  margin-left: 5px;
 }
 
 @media (max-width: 768px) {
