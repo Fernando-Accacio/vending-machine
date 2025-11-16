@@ -1,4 +1,4 @@
-# Vending Machine Social (Projeto de Formação Técnica)
+# Vending Machine Social
 
 ![Status](https://img.shields.io/badge/status-CONCLU%C3%8DDO-brightgreen)
 ![Java](https://img-shields.io/badge/Java-17-blue)
@@ -7,6 +7,8 @@
 ![MySQL](https://img.shields.io/badge/MySQL-Railway-orange)
 
 Este projeto implementa um sistema Full-Stack de **Vending Machine Social**, simulando um modelo de **gestão social** onde os produtos retirados são registrados, contabilizados e o custo é rastreado para cobrança posterior de ONGs parceiras.
+
+Link do projeto hospedado na nuvem (Vercel): https://vending-social.vercel.app
 
 ---
 
@@ -111,4 +113,3 @@ O arquivo `frontend/src/app/services/config/env.ts` define a URL da API que o An
     ng serve
     ```
 3.  O aplicativo estará em `http://localhost:4200/`.
-```
