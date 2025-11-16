@@ -1,10 +1,4 @@
-# Vending Machine Social
-
-![Status](https://img.shields.io/badge/status-CONCLU%C3%8DDO-brightgreen)
-![Java](https://img-shields.io/badge/Java-17-blue)
-![Spring](https://img.shields.io/badge/Spring_Boot-3.3-green)
-![Angular](https://img.shields.io/badge/Angular-17-red)
-![MySQL](https://img.shields.io/badge/MySQL-Railway-orange)
+🛍 Vending Machine Social
 
 Este projeto implementa um sistema Full-Stack de **Vending Machine Social**, simulando um modelo de **gestão social** onde os produtos retirados são registrados, contabilizados e o custo é rastreado para cobrança posterior de ONGs parceiras.
 
