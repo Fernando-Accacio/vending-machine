@@ -24,6 +24,102 @@ O sistema foi estruturado para atender a todas as demandas de um projeto em prod
 
 ---
 
+## 📖 Manual de Uso (Cliente) - Vending Machine Social
+
+Este site permite que você selecione e retire itens essenciais (como alimentos, fraldas e produtos de higiene) sem custo. O "Custo Real" que você vê é o valor que será coberto por uma ONG parceira, e o "Valor a Pagar" para você será sempre R$ 0,00.
+
+Veja como usar o sistema:
+
+### 1. Acesso ao Site e Login
+
+Para começar, você deve acessar o site e fazer o login usando suas credenciais (normalmente seu Documento/CPF e uma senha pessoal) para garantir a segurança e o registro de suas retiradas.
+
+### 2. Navegação Principal
+
+Após o login, você verá o menu principal:
+
+* **Home (Itens):** A página principal onde você vê todos os "Itens Disponíveis" para retirada.
+* **Minhas Retiradas:** O seu histórico de todos os pedidos que você já fez.
+* **Olá, Cliente:** Um menu para gerenciar sua conta.
+    * **Mudar Senha e usuário:** Permite atualizar suas informações de login.
+    * **Sair:** Desconecta você do sistema com segurança.
+
+### 3. Como Fazer uma Retirada (Passo a Passo)
+
+Este é o processo principal para selecionar e confirmar seus itens.
+
+#### Passo 1: Escolher os Itens (Home)
+
+Na página **Home**, você verá a lista de "Itens Disponíveis". Cada item mostra:
+* **Nome e Descrição:** O que é o produto (Ex: Leite em Pó (Lata 400g)).
+* **Custo Real:** O valor que a ONG parceira cobrirá (Ex: R$ 15.00).
+* **Valor a Pagar:** O custo para você, que será sempre **R$ 0,00**.
+
+Para selecionar um produto, clique no botão **"Adicionar à cesta"**.
+
+#### Passo 2: Gerenciar sua Cesta
+
+Assim que você adiciona um item, o painel **"Minha Cesta"** aparecerá:
+* **Ajustar Quantidade:** Você pode usar os botões **`+`** (mais) e **`-`** (menos) para definir quantas unidades de cada item você precisa.
+* **Verificar Totais:** A cesta calcula automaticamente o "Custo total (ONG)" e o seu "Total a pagar" (R$ 0,00).
+* **Tempo de Retirada:** O sistema mostra um tempo estimado para sua retirada (Ex: 40 min). Esse tempo é calculado dinamicamente com base nos itens e quantidades que você selecionou.
+
+#### Passo 3: Confirmar a Retirada
+
+Quando sua cesta estiver com todos os itens que você precisa, revise o pedido e clique no botão **"Confirmar Retirada"** para finalizar.
+
+### 4. Verificando seu Histórico ("Minhas Retiradas")
+
+Ao clicar em **"Minhas Retiradas"** no menu, você acessa seu histórico completo.
+* Cada pedido é listado como uma "Retirada" (Ex: Retirada #1).
+* Você pode ver a data, hora, o custo total para a ONG e a lista detalhada de itens que você retirou (Ex: 2x Leite em Pó, 1x Fralda Infantil).
+
+### 5. Gerenciando sua Conta
+
+#### Alterar Senha ou Usuário
+
+1.  Clique no menu **"Olá, Cliente"** e escolha **"Mudar Senha e usuário"**.
+2.  Você **deve** digitar sua **"Senha Atual"** para confirmar que é você.
+3.  Preencha os campos "Novo Nome de Usuário" ou "Nova Senha" (você pode mudar só um ou os dois).
+4.  Clique em **"Salvar Alterações"**.
+
+#### Sair do Sistema
+
+Para proteger sua conta, sempre clique em **"Sair"** no menu quando terminar de usar o site.
+
+---
+
+## 📜 Manual de Uso (Administrador / Gerente ONG)
+
+Este manual é destinado aos usuários com perfil de **Gerente** ou **ONG**, que possuem acesso ao painel de administração para gerenciar o sistema.
+
+### 1. Acesso ao Painel de Admin
+
+O login é feito pela mesma tela do cliente, mas o sistema identificará sua permissão de "GERENTE" e liberará o acesso às áreas restritas.
+
+### 2. Gerenciamento de Itens (CRUD)
+
+Como administrador, você tem controle total sobre o catálogo de produtos disponíveis no site. Você pode:
+
+* **Criar (Create):** Adicionar novos itens ao catálogo, definindo nome, descrição e o "Custo Real" (o valor que será cobrado da ONG).
+* **Ler (Read):** Visualizar todos os itens atualmente disponíveis.
+* **Atualizar (Update):** Editar informações de itens existentes (Ex: corrigir o custo de um item ou alterar sua descrição).
+* **Deletar (Delete):** Remover itens que não serão mais oferecidos.
+
+### 3. Relatórios de Retirada
+
+A seção **"Relatórios"** (/relatorios) é a sua principal ferramenta de gestão e prestação de contas. Nela, você pode visualizar **todas as retiradas** feitas no sistema por todos os usuários.
+
+Os relatórios detalham:
+* O usuário que fez a retirada.
+* A data e hora do pedido.
+* Todos os itens e quantidades de cada retirada.
+* O **Custo Total** daquela retirada (o valor a ser cobrado da ONG).
+
+Isso permite um rastreamento completo dos custos e da distribuição dos itens.
+
+---
+
 ## 🌐 Arquitetura, Hosting e Estrutura de Pastas
 
 O projeto utiliza uma arquitetura Full-Cloud com as seguintes plataformas:
