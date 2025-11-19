@@ -1,4 +1,3 @@
-// Salve em: src/main/java/com/ibeus/Comanda/Digital/controller/HomeController.java
 package com.ibeus.Comanda.Digital.controller;
 
 import org.springframework.web.bind.annotation.GetMapping;

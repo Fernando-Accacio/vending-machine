@@ -1,7 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { JwtHelperService } from '@auth0/angular-jwt';
-// CORREÇÃO: Importa o objeto environment central
 import { environment } from '../../../environments/environment'; 
 import { BehaviorSubject, Observable } from 'rxjs';
 
@@ -9,7 +8,6 @@ import { BehaviorSubject, Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class AuthenticateService {
-  // CORREÇÃO AQUI: Usamos environment.apiUrl diretamente
   private authUrl = environment.apiUrl + '/auth';
 
   private authState = new BehaviorSubject({

@@ -20,11 +20,9 @@ public class Dish {
     @Column(name = "tempo_reposicao_min")
     private Integer tempoReposicao;
     
-    // --- NOVO CAMPO: Bloqueio Lógico (Soft Delete) ---
+    // --- Bloqueio Lógico (Soft Delete) ---
     @Column(name = "is_active", nullable = false)
     private boolean isActive = true; // Por padrão, o prato é ativo
-
-    // --- Getters e Setters Gerados Manualmente ---
 
     public Long getId() {
         return id;
@@ -66,7 +64,7 @@ public class Dish {
         this.tempoReposicao = tempoReposicao;
     }
     
-    // --- NOVO: Getters e Setters para isActive ---
+    // --- Getters e Setters para isActive ---
     public boolean isActive() {
         return isActive;
     }

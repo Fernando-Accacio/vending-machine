@@ -23,7 +23,7 @@ public class JwtProvider {
         return Jwts.builder()
             .setSubject(email) 
             
-            // --- CORREÇÃO AQUI: Garante que o campo 'email' existe no token ---
+            // --- Garante que o campo 'email' existe no token ---
             .claim("email", email) 
             
             .claim("role", role)
@@ -36,7 +36,7 @@ public class JwtProvider {
     }
 
     // Valida o token e extrai as informações do usuário
-    // --- MUDANÇA 1: VAI RETORNAR 'Claims', NÃO 'String' ---
+    // --- VAI RETORNAR 'Claims', NÃO 'String' ---
     public Claims validateToken(String token) {
         try {
             Claims claims = Jwts.parser()
@@ -45,7 +45,7 @@ public class JwtProvider {
                 .parseClaimsJws(token) 
                 .getBody();
 
-            // --- MUDANÇA 2: RETORNA TODAS AS INFORMAÇÕES ---
+            // --- RETORNA TODAS AS INFORMAÇÕES ---
             return claims; 
             
         } catch (UnsupportedJwtException e) {

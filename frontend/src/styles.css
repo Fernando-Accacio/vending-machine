@@ -1,4 +1,4 @@
-/* --- NOVA PALETA DE CORES MODERNA (ROXO/AZUL) --- */
+/* --- PALETA DE CORES MODERNA (ROXO/AZUL) --- */
 :root {
   --primary-color: #4f46e5;
   --primary-color-dark: #4338ca;
@@ -24,7 +24,6 @@ html, body {
 
 /*
  * CSS PARA O OVERLAY GLOBAL
- * (Adicione isso ao seu app.component.css ou styles.css)
  */
 
 .loading-overlay {
@@ -35,15 +34,10 @@ html, body {
   width: 100vw;  /* 100% da largura da tela */
   height: 100vh; /* 100% da altura da tela */
 
-  /* 2. Z-Index: O mais importante! */
   z-index: 9999; /* Fica na frente de TUDO */
 
   /* 3. Fundo: Um fundo sólido (ou semi-transparente) */
   background-color: #ffffff; /* Fundo branco, igual ao app */
-  /* ou use um fundo escuro: 
-     background-color: rgba(0, 0, 0, 0.7); 
-     color: white; 
-  */
   
   /* 4. Centralizar o conteúdo (Spinner e Mensagem) */
   display: flex;
@@ -53,7 +47,7 @@ html, body {
   gap: 20px; /* Espaço entre o spinner e a mensagem */
 }
 
-/* * 5. CSS para a nova mensagem de loading 
+/* * 5. CSS para a mensagem de loading 
  */
 .loading-message {
   text-align: center;
@@ -71,10 +65,9 @@ html, body {
 }
 
 
-/* * 6. CSS para o seu spinner (Ajuste se necessário) 
+/* * 6. CSS para o spinner
  */
 .loading-overlay .spinner {
-  /* Exemplo de spinner, use o seu se já tiver */
   border: 8px solid #f3f3f3; /* Cinza claro */
   border-top: 8px solid #3498db; /* Azul */
   border-radius: 50%;
@@ -87,8 +80,6 @@ html, body {
   0% { transform: rotate(0deg); }
   100% { transform: rotate(360deg); }
 }
-
-/* Em src/styles.css */
 
 .container-loading {
   display: flex;
@@ -122,7 +113,6 @@ html, body {
 
 /* 2. O SPINNER (Ícone de Carregamento) */
 .spinner {
-    /* Exemplo simples de um spinner giratório */
     border: 5px solid #f3f3f3; /* Cinza claro */
     border-top: 5px solid var(--primary-color); /* A cor primária (roxo/azul) */
     border-radius: 50%;
@@ -141,7 +131,6 @@ html, body {
   box-shadow: none;
 }
 
-/* ISSO É O QUE VOCÊ PRECISA: */
 .main-content {
   max-width: 1360px;
   margin: 0 auto;
@@ -261,12 +250,10 @@ html, body {
 
 /* O botão ativo (Itens, na imagem) */
 .nav-button.active {
-  /* Você pode manter o fundo branco puro para dar mais destaque ao ativo */
   background-color: white; 
   color: var(--primary-color);
   font-weight: 600;
   opacity: 1;
-  /* Adicione uma sombra sutil para dar um toque de elevação se desejar */
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05); 
 }
 
@@ -302,7 +289,6 @@ html, body {
 
 /* --- ESTILOS DO CABEÇALHO (COM EFEITO GLASSMORPHISM) --- */
 .header {
-  /* Estilos do header antigo (glass) */
   background-color: rgba(255, 255, 255, 0.85);
   backdrop-filter: blur(20px) saturate(180%);
   -webkit-backdrop-filter: blur(20px) saturate(180%);
@@ -312,12 +298,12 @@ html, body {
   top: 0;
   z-index: 10;
   width: 100%;
-  height: 80px; /* Altura fixa do header antigo */
-  padding: 0 30px; /* Padding horizontal do header antigo */
+  height: 80px;
+  padding: 0 30px;
   box-sizing: border-box;
 
-  /* Estilos do header novo (flex layout) */
-  color: var(--text-color); /* MUITO IMPORTANTE: Cor padrão do texto agora é escura */
+  /* Estilos do header (flex layout) */
+  color: var(--text-color);
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -352,8 +338,8 @@ html, body {
   display: flex;
   align-items: center;
   gap: 12px;
-  flex: 1; /* NOVO: Ocupa 1/3 do espaço disponível */
-  justify-content: flex-start; /* NOVO: Alinha o logo à esquerda */
+  flex: 1; /* Ocupa 1/3 do espaço disponível */
+  justify-content: flex-start; /* Alinha o logo à esquerda */
   min-width: 0;
 }
 
@@ -479,7 +465,6 @@ html, body {
   letter-spacing: 0.3px;
 }
 
-/* styles.css - Regra .page-title CORRIGIDA (Padronização Completa) */
 .page-title {
   /* Tamanho: Mantém 1.8rem (Se ainda parecer maior, tente 1.7rem) */
   font-size: 1.8rem; 
@@ -487,9 +472,6 @@ html, body {
   /* PESO: O mais importante. Forçar o mesmo peso do H2. */
   font-weight: 600;  
   
-  /* Adicione !important *apenas* se o problema de peso persistir no H1 */
-  /* font-weight: 600 !important; */ 
-
   color: var(--text-color);
   margin: 1.5rem 0 2rem 0; 
   border-bottom: 2px solid var(--border-color); 
@@ -499,7 +481,6 @@ html, body {
   padding-right: 0;
 }
 
-/* styles.css - Regra h2 genérica (Padroniza os H2) */
 h2 {
     font-size: 1.8rem; 
     font-weight: 600; /* Garante que o H2 esteja no mesmo peso */
@@ -589,7 +570,7 @@ a:hover {
   font-weight: 600;
   color: var(--text-color) !important; /* Força a cor escura */
   margin: 0;
-  padding-left: 0; /* CORREÇÃO: Remove o padding fixo */
+  padding-left: 0;
 }
 
 .nav-wrapper {
@@ -615,13 +596,13 @@ a:hover {
 .auth-btn {
   display: flex;
   align-items: center;
-  flex: 1; /* NOVO: Ocupa 1/3 do espaço disponível, garantindo simetria */
-  justify-content: flex-end; /* NOVO: Alinha o conteúdo (Login) à direita */
-  margin-right: 0; /* CORREÇÃO: Remove o margin-right fixo que causava assimetria */
+  flex: 1; /* Ocupa 1/3 do espaço disponível, garantindo simetria */
+  justify-content: flex-end; /* Alinha o conteúdo (Login) à direita */
+  margin-right: 0;
   gap: 10px;
 }
 
-/* Novo container para os botões de ação (Mudar Senha e Sair) */
+/* Container para os botões de ação (Mudar Senha e Sair) */
 .auth-buttons {
   display: flex;
   gap: 8px;
@@ -635,7 +616,7 @@ a:hover {
 
 .user-info .user-role {
   font-size: 0.9em;
-  opacity: 1; /* Remove opacidade antiga */
+  opacity: 1;
   color: var(--text-color-light); /* Cor de texto secundária (cinza) */
 }
 
@@ -650,10 +631,9 @@ a:hover {
   background-color: var(--primary-hover);
 }
 
-/* ISSO É O QUE VOCÊ PRECISA: */
 .auth-btn .change-pass-btn {
-  color: var(--text-color) !important; /* <--- ADICIONE ISSO */
-  background-color: var(--border-color) !important; /* <--- E ISSO (para garantir) */
+  color: var(--text-color) !important;
+  background-color: var(--border-color) !important;
 }
 
 .auth-btn .change-pass-btn:hover {
@@ -705,7 +685,7 @@ a:hover {
   letter-spacing: 0.5px;
 }
 
-/* --- ESTILOS DE TABELA (ADICIONADO) --- */
+/* --- ESTILOS DE TABELA  --- */
 table {
   width: 100%;
   border-collapse: collapse;
@@ -744,7 +724,6 @@ td:last-child {
   vertical-align: middle;
 }
 
-/* Se você usar um container para os botões */
 .action-buttons-container {
   display: inline-flex;
   align-items: center;
@@ -790,7 +769,7 @@ td:last-child {
   margin: 0 !important;
 }
 
-/* Botão "NOVO ITEM" (newDish) - ADICIONADO */
+/* Botão "NOVO ITEM" (newDish) */
 .newDish {
   padding: 14px 20px;
   border: none;
@@ -816,7 +795,7 @@ td:last-child {
 
 /* 2. Garante que a navegação desktop (links centrais e botões de auth) esteja visível */
 .desktop-nav {
-    display: flex; /* Ou 'block', mas 'flex' parece ser o correto pelo seu HTML */
+    display: flex;
     align-items: center;
 }
 
@@ -1006,9 +985,9 @@ td:last-child {
   .table-container table td:last-child {
     display: flex !important;
     text-align: left !important;
-    flex-direction: column !important; /* ADICIONADO: Empilha os itens verticalmente */
-    justify-content: flex-start !important; /* ADICIONADO: Alinha ao topo */
-    align-items: flex-start !important; /* ADICIONADO: Alinha à esquerda */
+    flex-direction: column !important; /* Empilha os itens verticalmente */
+    justify-content: flex-start !important; /* Alinha ao topo */
+    align-items: flex-start !important; /* Alinha à esquerda */
     padding: 14px 16px !important;
     border-bottom: none !important;
   }
@@ -1136,13 +1115,11 @@ td:last-child {
   }
 
 .mobile-menu-inner {
-  /* --- EFEITOS COPIADOS DO SEU .header --- */
   background-color: rgba(255, 255, 255, 0.85);
   backdrop-filter: blur(20px) saturate(180%);
   -webkit-backdrop-filter: blur(20px) saturate(180%);
-  border: 1px solid rgba(0, 0, 0, 0.08); /* (Usei 'border' em vez de 'border-bottom') */
+  border: 1px solid rgba(0, 0, 0, 0.08);
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
-  /* --- FIM DOS EFEITOS --- */
   
   /* Layout e Animação (Mantidos) */
   width: 85%;
@@ -1204,8 +1181,6 @@ td:last-child {
 
 /* 5. BOTÕES DE NAVEGAÇÃO DO MENU */
 
-/* 2. CORREÇÃO DOS BOTÕES INATIVOS (DUPLICADO) */
-/* --- CORREÇÃO 3: BOTÃO "MUDAR SENHA" E INATIVOS COM BORDA SUAVE --- */
 .mobile-menu a.nav-button {
     width: 100%;
     margin: 8px 0;
@@ -1216,8 +1191,6 @@ td:last-child {
     background-color: rgba(240, 240, 240, 0.85); 
 
     color: var(--text-color);
-    /* Remova a opacidade geral para não afetar o texto */
-    /* opacity: 0.90; */ 
     
     border: none;
     border-radius: 8px;
@@ -1232,8 +1205,7 @@ td:last-child {
     background-color: rgba(240, 240, 240, 1.0); 
 }
 
-/* ADICIONE ESTA NOVA REGRA - Estilo do Botão ATIVO (página atual) */
-/* 1. ESTILO DO BOTÃO ATIVO (AGORA COM SUBLINHADO) */
+/* 1. ESTILO DO BOTÃO ATIVO */
 .mobile-menu .nav-button.active {
   background-color: white !important;
   color: var(--primary-color) !important;
@@ -1269,7 +1241,6 @@ td:last-child {
     background-color: var(--border-color) !important;
 }
 
-/* --- CORREÇÃO 4: NOME EM NEGRITO --- */
 .mobile-user-info strong { /* Se for uma tag <strong> */
   font-weight: 700; /* Negrito */
   color: var(--text-color); /* Cor mais escura para o nome */
@@ -1309,7 +1280,6 @@ td:last-child {
     gap: 8px;
   }
 
-/* 3. CORREÇÃO DO "CONECTADO COMO..." (DUPLICADO) */
 .mobile-user-info {
   display: block !important;
   background: white;

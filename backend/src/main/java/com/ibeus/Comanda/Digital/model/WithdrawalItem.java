@@ -1,6 +1,6 @@
 package com.ibeus.Comanda.Digital.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore; // <-- 1. IMPORTAÇÃO NOVA
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 @Entity
@@ -14,7 +14,7 @@ public class WithdrawalItem {
     // A qual retirada este item pertence
     @ManyToOne
     @JoinColumn(name = "withdrawal_id", nullable = false)
-    @JsonIgnore // <-- 2. ANOTAÇÃO NOVA (Impede o loop infinito do JSON)
+    @JsonIgnore // (Impede o loop infinito do JSON)
     private Withdrawal withdrawal;
 
     // Qual produto (Dish) foi retirado
@@ -30,7 +30,7 @@ public class WithdrawalItem {
     @Column(name = "cost_at_time")
     private Double costAtTime;
 
-    // --- Getters e Setters (Manuais) ---
+    // --- Getters e Setters ---
 
     public Long getId() {
         return id;

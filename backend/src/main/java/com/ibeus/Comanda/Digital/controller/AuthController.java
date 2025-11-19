@@ -25,7 +25,6 @@ public class AuthController {
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody LoginRequest loginRequest) {
         
-        // LINHA 28: A chamada correta ao método que foi restaurado no UserService.
         Optional<User> userOptional = this.userService.findByDocumentoAndPassword(loginRequest.getDocumento(), loginRequest.getPassword());
 
         if (userOptional.isEmpty()) {
@@ -34,8 +33,6 @@ public class AuthController {
 
         User user = userOptional.get();
 
-        // GERAÇÃO DO TOKEN: Certifique-se de que o JwtProvider use o nome (name) correto,
-        // pois ele pode ter sido alterado na tela de Alterar Credenciais.
         String token = tokenProvider.generateToken(user.getEmail(), user.getRole(), user.getName(), user.getPhoneNumber());
         return ResponseEntity.ok(new LoginResponse(token));
     }
@@ -54,7 +51,7 @@ public class AuthController {
     }
 
 
-    // --- DTO (Molde) para o Login CORRIGIDO ---
+    // --- DTO (Molde) para o Login  ---
     public static class LoginRequest {
         private String documento;
         private String password;
@@ -68,14 +65,14 @@ public class AuthController {
         public void setPassword(String password) { this.password = password; }
     }
 
-    // --- DTO (Molde) para o Registro CORRIGIDO ---
+    // --- DTO (Molde) para o Registro ---
     public static class RegisterRequest {
         private String name;
         private String email;
         private String password;
         private String documento;
         private String phoneNumber;
-        private String role; // <<< CAMPO ROLE ADICIONADO PARA CORRESPONDER AO SEU JSON DE TESTE
+        private String role;
 
         // Getters
         public String getName() { return name; }
@@ -83,15 +80,14 @@ public class AuthController {
         public String getPassword() { return password; }
         public String getDocumento() { return documento; }
         public String getPhoneNumber() { return phoneNumber; }
-        public String getRole() { return role; } // <<< GETTER ADICIONADO
+        public String getRole() { return role; }
 
-        // >>> SETTERS ADICIONADOS PARA FUNCIONAR O @RequestBody <<<
         public void setName(String name) { this.name = name; }
         public void setEmail(String email) { this.email = email; }
         public void setPassword(String password) { this.password = password; }
         public void setDocumento(String documento) { this.documento = documento; }
         public void setPhoneNumber(String phoneNumber) { this.phoneNumber = phoneNumber; }
-        public void setRole(String role) { this.role = role; } // <<< SETTER ADICIONADO
+        public void setRole(String role) { this.role = role; }
     }
 
     // --- DTO para a Resposta ---

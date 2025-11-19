@@ -32,12 +32,12 @@ public class DishService {
     public Dish update(Long id, Dish dishDetails) {
         Dish dish = findById(id);
         
-        // --- CORREÇÃO DA EDIÇÃO ---
+        // --- EDIÇÃO ---
         dish.setName(dishDetails.getName());
         dish.setDescription(dishDetails.getDescription());
         dish.setCusto(dishDetails.getCusto());
         
-        // ESSENCIAL: Adicionar o Setter para o Tempo de Reposição
+        // Adicionar o Setter para o Tempo de Reposição
         dish.setTempoReposicao(dishDetails.getTempoReposicao());
         // --------------------------
         

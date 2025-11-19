@@ -43,7 +43,7 @@ public class UserService {
         return userRepository.save(user);
     }
 
-    // --- MÉTODO DE LOGIN (findByDocumentoAndPassword) RESTAURADO/CORRIGIDO ---
+    // --- MÉTODO DE LOGIN (findByDocumentoAndPassword) ---
     public Optional<User> findByDocumentoAndPassword(String documento, String password) {
         Optional<User> userOptional = userRepository.findByDocumento(documento);
 
@@ -96,7 +96,7 @@ public class UserService {
     }
 
     //
-    // --- MÉTODO DE ALTERAÇÃO DE CREDENCIAIS (MODIFICADO) ---
+    // --- MÉTODO DE ALTERAÇÃO DE CREDENCIAIS ---
     //
     @org.springframework.transaction.annotation.Transactional
     public void changeCredentials(
@@ -121,7 +121,7 @@ public class UserService {
 
         // 4. Lógica Opcional: Altera a senha
         if (newPassword != null && !newPassword.trim().isEmpty()) {
-             // 4.1. Validação de Senha (Opcional, mas boa prática: a nova senha não pode ser igual à antiga)
+             // 4.1. Validação de Senha
              if (passwordEncoder.matches(newPassword, user.getPassword())) {
                  throw new RuntimeException("A nova senha não pode ser igual à antiga.");
              }

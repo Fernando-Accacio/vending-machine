@@ -1,8 +1,3 @@
-/* Estilos para a tela de Formulário de Prato (dish-form) */
-
-/* Estilo para a Seta de Voltar (conforme solicitado e adaptado para o alinhamento) */
-/* Estilo para a Seta de Voltar (ajustado) */
-/* Estilo para a Seta de Voltar (ajustado) */
 .back-arrow-link {
   display: flex;
   align-items: center;
@@ -13,7 +8,6 @@
   /* Ajuste para dar um espaço em cima e alinhar melhor abaixo */
   margin: 2rem auto 0.5rem;
   
-  /* Removido o padding lateral para que ele fique no limite do container centralizado */
   padding: 0;
   
   font-weight: 500;
@@ -22,11 +16,6 @@
   font-size: 0.9rem;
   gap: 5px;
 }
-
-/* ... MANTENHA O RESTO DO SEU CSS, inclusive a media query ... */
-
-
-/* ... MANTENHA O RESTO DO SEU CSS, inclusive a media query ... */
 
 .back-arrow-link:hover {
     color: #000; 
@@ -38,10 +27,8 @@
     margin: 1rem auto 4rem; 
     padding: 2.5rem;
     
-    /* Adaptado do estilo .change-password-container que você enviou */
-    /* Substitua por suas variáveis reais: var(--card-background) */
     background-color: white; 
-    border: 1px solid #ddd; /* Substitua por var(--border-color) */
+    border: 1px solid #ddd;
     border-radius: 12px;
     box-shadow: 0 4px 12px rgba(0,0,0,0.05);
 }
@@ -56,11 +43,6 @@ h2 {
       color: #333; 
 }
 
-/* * Cada "grupo" (label + input) 
- * - 'flex: 1 1 300px' é a mágica:
- * Tenta ter 300px, cresce se precisar (1), encolhe se precisar (1).
- * Isso cria um layout de 2 colunas em telas largas e 1 coluna em telas estreitas.
-*/
 .form-group {
     display: flex;
     flex-direction: column; /* Coloca o label EM CIMA do input */

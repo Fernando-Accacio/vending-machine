@@ -3,11 +3,11 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from '../../environments/environment'; 
 
-// Interface (molde) para o DTO do back-end (ATUALIZADA)
+// Interface (molde) para o DTO do back-end
 export interface ChangeCredentialsRequest {
   oldPassword: string;
   newPassword: string | null; // Agora pode ser null
-  newUsername: string | null; // <<< NOVO CAMPO
+  newUsername: string | null;
 }
 
 @Injectable({

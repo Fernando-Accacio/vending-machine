@@ -17,7 +17,6 @@ export class ReportsComponent implements OnInit {
   withdrawals: DisplayReportWithdrawal[] = []; 
   totalCostAll: number = 0;
   
-  // A variável já existia, apenas garantimos que está em 'true'
   isLoading: boolean = true; 
 
   constructor(private withdrawalService: WithdrawalService) {}
@@ -29,7 +28,7 @@ export class ReportsComponent implements OnInit {
   loadReports(): void {
     this.isLoading = true; // -> Garante o loading
 
-    this.withdrawalService.getWithdrawalsReport().subscribe({ // -> MUDANÇA (para objeto)
+    this.withdrawalService.getWithdrawalsReport().subscribe({
       next: (data) => {
         this.withdrawals = data.map((w, index) => {
           const dateStringUTC = w.withdrawalDate + 'Z';
@@ -43,7 +42,7 @@ export class ReportsComponent implements OnInit {
         this.totalCostAll = data.reduce((total: number, w: ReportWithdrawal) => total + w.totalCost, 0); 
         this.isLoading = false; // -> Desliga no sucesso
       },
-      error: (err) => { // -> NOVO
+      error: (err) => {
         console.error("Erro ao carregar relatórios:", err);
         this.isLoading = false; // -> Desliga no erro
       }

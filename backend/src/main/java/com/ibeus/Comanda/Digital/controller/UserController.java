@@ -4,7 +4,7 @@ import com.ibeus.Comanda.Digital.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.http.HttpStatus; // <<< Garanta que este import exista
+import org.springframework.http.HttpStatus;
 
 import java.security.Principal;
 
@@ -32,7 +32,7 @@ public class UserController {
         public void setNewUsername(String newUsername) { this.newUsername = newUsername; }
     }
 
-    // --- ENDPOINT COM STATUS HTTP CORRIGIDO ---
+    // --- ENDPOINT COM STATUS HTTP ---
     @PostMapping("/change-password")
     public ResponseEntity<?> changePassword(
             Principal principal,
@@ -54,7 +54,7 @@ public class UserController {
         } catch (RuntimeException e) {
             // Caso de ERRO DE VALIDAÇÃO (Senha Antiga Incorreta, Nova Senha = Antiga, etc.)
             // RETORNA 400 BAD REQUEST, que o Frontend entende como erro.
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage()); // <<< CORREÇÃO AQUI
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
         }
     }
 }

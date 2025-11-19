@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core'; // -> MUDANÇA AQUI
+import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router, RouterModule } from '@angular/router';
@@ -12,9 +12,9 @@ import { LoadingService } from '../../services/loading/loading.service';
   templateUrl: './register.component.html',
   styleUrls: ['./register.component.css']
 })
-export class RegisterComponent implements OnInit { // -> MUDANÇA AQUI
+export class RegisterComponent implements OnInit {
   
-  public isLoadingLocal: boolean = true; // -> NOVO
+  public isLoadingLocal: boolean = true;
 
   passwordFieldType: string = 'password';
   confirmPasswordFieldType: string = 'password';
@@ -35,9 +35,7 @@ export class RegisterComponent implements OnInit { // -> MUDANÇA AQUI
     private loadingService: LoadingService 
   ) {}
 
-  // -> NOVO MÉTODO
   ngOnInit(): void {
-    // Simula um carregamento muito rápido para consistência visual
     setTimeout(() => {
       this.isLoadingLocal = false;
     }, 50);

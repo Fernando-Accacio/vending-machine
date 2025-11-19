@@ -9,11 +9,10 @@ import java.util.List;
 @Repository
 public interface WithdrawalRepository extends JpaRepository<Withdrawal, Long> {
     
-    // NOVO: Busca retiradas pelo email do usuário (Spring Data JPA Magic)
+    // Busca retiradas pelo email do usuário (Spring Data JPA Magic)
     // Assume que a entidade Withdrawal tem um campo User e User tem um campo email
     List<Withdrawal> findByUserEmail(String email); 
     
-    // --- MÉTODO ANTIGO ADICIONADO ---
     @Query("SELECT w FROM Withdrawal w " +
             "LEFT JOIN FETCH w.user " +
             "LEFT JOIN FETCH w.items i " +

@@ -14,7 +14,7 @@ import { Input } from '@angular/core';
 })
 export class DishFormComponent implements OnInit {
     
-    // Adicionado Input para compatibilidade com a versão anterior (se necessário)
+    // Adicionado Input para compatibilidade com a versão anterior
     @Input() dishId: number | null = null;
     
     dish: Dish = {
@@ -27,7 +27,6 @@ export class DishFormComponent implements OnInit {
     
     isEdit: boolean = false;
 
-    // ATUALIZAÇÃO: Tentando a rota '/itens', que é o link do menu para gerenciamento
     private GERENTE_LISTA_ITENS_ROUTE = '/itens'; 
 
     constructor(
@@ -55,7 +54,7 @@ export class DishFormComponent implements OnInit {
         if (this.isEdit) {
             this.dishService.updateDish(this.dish.id!, this.dish).subscribe({
                 next: () => {
-                    // CORREÇÃO DE NAVEGAÇÃO: Volta para a tela de gerenciamento de itens do Gerente
+                    // Volta para a tela de gerenciamento de itens do Gerente
                     this.router.navigate([this.GERENTE_LISTA_ITENS_ROUTE]); 
                     console.log('Item atualizado com sucesso!');
                 },
@@ -66,7 +65,7 @@ export class DishFormComponent implements OnInit {
         } else {
             this.dishService.createDish(this.dish).subscribe({
                 next: () => {
-                    // CORREÇÃO DE NAVEGAÇÃO: Volta para a tela de gerenciamento de itens do Gerente
+                    // Volta para a tela de gerenciamento de itens do Gerente
                     this.router.navigate([this.GERENTE_LISTA_ITENS_ROUTE]);
                     console.log('Item registrado com sucesso!');
                 },
@@ -79,7 +78,7 @@ export class DishFormComponent implements OnInit {
 
     // Implementação da função goBack() para o botão Voltar no HTML
     goBack(): void {
-        // CORREÇÃO DE NAVEGAÇÃO: Redireciona para a tela de gerenciamento de itens do Gerente.
+        // Redireciona para a tela de gerenciamento de itens do Gerente.
         this.router.navigate([this.GERENTE_LISTA_ITENS_ROUTE]);
     }
 }

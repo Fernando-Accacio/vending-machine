@@ -8,7 +8,6 @@ export const gerenteGuardGuard: CanActivateFn = (route, state) => {
 
   const role = authService.getRole();
   
-  // --- A CORREÇÃO ESTÁ AQUI ---
   if (role === 'GERENTE') { // Checa por "GERENTE" (maiúsculo)
     return true;
   }

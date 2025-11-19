@@ -1,7 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-// O import é para o objeto environment central
 import { environment } from '../../environments/environment'; 
 
 // --- INTERFACES DO BACKEND ---
@@ -51,7 +50,6 @@ export interface WithdrawalRequest {
 })
 export class WithdrawalService {
 
-    // CORREÇÃO AQUI: Usamos environment.apiUrl diretamente
     private apiUrl = `${environment.apiUrl}/withdrawals`; 
 
     constructor(private http: HttpClient) {}

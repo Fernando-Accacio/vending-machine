@@ -1,7 +1,4 @@
     <a class="back-arrow-link" (click)="goBack()">
-        <!-- Ajuste o ícone: Se você usa Font Awesome, use <i class="fas fa-arrow-left"></i> -->
-        <!-- Se você usa o SVG (como na versão anterior), mantenha o SVG, mas remova o estilo do CSS que você mandou,
-             pois a tag <i> não está sendo usada. Vou manter o SVG, que é o mais comum no Angular Standalone. -->
         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-right: 5px;">
             <path d="m12 19-7-7 7-7"/><path d="M19 12H5"/>
         </svg>
@@ -9,8 +6,6 @@
     </a>
 
 <div class="form-wrapper">
-    <!-- ATUALIZAÇÃO: Usando a classe 'back-arrow-link' e o ícone com a tag <i> (se for Font Awesome) ou SVG -->
-    <!-- Fim do link Voltar -->
     
     <form (ngSubmit)="saveDish()">
 

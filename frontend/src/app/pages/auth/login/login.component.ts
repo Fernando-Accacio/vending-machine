@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core'; // -> MUDANÇA AQUI
+import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { AuthenticateService } from '../../../services/auth/authenticate.service';
@@ -16,9 +16,9 @@ import { LoadingService } from '../../../services/loading/loading.service';
   templateUrl: './login.component.html',
   styleUrl: './login.component.css'
 })
-export class LoginComponent implements OnInit { // -> MUDANÇA AQUI
+export class LoginComponent implements OnInit {
   
-  public isLoadingLocal: boolean = true; // -> NOVO
+  public isLoadingLocal: boolean = true;
   
   passwordFieldType: string = 'password';
   message: { text: string, type: 'success' | 'error' | null } = { text: '', type: null };
@@ -34,7 +34,6 @@ export class LoginComponent implements OnInit { // -> MUDANÇA AQUI
     private loadingService: LoadingService 
   ) {}
 
-  // -> NOVO MÉTODO
   ngOnInit(): void {
     // Simula um carregamento muito rápido para consistência visual
     setTimeout(() => {

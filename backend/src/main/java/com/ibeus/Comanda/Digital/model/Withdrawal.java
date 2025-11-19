@@ -24,11 +24,11 @@ public class Withdrawal {
     private Double totalCost;
 
     @Column(name = "withdrawal_date")
-    // GARANTIDO: Força o formato ISO 8601 para que o Angular saiba como decodificar a string.
+    // Força o formato ISO 8601 para que o Angular saiba como decodificar a string.
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss")
     private LocalDateTime withdrawalDate;
     
-    // --- Getters e Setters (Manuais) ---
+    // --- Getters e Setters ---
 
     public Long getId() {
         return id;

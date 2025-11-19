@@ -114,7 +114,7 @@ export class ChangePasswordComponent {
             this.router.navigate(['/auth/login']); 
         }, 2000);
       },
-      // CORREÇÃO FINAL: Extrai a mensagem de erro do corpo da resposta 400 (que é texto puro)
+      // Extrai a mensagem de erro do corpo da resposta 400 (que é texto puro)
       error: (err) => {
             // Usa err.error (que contém a string de texto 'A senha atual está incorreta.')
             const errorMessage = err.error || err.statusText; 

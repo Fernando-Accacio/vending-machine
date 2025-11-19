@@ -26,12 +26,12 @@ import java.util.Arrays;
 public class SecurityConfig {
 
     private final JwtAuthenticationFilter jwtAuthenticationFilter;
-    private final JwtAuthEntryPoint jwtAuthEntryPoint; // INJEÇÃO DO NOVO COMPONENTE
+    private final JwtAuthEntryPoint jwtAuthEntryPoint;
 
     @Autowired
     public SecurityConfig(
         JwtAuthenticationFilter jwtAuthenticationFilter,
-        JwtAuthEntryPoint jwtAuthEntryPoint // Adicionado aqui
+        JwtAuthEntryPoint jwtAuthEntryPoint
     ) {
         this.jwtAuthenticationFilter = jwtAuthenticationFilter;
         this.jwtAuthEntryPoint = jwtAuthEntryPoint;
@@ -48,14 +48,14 @@ public class SecurityConfig {
             .cors(cors -> cors.configurationSource(corsConfigurationSource()))
             .csrf(csrf -> csrf.disable())
             
-            // NOVO: Desativa o login padrão e o basic, que causam redirecionamento
+            // Desativa o login padrão e o basic, que causam redirecionamento
             .httpBasic(basic -> basic.disable())
             .formLogin(form -> form.disable())
 
             .sessionManagement(session -> session
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
             
-            // NOVO: Configura o handler para retornar 401 em caso de falha de autenticação
+            // Configura o handler para retornar 401 em caso de falha de autenticação
             .exceptionHandling(exceptions -> exceptions
                 .authenticationEntryPoint(jwtAuthEntryPoint)
             )
@@ -80,7 +80,7 @@ public class SecurityConfig {
                 .requestMatchers(HttpMethod.POST, "/withdrawals").authenticated()
 
                 // ROTA CLIENTE: Historico de retiradas (GET /withdrawals/history)
-                .requestMatchers(HttpMethod.GET, "/withdrawals/history").authenticated() // ROTA QUE ESTAVA TE CAUSANDO PROBLEMAS
+                .requestMatchers(HttpMethod.GET, "/withdrawals/history").authenticated()
                 
                 // ROTA GERENTE: Relatorio de retiradas
                 .requestMatchers(HttpMethod.GET, "/withdrawals").hasAuthority("GERENTE")
@@ -103,7 +103,7 @@ public class SecurityConfig {
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
         
-        // CORREÇÃO: DOMÍNIOS ESPECÍFICOS E ALLOW_CREDENTIALS
+        // DOMÍNIOS ESPECÍFICOS E ALLOW_CREDENTIALS
         configuration.setAllowedOrigins(Arrays.asList(
             "https://vending-social.vercel.app",
             "http://localhost:4200"

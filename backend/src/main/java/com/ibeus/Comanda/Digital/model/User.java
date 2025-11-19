@@ -21,7 +21,6 @@ public class User {
     @Column(name = "phone_number")
     private String phoneNumber;
 
-    // --- CAMPO NOVO ---
     // Adiciona o campo 'documento' e garante que ele seja único no banco
     @Column(unique = true) 
     private String documento;
@@ -75,8 +74,6 @@ public class User {
 	public void setPhoneNumber(String phoneNumber) {
 		this.phoneNumber = phoneNumber;
 	}
-
-    // --- GETTER/SETTER NOVO ---
 
 	public String getDocumento() {
 		return documento;

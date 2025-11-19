@@ -87,7 +87,7 @@ h2 {
 }
 
 @media (max-width: 768px) {
-  /* FIX: Adiciona a regra do h2 dentro da media query para garantir a centralização */
+  /* Adiciona a regra do h2 dentro da media query para garantir a centralização */
   h2 {
     text-align: center;
   }
@@ -125,7 +125,7 @@ h2 {
   }
 
   .report-table td {
-    /* FIX: Alterado para Flexbox para alinhar label e valor */
+    /* Alterado para Flexbox para alinhar label e valor */
     display: flex;
     justify-content: space-between; /* Joga o label (::before) para a esquerda e o valor (texto) para a direita */
     align-items: center; /* Alinha verticalmente */
@@ -167,7 +167,6 @@ h2 {
     /* Adiciona o "label" (Ex: "ID:", "DATA:") */
     /* Pega o valor do atributo 'data-label' do HTML */
     content: attr(data-label);
-    /* float: left; */ /* REMOVIDO - Não usamos mais float */
     font-weight: 600;
     color: var(--text-color-light); /* Deixa o label mais claro */
     text-transform: uppercase;
@@ -176,9 +175,8 @@ h2 {
     text-align: left; /* Garante que o label esteja alinhado à esquerda */
   }
 
-  /* --- INÍCIO DOS AJUSTES PARA A LISTA DE ITENS --- */
   .report-table td[data-label="Itens Retirados"] {
-    display: block; /* OVERRIDE: Esta célula especial não será flex, volta a ser bloco */
+    display: block;
     text-align: left; /* Alinha o conteúdo da célula à esquerda */
     padding-bottom: 8px; /* Adiciona um respiro no final */
   }
@@ -193,14 +191,14 @@ h2 {
   }
 
   .report-table td[data-label="Itens Retirados"] ul {
-    padding-left: 20px; /* FIX: Adiciona padding para a bolinha aparecer */
+    padding-left: 20px; /* Adiciona padding para a bolinha aparecer */
     margin: 0; /* Remove a margem padrão da ul */
     list-style-position: outside; /* FIX: 'outside' é mais padrão para listas */
   }
 
   .report-table td[data-label="Itens Retirados"] li {
     margin-bottom: 6px; /* Ajusta o espaçamento entre os itens da lista */
-    padding-left: 0; /* REMOVIDO: O padding agora está na <ul> */
+    padding-left: 0;
     text-align: left; /* Garante que o texto do item esteja à esquerda */
     /* FIX: Garante que a cor do texto seja a correta (herdada) */
     color: var(--text-color); 
@@ -212,8 +210,8 @@ h2 {
   }
 
     .report-container h2 {
-    text-align: center;   /* Garante a centralização */
-    margin-top: 30px;     /* ADICIONADO: Espaço padrão acima do título */
-    line-height: 1.3;     /* ADICIONADO: Espaçamento padrão entre linhas */
+    text-align: center; /* Garante a centralização */
+    margin-top: 30px;
+    line-height: 1.3;
   }
 }

@@ -12,7 +12,7 @@ import { RouterModule } from '@angular/router';
 })
 export class DishListComponent implements OnInit {
   dishes: Dish[] = [];
-  public isLoading: boolean = true; // -> NOVO (Começa em true)
+  public isLoading: boolean = true; // (Começa em true)
 
   constructor(private dishService: DishService) {}
 
@@ -21,16 +21,16 @@ export class DishListComponent implements OnInit {
   }
 
   loadDishes() {
-    this.isLoading = true; // -> NOVO (Garante o loading em re-carregamentos)
+    this.isLoading = true; // (Garante o loading em re-carregamentos)
     
-    this.dishService.getDishes().subscribe({ // -> MUDANÇA (para objeto)
+    this.dishService.getDishes().subscribe({ // (para objeto)
       next: (data: Dish[]) => {
         this.dishes = data;
-        this.isLoading = false; // -> NOVO (Desliga no sucesso)
+        this.isLoading = false; // (Desliga no sucesso)
       },
       error: (err) => { // -> NOVO
         console.error("Erro ao carregar itens:", err);
-        this.isLoading = false; // -> NOVO (Desliga no erro)
+        this.isLoading = false; // (Desliga no erro)
       }
     });
   }

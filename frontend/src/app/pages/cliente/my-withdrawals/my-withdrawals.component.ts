@@ -4,8 +4,6 @@ import { WithdrawalService, Withdrawal } from '../../../services/withdrawal.serv
 import { AuthenticateService } from '../../../services/auth/authenticate.service';
 import { RouterModule } from '@angular/router'; 
 
-// Interface temporária para estender Withdrawal com o índice de exibição
-// Isso ajuda o TypeScript a reconhecer a nova propriedade
 interface DisplayWithdrawal extends Withdrawal {
   displayIndex: number; 
 }
@@ -18,7 +16,7 @@ interface DisplayWithdrawal extends Withdrawal {
   styleUrl: './my-withdrawals.component.css'
 })
 export class MyWithdrawalsComponent implements OnInit {
-  history: DisplayWithdrawal[] = []; // Usamos a nova interface
+  history: DisplayWithdrawal[] = []; 
   isLoading: boolean = true;
   errorMessage: string | null = null;
   
@@ -34,7 +32,7 @@ export class MyWithdrawalsComponent implements OnInit {
   loadHistory(): void {
     this.withdrawalService.getHistory().subscribe({
       next: (data: Withdrawal[]) => {
-        // --- CORREÇÃO AQUI: Adiciona o displayIndex ---
+        // --- Adiciona o displayIndex ---
         // O segundo parâmetro do 'map' é o índice (começa em 0)
         this.history = data.map((w, index) => { 
           const dateStringUTC = w.withdrawalDate + 'Z';

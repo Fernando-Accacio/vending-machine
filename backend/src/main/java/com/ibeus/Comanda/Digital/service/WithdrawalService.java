@@ -76,7 +76,7 @@ public class WithdrawalService {
     }
     
     /**
-     * NOVO: Busca retiradas por email (Histórico do Cliente).
+     * Busca retiradas por email (Histórico do Cliente).
      */
     public List<Withdrawal> findByEmail(String email) {
         // Isso depende de você ter configurado a relação correta no WithdrawalRepository

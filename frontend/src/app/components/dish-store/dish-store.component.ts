@@ -3,10 +3,8 @@ import { CommonModule } from '@angular/common';
 import { DishService, Dish } from '../../services/dish.service'; 
 import { Router } from '@angular/router';
 
-// --- NOVAS IMPORTAÇÕES ---
 import { AuthenticateService } from '../../services/auth/authenticate.service';
 import { WithdrawalService, CartItemDto, WithdrawalRequest } from '../../services/withdrawal.service';
-// NOVO: Importe o LoadingService
 import { LoadingService } from '../../services/loading/loading.service'; 
 
 interface CartItem extends Dish {
@@ -28,10 +26,8 @@ export class DishStoreComponent implements OnInit {
   totalAmount: number = 0;
   totalLeadTime: number = 0; 
 
-  // --- NOVO ---
   public isLoadingLocal: boolean = false; // Flag de loading local
 
-  // --- CONSTRUTOR ATUALIZADO ---
   constructor(
     private dishService: DishService, 
     private router: Router,
@@ -50,7 +46,7 @@ export class DishStoreComponent implements OnInit {
     // 1. ATIVA O LOADING LOCAL (SEMPRE)
     this.isLoadingLocal = true; 
 
-    // 2. LÓGICA DE DECISÃO (A GRANDE MUDANÇA)
+    // 2. LÓGICA DE DECISÃO
     if (this.loadingService.isFirstLoad()) {
       // É o COLD START. Ativa o OVERLAY GLOBAL.
       this.loadingService.show();
@@ -83,7 +79,6 @@ export class DishStoreComponent implements OnInit {
     });
   }
 
-  // ... (o restante dos métodos permanece o mesmo)
   addToCart(dish: Dish): void {
     const existingItem = this.cart.find(item => item.id === dish.id);
     if (existingItem) {
@@ -147,8 +142,8 @@ export class DishStoreComponent implements OnInit {
       cart: cartDto
     };
 
-    // 3. ATIVA LOADING (Usando o global aqui é ok, pois é uma ação importante)
-    this.isLoadingLocal = true; // (Mantemos este por segurança)
+    // 3. ATIVA LOADING
+    this.isLoadingLocal = true;
     this.loadingService.show();
     
     this.withdrawalService.createWithdrawal(request).subscribe({
