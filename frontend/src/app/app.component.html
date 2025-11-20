@@ -78,33 +78,51 @@
 
                     <ng-container *ngIf="isCliente || (!isGerente && !isEntregador)">
                         <a routerLink="/" 
-                        class="nav-button" 
-                        routerLinkActive="active" 
-                        [routerLinkActiveOptions]="{exact: true}" 
-                        (click)="toggleMenu()">Itens</a>
+                           class="nav-button" 
+                           routerLinkActive="active" 
+                           [routerLinkActiveOptions]="{exact: true}" 
+                           (click)="toggleMenu()">
+                           <span>Itens</span>
+                        </a>
 
                         <a *ngIf="isAuthenticated" 
-                        routerLink="/minhas-retiradas" 
-                        class="nav-button" 
-                        routerLinkActive="active" 
-                        (click)="toggleMenu()">Minhas Retiradas</a>
+                           routerLink="/minhas-retiradas" 
+                           class="nav-button" 
+                           routerLinkActive="active" 
+                           (click)="toggleMenu()">
+                           <span>Minhas Retiradas</span>
+                        </a>
                     </ng-container>
 
                     <ng-container *ngIf="isGerente">
-                        <a routerLink="/itens" class="nav-button" routerLinkActive="active" (click)="toggleMenu()">Gerenciamento de Itens</a>
-                        <a routerLink="/relatorios" class="nav-button" routerLinkActive="active" (click)="toggleMenu()">Relatórios</a>
+                        <a routerLink="/itens" class="nav-button" routerLinkActive="active" (click)="toggleMenu()">
+                            <span>Gerenciamento de Itens</span>
+                        </a>
+                        <a routerLink="/relatorios" class="nav-button" routerLinkActive="active" (click)="toggleMenu()">
+                            <span>Relatórios</span>
+                        </a>
                     </ng-container>
 
                     <ng-container *ngIf="isEntregador">
-                        <a routerLink="/entregas" class="nav-button" routerLinkActive="active" (click)="toggleMenu()">Pedidos de Entrega</a>
+                        <a routerLink="/entregas" class="nav-button" routerLinkActive="active" (click)="toggleMenu()">
+                            <span>Pedidos de Entrega</span>
+                        </a>
                     </ng-container>
 
                     <hr *ngIf="isAuthenticated" class="menu-divider">
 
                     <div class="mobile-auth-section">
-                        <a *ngIf="isAuthenticated" routerLink="/change-password" class="nav-button change-pass-btn" routerLinkActive="active" (click)="toggleMenu()">Mudar Senha e usuário</a>
-                        <button *ngIf="isAuthenticated" class="nav-button logout-btn danger-btn" (click)="logout()">Sair</button>
-                        <a *ngIf="!isAuthenticated" routerLink="/login" class="nav-button login-btn" routerLinkActive="active" (click)="toggleMenu()">Login</a>
+                        <a *ngIf="isAuthenticated" routerLink="/change-password" class="nav-button change-pass-btn" routerLinkActive="active" (click)="toggleMenu()">
+                            <span>Mudar Senha e usuário</span>
+                        </a>
+                        
+                        <button *ngIf="isAuthenticated" class="nav-button logout-btn danger-btn" (click)="logout()">
+                            <span>Sair</span>
+                        </button>
+                        
+                        <a *ngIf="!isAuthenticated" routerLink="/login" class="nav-button login-btn" routerLinkActive="active" (click)="toggleMenu()">
+                            <span>Login</span>
+                        </a>
                     </div>
                 </div>
             </nav>

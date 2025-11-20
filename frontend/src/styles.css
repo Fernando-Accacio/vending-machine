@@ -221,39 +221,66 @@ html, body {
   box-sizing: border-box;
 }
 
+/* --- BOTÃO DE NAVEGAÇÃO --- */
+
 .nav-button {
-  
-  background-color: rgba(240, 240, 240, 0.85); /* Cinza pálido */
-  
-  border: none;
+  background-color: rgba(240, 240, 240, 0.85);
   color: var(--text-color);
-  opacity: 1; /* Retornamos para 1 para que o fundo seja visível */
-  padding: 12px 16px;
-  border-radius: 6px;
   font-size: 14px;
   font-weight: 500;
-  text-decoration: none;
-  transition: all 0.2s ease;
-  cursor: pointer;
-  white-space: nowrap;
-  display: inline-block;
   text-align: center;
+  
+  padding: 12px 16px; /* Padding para o espaço visual do botão */
+  
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: inline-block;
   box-sizing: border-box;
+  white-space: nowrap;
+  text-decoration: none !important;
+  
+  position: relative; 
 }
 
+/* A BARRA ANIMADA */
+.nav-button::after {
+  content: '';
+  position: absolute;
+  
+  bottom: 8px; /* Aproxima mais do texto */
+  
+  /* Largura inicial da linha (ex: 80% do botão) */
+  /* Para controlar o quanto ela se estende além do texto */
+  width: calc(100% - 30px); 
+  
+  left: 50%; /* Centraliza horizontalmente */
+  transform: translateX(-50%) scaleX(0); /* Começa invisível e centralizado */
+  transform-origin: center;   
+  transition: transform 0.3s ease-out; 
+
+  height: 2px; /* Mais delicado */
+  background-color: var(--primary-color);
+}
+
+/* ESTILO AO PASSAR O MOUSE (HOVER) */
 .nav-button:hover {
-  /* Aumenta o contraste no hover */
-  background-color: rgba(240, 240, 240, 1.0); /* Branco mais sólido */
+  background-color: rgba(240, 240, 240, 1.0);
   color: var(--primary-color);
-  opacity: 1;
 }
 
-/* O botão ativo (Itens, na imagem) */
+/* Mostra a linha APENAS no hover */
+.nav-button:hover::after {
+  /* No hover, faz a linha aparecer (mantendo a largura calculada) */
+  transform: translateX(-50%) scaleX(1); 
+}
+
+/* --- ESTADO ATIVO (SELECIONADO) --- */
 .nav-button.active {
   background-color: white; 
   color: var(--primary-color);
-  font-weight: 600;
-  opacity: 1;
+  font-weight: 700;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05); 
 }
 
@@ -649,7 +676,29 @@ a:hover {
 }
 
 .auth-btn .change-pass-btn:hover {
-  background-color: #d1d5db; /* Um cinza um pouco mais escuro */
+    color: var(--primary-color) !important; /* Sobrescreve a cor preta fixa */
+    background-color: rgba(240, 240, 240, 1.0) !important; /* Garante o fundo correto */
+}
+
+.auth-btn .change-pass-btn:hover {
+    color: var(--primary-color) !important; /* Sobrescreve a cor preta fixa */
+    background-color: rgba(240, 240, 240, 1.0) !important; /* Garante o fundo correto */
+}
+
+/* O botão de sair não deve ter a linha */
+.logout-btn::after,
+.danger-btn::after {
+    display: none !important;
+    content: none !important;
+    width: 0 !important;
+}
+
+/* Garante que o botão sair continue vermelho/padrão no hover */
+.auth-btn .logout-btn:hover,
+.danger-btn:hover {
+    color: white !important; /* Texto branco */
+    background-color: var(--danger-hover) !important; /* Fundo vermelho escuro */
+    box-shadow: 0 4px 12px rgba(220, 38, 38, 0.3) !important;
 }
 
 /* Botões primários dentro do header (ex: "Nova Retirada") */
@@ -721,8 +770,6 @@ thead th {
 tbody tr:nth-child(even) {
   background-color: #fdfdfd;
 }
-
-/* Botões de Ação na Tabela */
 
 /* Centraliza o header "Ações" */
 th:last-child {
@@ -1095,10 +1142,12 @@ td:last-child {
     margin: 1rem auto 0;
   }
 
-/* --- ESTILOS GERAIS DO HAMBÚRGUER --- */
+/* ============================================================
+   MENU MOBILE COMPLETO - VERSÃO UNIFICADA COM ANIMAÇÃO SCALE-X
+   ============================================================ */
 
-/* 10. Menu Mobile (COM AJUSTES DE TRANSIÇÃO E FUNDO) */
-  .mobile-menu {
+/* --- 1. ESTRUTURA DO CONTAINER (Fundo escuro) --- */
+.mobile-menu {
     background-color: rgba(0, 0, 0, 0.6);
     backdrop-filter: blur(8px);
     width: 100vw;
@@ -1107,224 +1156,277 @@ td:last-child {
     top: 0;
     left: 0;
     z-index: 1000;
-
     opacity: 0;
     visibility: hidden;
     transition: opacity 0.3s ease-out, visibility 0.3s ease-out;
-
     display: flex;
     align-items: center;
     justify-content: flex-end;
-  }
+}
 
-  .mobile-menu.active {
+.mobile-menu.active {
     opacity: 1;
     visibility: visible;
-  }
-
-  .mobile-menu-close:hover {
-    opacity: 1;
-  }
-
-.mobile-menu-inner {
-  background-color: rgba(255, 255, 255, 0.85);
-  backdrop-filter: blur(20px) saturate(180%);
-  -webkit-backdrop-filter: blur(20px) saturate(180%);
-  border: 1px solid rgba(0, 0, 0, 0.08);
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
-  
-  /* Layout e Animação (Mantidos) */
-  width: 85%;
-  max-width: 320px;
-  padding: 30px 20px;
-  border-radius: 12px;
-  margin-right: 10px;
-  transform: translateX(100%);
-  opacity: 0;
-  transition: transform 0.3s 0.1s ease-out, opacity 0.2s 0.1s ease-out;
 }
 
-  .mobile-menu.active .mobile-menu-inner {
+/* --- 2. CAIXA BRANCA (Menu) --- */
+.mobile-menu-inner {
+    background-color: rgba(255, 255, 255, 0.85);
+    backdrop-filter: blur(20px) saturate(180%);
+    -webkit-backdrop-filter: blur(20px) saturate(180%);
+    width: 85%;
+    max-width: 320px;
+    padding: 30px 20px;
+    border-radius: 12px;
+    margin-right: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    transform: translateX(100%);
+    opacity: 0;
+    transition: transform 0.3s 0.1s ease-out, opacity 0.2s 0.1s ease-out;
+}
+
+.mobile-menu.active .mobile-menu-inner {
     transform: translateX(0);
     opacity: 1;
-  }
+}
 
+/* --- 3. BOTÃO DE FECHAR (X ou SETA) --- */
 .mobile-menu-close {
-  position: absolute;
-  top: 40px;
-  left: 15px;
-  background: none;
-  border: none;
-  color: var(--text-color-light); /* 1. COR DA SETA CORRIGIDA */
-  font-size: 22px;
-  font-weight: bold;
-  line-height: 1;
-  padding: 5px;
-  cursor: pointer;
-  opacity: 0.8;
-  transition: opacity 0.2s;
-  transform: translateY(-50%);
-  z-index: 10;
-}
-.mobile-menu-close:hover {
-  opacity: 1;
-}
-
-.mobile-menu-title {
-  font-size: 20px;
-  margin-bottom: 20px;
-  font-weight: 700;
-  letter-spacing: 0.5px;
-  margin-top: 0;
-  color: var(--text-color);
-  text-align: center;
-}
-
-.mobile-menu .danger-btn:hover,
-.mobile-menu .danger-btn:active {
-  background-color: var(--danger-hover) !important;
-}
-
-  .mobile-menu .nav-button:focus,
-.mobile-menu .nav-button:active {
-  outline: none;
-  background-color: #e0e0e0; /* Efeito de clique */
-}
-
-/* 5. BOTÕES DE NAVEGAÇÃO DO MENU */
-
-.mobile-menu a.nav-button {
-    width: 100%;
-    margin: 8px 0;
-    padding: 14px 20px;
-    font-size: 15px;
-    font-weight: 500;
-    
-    background-color: rgba(240, 240, 240, 0.85); 
-
-    color: var(--text-color);
-    
+    position: absolute;
+    top: 40px;
+    left: 15px;
+    background: none;
     border: none;
-    border-radius: 8px;
-    transition: all 0.3s ease;
+    color: var(--text-color-light);
+    font-size: 22px;
+    font-weight: bold;
+    line-height: 1;
+    padding: 5px;
+    cursor: pointer;
+    opacity: 0.8;
+    transition: opacity 0.2s;
+    transform: translateY(-50%);
+    z-index: 10;
+}
+
+.mobile-menu-close:hover {
+    opacity: 1;
+}
+
+/* --- 4. TÍTULO DO MENU --- */
+.mobile-menu-title {
+    font-size: 20px;
+    margin-bottom: 20px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    margin-top: 0;
+    color: var(--text-color);
     text-align: center;
 }
 
-/* Efeito ao passar o mouse ou tocar (para indicar interação) */
+/* --- 5. CONFIGURAÇÃO BASE DO BOTÃO (A Caixa Cinza) --- */
+.mobile-menu a.nav-button,
+.mobile-menu button.nav-button {
+    width: 100% !important;
+    margin: 8px 0;
+    padding: 14px 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: rgba(240, 240, 240, 0.85);
+    color: var(--text-color);
+    font-size: 15px;
+    font-weight: 500;
+    border: none;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+    text-decoration: none !important;
+    outline: none !important;
+    box-shadow: none !important;
+    position: relative;
+    -webkit-tap-highlight-color: transparent;
+}
+
+/* Remove linha nativa em todos os estados */
 .mobile-menu a.nav-button:hover,
-.mobile-menu a.nav-button:active {
-    /* Deixa o botão um pouco mais opaco ao interagir */
-    background-color: rgba(240, 240, 240, 1.0); 
+.mobile-menu a.nav-button:focus,
+.mobile-menu a.nav-button:active,
+.mobile-menu button.nav-button:hover,
+.mobile-menu button.nav-button:focus,
+.mobile-menu button.nav-button:active {
+    text-decoration: none !important;
+    outline: none !important;
+    border-bottom: none !important;
 }
 
-/* 1. ESTILO DO BOTÃO ATIVO */
+/* Remove ::after antigo do botão pai */
+.mobile-menu a.nav-button::after,
+.mobile-menu button.nav-button::after {
+    content: none !important;
+    display: none !important;
+}
+
+/* --- 6. CONFIGURAÇÃO DO TEXTO (SPAN) COM ANIMAÇÃO SCALE-X --- */
+.mobile-menu .nav-button span {
+    display: inline-block;
+    position: relative;
+    width: auto !important;
+    padding-bottom: 4px;
+    color: inherit;
+    border-bottom: none !important;
+    transition: color 0.3s ease;
+}
+
+/* A LINHA QUE EXPANDE (IGUAL AO DESKTOP) */
+.mobile-menu .nav-button span::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background-color: #4c35d3;
+    transform: scaleX(0);
+    transform-origin: center;
+    transition: transform 0.3s ease-out;
+}
+
+/* --- 7. ESTADOS DE INTERAÇÃO (HOVER E ATIVO) --- */
+
+/* Quando passar o mouse ou estiver ativo: EXPANDIR A LINHA */
+.mobile-menu .nav-button:hover span::after,
+.mobile-menu .nav-button.active span::after {
+    transform: scaleX(1);
+}
+
+/* Mudar a cor do texto */
+.mobile-menu .nav-button:hover span,
+.mobile-menu .nav-button.active span {
+    color: #4c35d3 !important;
+}
+
+/* Estado ATIVO no botão pai */
 .mobile-menu .nav-button.active {
-  background-color: white !important;
-  color: var(--primary-color) !important;
-  font-weight: 700;
-  
-  text-decoration: underline !important; 
-  text-decoration-thickness: 2px;
+    background-color: white !important;
+    font-weight: 700;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05) !important;
 }
 
-.mobile-menu .change-pass-btn {
-  background-color: var(--border-color) !important; /* <-- Fundo igual ao desktop */
-  color: var(--text-color) !important;
-  font-weight: 600;
-  opacity: 1;
+/* Estado HOVER no botão pai */
+.mobile-menu a.nav-button:hover,
+.mobile-menu button.nav-button:hover {
+    background-color: rgba(240, 240, 240, 1.0);
+    color: var(--primary-color);
+}
 
-  padding: 14px 20px !important; /* Mais alto */
-    font-size: 16px !important; /* Fonte maior */
-    margin: 10px 0 !important; /* Adiciona um pouco mais de espaço */
+/* Efeito de clique (Active) */
+.mobile-menu a.nav-button:active,
+.mobile-menu button.nav-button:active {
+    background-color: #e0e0e0;
+    transform: scale(0.98);
+}
+
+/* --- 8. BOTÕES ESPECIAIS (MUDAR SENHA E SAIR) --- */
+
+/* Botão Mudar Senha - AGORA COM LINHA ANIMADA! */
+.mobile-menu .change-pass-btn {
+    background-color: var(--border-color) !important;
+    color: var(--text-color) !important;
+    font-weight: 600;
+    margin: 10px 0 !important;
 }
 
 .mobile-menu .change-pass-btn:hover,
 .mobile-menu .change-pass-btn:active {
-  background-color: #d1d5db !important; /* <-- Hover igual ao desktop */
-  color: var(--text-color) !important;
+    background-color: rgba(240, 240, 240, 1.0) !important;
+    color: var(--primary-color) !important;
 }
 
-.change-pass-btn {
-  color: var(--text-color);
+.mobile-menu .change-pass-btn:hover span {
+    color: var(--primary-color) !important;
 }
 
-.auth-btn .change-pass-btn {
-    color: var(--text-color) !important;
-    background-color: var(--border-color) !important;
+/* Linha animada aparece no hover do botão Mudar Senha */
+.mobile-menu .change-pass-btn:hover span::after {
+    transform: scaleX(1);
 }
 
-.mobile-user-info strong { /* Se for uma tag <strong> */
-  font-weight: 700; /* Negrito */
-  color: var(--text-color); /* Cor mais escura para o nome */
+/* Botão Sair (Danger) - SEM LINHA */
+.mobile-menu .danger-btn {
+    background-color: var(--danger-color) !important;
+    color: white !important;
+    font-weight: 600;
+    border: none;
 }
 
-/* Se for uma classe, digamos, <span class="user-name">Gerente</span> */
+.mobile-menu .danger-btn:hover,
+.mobile-menu .danger-btn:active {
+    background-color: var(--danger-hover) !important;
+    color: white !important;
+}
+
+.mobile-menu .danger-btn span {
+    color: white !important;
+}
+
+/* REMOVE A LINHA ANIMADA APENAS DO BOTÃO SAIR */
+.mobile-menu .danger-btn span::after {
+    display: none !important;
+    content: none !important;
+    transform: scaleX(0) !important;
+}
+
+/* --- 9. USER INFO --- */
+.mobile-user-info {
+    display: block !important;
+    background: white;
+    color: var(--text-color-light);
+    border: none;
+    padding: 12px 16px;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 500;
+    margin-bottom: 10px;
+    width: 100%;
+    text-align: center !important;
+    line-height: 1.4;
+    white-space: nowrap !important;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 100%;
+    box-sizing: border-box;
+}
+
+.mobile-user-info strong,
 .mobile-user-info .user-name {
-  font-weight: 700;
-  color: var(--text-color);
+    font-weight: 700;
+    color: var(--text-color);
 }
 
 .mobile-user-info .user-role {
-  font-weight: 500;
-}
-
-.user-role {
+    font-weight: 500;
     margin-left: 4px;
 }
 
-.mobile-menu .danger-btn {
-  background-color: var(--danger-color) !important;
-  color: white !important;
-  font-weight: 600;
-  border: none;
+/* --- 10. DIVIDER E ELEMENTOS ADICIONAIS --- */
+.menu-divider {
+    width: 100%;
+    border: 0;
+    border-top: 1px solid var(--border-color);
+    margin: 20px 0;
 }
 
-.mobile-menu .danger-btn:focus,
-.mobile-menu .danger-btn:active {
-  outline: none; /* 4. REMOVE A "BORDA INTERNA" AO CLICAR */
+.logo-img {
+    max-height: 40px;
 }
 
-  .mobile-auth-section {
+.mobile-auth-section {
     width: 100%;
     display: flex;
     flex-direction: column;
     align-items: center;
     gap: 8px;
-  }
-
-.mobile-user-info {
-  display: block !important;
-  background: white;
-  color: var(--text-color-light); /* Cor base cinza */
-  border: none; /* 3. REMOVE A BORDA EXTERNA */
-  padding: 12px 16px;
-  border-radius: 8px;
-  font-size: 14px;
-  font-weight: 500;
-  margin-bottom: 10px;
-  width: 100%;
-  text-align: center !important;  word-wrap: break-word;
-  white-space: normal;
-  line-height: 1.4;
-
-  /* --- REGRAS PARA CORTAR O NOME (MOBILE) --- */
-  white-space: nowrap !important;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  
-  /* Garante que não estoure a largura do menu */
-  max-width: 100%; 
-  box-sizing: border-box;
-}
-
-.menu-divider {
-  width: 100%;
-  border: 0;
-  border-top: 1px solid var(--border-color);
-  margin: 20px 0;
-}
-
-.logo-img {
-  max-height: 40px; 
 }
 }
