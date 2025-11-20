@@ -518,7 +518,6 @@ h2 {
     font-weight: 600; /* Garante que o H2 esteja no mesmo peso */
     color: var(--text-color);
   
-  /* Alinhamento: Mude para 'left' para padronizar com as imagens */
   text-align: left; 
   
   /* Espaçamento: 1.5rem topo, 2rem embaixo */
@@ -813,7 +812,7 @@ a:hover {
   background-color: #374151;
   color: white;
   text-align: center;
-  padding: 6px 4px; /* AJUSTE: Aumentei o padding vertical de 4px para 6px */
+  padding: 6px 4px;
   font-size: 12px;
   font-weight: 500;
   letter-spacing: 0.5px;
@@ -1256,12 +1255,12 @@ td:last-child {
 
   .withdrawal-header h3 {
     margin: 0 !important; /* Remove margens padrão do h3 */
-    font-size: 18px !important; /* Ajuste opcional de fonte */
+    font-size: 18px !important;
   }
 
   .withdrawal-header .date {
     margin: 0 !important; /* Remove margens padrão do span */
-    font-size: 14px !important; /* Ajuste opcional de fonte */
+    font-size: 14px !important;
     color: var(--text-color-light); /* Cor mais suave para a data */
   }
 
