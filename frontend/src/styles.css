@@ -452,6 +452,11 @@ html, body {
   font-weight: 500;
   white-space: nowrap;
   min-width: auto;
+
+  white-space: nowrap;
+  min-width: 0; /* Permite que o container encolha se faltar espaço */
+  flex-shrink: 1; /* Autoriza o flexbox a apertar esse item */
+  max-width: 200px; /* Trava a largura total da caixa cinza */
 }
 
 /* --- ESTILOS DO SUBTÍTULO DA PÁGINA --- */
@@ -612,6 +617,13 @@ a:hover {
 .user-info .user-name {
   font-weight: 700;
   color: var(--text-color); /* Cor de texto principal (escura) */
+
+  display: inline-block;
+  max-width: 150px; /* Diminuí de 150px para 100px */
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  vertical-align: middle;
 }
 
 .user-info .user-role {
@@ -1294,6 +1306,15 @@ td:last-child {
   text-align: center !important;  word-wrap: break-word;
   white-space: normal;
   line-height: 1.4;
+
+  /* --- REGRAS PARA CORTAR O NOME (MOBILE) --- */
+  white-space: nowrap !important;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  
+  /* Garante que não estoure a largura do menu */
+  max-width: 100%; 
+  box-sizing: border-box;
 }
 
 .menu-divider {
