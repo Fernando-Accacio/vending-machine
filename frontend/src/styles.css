@@ -739,6 +739,10 @@ a:hover {
   background-color: var(--primary-hover);
 }
 
+.header .login-btn::after {
+    display: none !important;
+}
+
 .auth-btn .change-pass-btn {
   color: var(--text-color) !important;
   background-color: var(--border-color) !important;
