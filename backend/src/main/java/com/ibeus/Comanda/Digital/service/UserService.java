@@ -53,7 +53,6 @@ public class UserService {
             User user = userOptional.get();
             
             // 1. VERIFICA SE ESTÁ ATIVO ANTES DE TUDO
-            // Assim, o bloqueio tem prioridade sobre a senha.
             if (!user.isActive()) {
                 throw new RuntimeException("Conta bloqueada. Contate o gerente.");
             }
@@ -63,11 +62,10 @@ public class UserService {
                 return user;
             }
         }
-        // Retorna null se usuário não existe ou senha errada
         return null; 
     }
 
-    // --- Novos Métodos para o ADMIN ---
+    // --- Métodos para o ADMIN ---
 
     public List<User> findAllUsers() {
         return userRepository.findAll();
@@ -75,18 +73,25 @@ public class UserService {
 
     public User toggleUserStatus(Long id) {
         User user = findById(id);
-        // Inverte o status (se true vira false, se false vira true)
         user.setActive(!user.isActive());
         return userRepository.save(user);
     }
 
-    // --- Método para o Cliente se Auto-Desativar ---
-    public void deactivateMyAccount(String email) {
-        User user = findByEmail(email);
-        if (user != null) {
-            user.setActive(false);
-            userRepository.save(user);
+    // --- MÉTODO DE AUTO-DESATIVAÇÃO ---
+    // Recebe a senha digitada pelo usuário para confirmar
+    public void deactivateMyAccount(String email, String rawPassword) {
+        // Busca o usuário (lança erro se não achar, embora o token garanta que existe)
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new RuntimeException("Usuário não encontrado."));
+
+        // VERIFICA A SENHA
+        if (!passwordEncoder.matches(rawPassword, user.getPassword())) {
+            throw new RuntimeException("Senha incorreta. Não foi possível desativar a conta.");
         }
+
+        // Se a senha bater, desativa
+        user.setActive(false);
+        userRepository.save(user);
     }
 
     // --- Métodos de Busca/CRUD ---
