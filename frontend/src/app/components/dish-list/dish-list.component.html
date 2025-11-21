@@ -10,16 +10,22 @@
     <table>
       <thead>
         <tr>
-          <th>ID</th>
+          <th style="width: 60px;">Imagem</th> <th>ID</th>
           <th>Nome</th>
           <th>Descrição</th>
           <th>Custo (R$)</th>
-          <th>Tempo Reposição (min)</th>
+          <th>Tempo Reposição</th>
           <th>Ações</th>
         </tr>
       </thead>
       <tbody>
         <tr *ngFor="let dish of dishes">
+          <td>
+             <img [src]="dish.imageUrl || 'assets/logo.png'" 
+                  alt="Foto" 
+                  style="width: 40px; height: 40px; object-fit: cover; border-radius: 4px; display: block; margin: 0 auto;">
+          </td>
+          
           <td>{{ dish.id }}</td>
           <td>{{ dish.name }}</td>
           <td>{{ dish.description }}</td>
@@ -34,7 +40,7 @@
         </tr>
         
         <tr *ngIf="!dishes || dishes.length === 0" class="no-records-row">
-            <td [attr.colspan]="6">Nenhum item encontrado.</td>
+            <td [attr.colspan]="7">Nenhum item encontrado.</td>
         </tr>
       </tbody>
     </table>

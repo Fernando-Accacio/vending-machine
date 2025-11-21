@@ -8,164 +8,157 @@ import { WithdrawalService, CartItemDto, WithdrawalRequest } from '../../service
 import { LoadingService } from '../../services/loading/loading.service'; 
 
 interface CartItem extends Dish {
-  quantity: number;
+  quantity: number;
 }
 
 const TEMPO_FIXO_MAQUINA = 10; 
 
 @Component({
-  selector: 'app-dish-store',
-  templateUrl: './dish-store.component.html',
-  styleUrls: ['./dish-store.component.css'],
-  standalone: true,
-  imports: [CommonModule]
+  selector: 'app-dish-store',
+  templateUrl: './dish-store.component.html',
+  styleUrls: ['./dish-store.component.css'],
+  standalone: true,
+  imports: [CommonModule]
 })
 export class DishStoreComponent implements OnInit {
-  dishes: Dish[] = [];
-  cart: CartItem[] = [];
-  totalAmount: number = 0;
-  totalLeadTime: number = 0; 
+  dishes: Dish[] = [];
+  cart: CartItem[] = [];
+  totalAmount: number = 0;
+  totalLeadTime: number = 0; 
 
-  public isLoadingLocal: boolean = false; // Flag de loading local
+  public isLoadingLocal: boolean = false; 
 
-  constructor(
-    private dishService: DishService, 
-    private router: Router,
-    private authService: AuthenticateService, 
-    private withdrawalService: WithdrawalService,
-    // NOVO: Injete o LoadingService
-    private loadingService: LoadingService 
-  ) {}
+  constructor(
+    private dishService: DishService, 
+    private router: Router,
+    private authService: AuthenticateService, 
+    private withdrawalService: WithdrawalService,
+    private loadingService: LoadingService 
+  ) {}
 
-  ngOnInit(): void {
-    this.loadDishes(); // A lógica foi movida para dentro do loadDishes()
-    this.updateTotal(); 
-  }
+  ngOnInit(): void {
+    this.loadDishes(); 
+    this.updateTotal(); 
+  }
 
-  loadDishes(): void {
-    // 1. ATIVA O LOADING LOCAL (SEMPRE)
-    this.isLoadingLocal = true; 
+  loadDishes(): void {
+    this.isLoadingLocal = true; 
 
-    // 2. LÓGICA DE DECISÃO
-    if (this.loadingService.isFirstLoad()) {
-      // É o COLD START. Ativa o OVERLAY GLOBAL.
-      this.loadingService.show();
-    }
-    // Se não for o firstLoad, ele só vai mostrar o isLoadingLocal,
-    // que é o comportamento correto para navegação (ex: "Voltar do Login")
+    if (this.loadingService.isFirstLoad()) {
+      this.loadingService.show();
+    }
 
-    this.dishService.getDishes().subscribe({
-        next: (data: Dish[]) => {
-            this.dishes = data;
-        },
-        error: (err) => {
-            console.error('Erro ao carregar itens:', err);
-            
-            // 3. DESATIVA OS LOADINGS (em caso de erro)
-            if (this.loadingService.isFirstLoad()) {
-              this.loadingService.hide(); // Desliga o global (se estiver ligado)
-            }
-            this.isLoadingLocal = false; // Desliga o local
-            this.loadingService.completeFirstLoad(); // Marca como concluído (mesmo com erro)
-        },
-        complete: () => {
-            // 4. DESATIVA OS LOADINGS (em caso de sucesso)
-             if (this.loadingService.isFirstLoad()) {
-              this.loadingService.hide(); // Desliga o global (se estiver ligado)
-            }
-            this.isLoadingLocal = false; // Desliga o local
-            this.loadingService.completeFirstLoad(); // Marca como concluído
-        }
-    });
-  }
+    this.dishService.getDishes().subscribe({
+        next: (data: Dish[]) => {
+            this.dishes = data;
+        },
+        error: (err) => {
+            console.error('Erro ao carregar itens:', err);
+            
+            if (this.loadingService.isFirstLoad()) {
+              this.loadingService.hide(); 
+            }
+            this.isLoadingLocal = false; 
+            this.loadingService.completeFirstLoad(); 
+        },
+        complete: () => {
+             if (this.loadingService.isFirstLoad()) {
+              this.loadingService.hide(); 
+            }
+            this.isLoadingLocal = false; 
+            this.loadingService.completeFirstLoad(); 
+        }
+    });
+  }
 
-  addToCart(dish: Dish): void {
-    const existingItem = this.cart.find(item => item.id === dish.id);
-    if (existingItem) {
-      existingItem.quantity += 1;
-    } else {
-      this.cart.push({ ...dish, quantity: 1 });
-    }
-    this.updateTotal();
-  }
+  addToCart(dish: Dish): void {
+    const existingItem = this.cart.find(item => item.id === dish.id);
+    if (existingItem) {
+      existingItem.quantity += 1;
+    } else {
+      this.cart.push({ ...dish, quantity: 1 });
+    }
+    this.updateTotal();
+  }
 
-  removeFromCart(dish: CartItem): void {
-    const index = this.cart.findIndex(item => item.id === dish.id);
-    if (index > -1) {
-      if (this.cart[index].quantity > 1) {
-        this.cart[index].quantity -= 1;
-      } else {
-        this.cart.splice(index, 1);
-      }
-    }
-    this.updateTotal();
-  }
+  removeFromCart(dish: CartItem): void {
+    const index = this.cart.findIndex(item => item.id === dish.id);
+    if (index > -1) {
+      if (this.cart[index].quantity > 1) {
+        this.cart[index].quantity -= 1;
+      } else {
+        this.cart.splice(index, 1);
+      }
+    }
+    this.updateTotal();
+  }
 
-  updateTotal(): void {
-    this.totalAmount = this.cart.reduce((total, item) => {
-      return total + (item.custo * item.quantity);
-    }, 0);
+  updateTotal(): void {
+    this.totalAmount = this.cart.reduce((total, item) => {
+      return total + (item.custo * item.quantity);
+    }, 0);
 
-    const leadTimeVariavel = this.cart.reduce((total, item) => {
-        const tempoItem = item.tempoReposicao || 0; 
-        return total + (tempoItem * item.quantity);
-    }, 0);
+    const leadTimeVariavel = this.cart.reduce((total, item) => {
+        const tempoItem = item.tempoReposicao || 0; 
+        return total + (tempoItem * item.quantity);
+    }, 0);
 
-    if (this.cart.length > 0) {
-      this.totalLeadTime = TEMPO_FIXO_MAQUINA + leadTimeVariavel;
-    } else {
-      this.totalLeadTime = 0; 
-    }
-  }
+    if (this.cart.length > 0) {
+      this.totalLeadTime = TEMPO_FIXO_MAQUINA + leadTimeVariavel;
+    } else {
+      this.totalLeadTime = 0; 
+    }
+  }
 
-  checkout(): void {
-    if (!this.authService.isAuthenticated()) {
-      alert('Você precisa estar logado para finalizar uma retirada!');
-      this.router.navigate(['/login']); 
-      return;
-    }
-    
-    const email = this.authService.getEmail(); 
-    if (!email) {
-        alert('Erro de autenticação: Email não encontrado no token. Tente fazer login novamente.');
-        this.router.navigate(['/login']); 
-        return;
-    }
+  checkout(): void {
+    if (!this.authService.isAuthenticated()) {
+      alert('Você precisa estar logado para finalizar uma retirada!');
+      this.router.navigate(['/login']); 
+      return;
+    }
+    
+    const email = this.authService.getEmail(); 
+    if (!email) {
+        alert('Erro de autenticação: Email não encontrado no token. Tente fazer login novamente.');
+        this.router.navigate(['/login']); 
+        return;
+    }
 
-    const cartDto: CartItemDto[] = this.cart.map(item => ({
-      dishId: item.id,
-      quantity: item.quantity
-    }));
+    // --- CORREÇÃO DO ERRO TS2322 AQUI ---
+    const cartDto: CartItemDto[] = this.cart
+      .filter(item => item.id !== undefined) // 1. Filtra itens sem ID
+      .map(item => ({
+        dishId: item.id!, // 2. O '!' avisa o TypeScript que o ID existe com certeza
+        quantity: item.quantity
+      }));
+    // -------------------------------------
 
-    const request: WithdrawalRequest = {
-      email: email,
-      cart: cartDto
-    };
+    const request: WithdrawalRequest = {
+      email: email,
+      cart: cartDto
+    };
 
-    // 3. ATIVA LOADING
-    this.isLoadingLocal = true;
-    this.loadingService.show();
-    
-    this.withdrawalService.createWithdrawal(request).subscribe({
-      next: (response) => {
-        alert('Retirada registrada com sucesso!');
-        this.cart = [];
-        this.updateTotal();
-        localStorage.removeItem('cart');
-        this.router.navigate(['/']);
-      },
-      error: (err) => {
-        console.error('Falha ao registrar retirada', err);
-        alert('Houve um erro ao registrar sua retirada. Tente novamente.');
-        // 4. DESATIVA LOADING (EM CASO DE ERRO)
-        this.isLoadingLocal = false; 
-        this.loadingService.hide();
-      },
-      complete: () => {
-        // 4. DESATIVA LOADING (EM CASO DE SUCESSO)
-        this.isLoadingLocal = false; 
-        this.loadingService.hide();
-      }
-    });
-  }
+    this.isLoadingLocal = true;
+    this.loadingService.show();
+    
+    this.withdrawalService.createWithdrawal(request).subscribe({
+      next: (response) => {
+        alert('Retirada registrada com sucesso!');
+        this.cart = [];
+        this.updateTotal();
+        localStorage.removeItem('cart');
+        this.router.navigate(['/']);
+      },
+      error: (err) => {
+        console.error('Falha ao registrar retirada', err);
+        alert('Houve um erro ao registrar sua retirada. Tente novamente.');
+        this.isLoadingLocal = false; 
+        this.loadingService.hide();
+      },
+      complete: () => {
+        this.isLoadingLocal = false; 
+        this.loadingService.hide();
+      }
+    });
+  }
 }

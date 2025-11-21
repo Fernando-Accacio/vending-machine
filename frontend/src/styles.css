@@ -976,6 +976,12 @@ td:last-child {
     box-sizing: border-box !important;
 }
 
+/* OCULTA a coluna Imagem INTEIRA (cabeçalho e dados) no mobile */
+.table-container table th:nth-child(1),
+.table-container table td:nth-child(1) {
+    display: none !important;
+}
+
 /* Botão "NOVO ITEM" (newDish) */
 .newDish {
   padding: 14px 20px;
@@ -1367,7 +1373,513 @@ td:last-child {
     /* Se quiser que o botão "Sair" não fique esticado, remova o "flex: 1" acima */
 }
 
-@media (max-width: 1150px) {
+/* ============================================================
+   MEDIA QUERY PARA TABLETS (769px - 1150px)
+   Header com Menu Hambúrguer + Menu Mobile completo
+   ============================================================ */
+@media (min-width: 769px) and (max-width: 1150px) {
+  /* Ajustes no Cabeçalho */
+  .header {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    height: 60px;
+    padding: 8px 15px;
+    gap: 0;
+    width: 100%;
+    box-sizing: border-box;
+    flex-wrap: nowrap;
+  }
+
+  header button {
+    min-width: 0;
+  }
+
+  .desktop-nav,
+  .header-center,
+  .header-nav,
+  .auth-buttons {
+    display: none !important;
+  }
+
+  .menu-toggle {
+    display: flex;
+    margin-left: 0;
+  }
+
+  .header-left {
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .header-title {
+    font-size: 12px;
+  }
+
+  .header-subtitle {
+    font-size: 11px;
+  }
+
+  .back-button {
+    font-size: 20px;
+    padding: 2px 4px;
+  }
+
+  /* ============================================================
+     MENU MOBILE COMPLETO - VERSÃO UNIFICADA COM ANIMAÇÃO SCALE-X
+     ============================================================ */
+
+  /* --- 1. ESTRUTURA DO CONTAINER (Fundo escuro) --- */
+  .mobile-menu {
+    background-color: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(8px);
+    width: 100vw;
+    height: 100vh;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 1000;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease-out, visibility 0.3s ease-out;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+  }
+
+  .mobile-menu.active {
+    opacity: 1;
+    visibility: visible;
+  }
+
+  /* --- 2. CAIXA BRANCA (Menu) --- */
+  .mobile-menu-inner {
+    background-color: rgba(255, 255, 255, 0.85);
+    backdrop-filter: blur(20px) saturate(180%);
+    -webkit-backdrop-filter: blur(20px) saturate(180%);
+    width: 85%;
+    max-width: 320px;
+    padding: 30px 20px;
+    border-radius: 12px;
+    margin-right: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    transform: translateX(100%);
+    opacity: 0;
+    transition: transform 0.3s 0.1s ease-out, opacity 0.2s 0.1s ease-out;
+  }
+
+  .mobile-menu.active .mobile-menu-inner {
+    transform: translateX(0);
+    opacity: 1;
+  }
+
+  /* --- 3. BOTÃO DE FECHAR (X ou SETA) --- */
+  .mobile-menu-close {
+    position: absolute;
+    top: 40px;
+    left: 15px;
+    background: none;
+    border: none;
+    color: var(--text-color-light);
+    font-size: 22px;
+    font-weight: bold;
+    line-height: 1;
+    padding: 5px;
+    cursor: pointer;
+    opacity: 0.8;
+    transition: opacity 0.2s;
+    transform: translateY(-50%);
+    z-index: 10;
+  }
+
+  .mobile-menu-close:hover {
+    opacity: 1;
+  }
+
+  /* --- 4. TÍTULO DO MENU --- */
+  .mobile-menu-title {
+    font-size: 20px;
+    margin-bottom: 20px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    margin-top: 0;
+    color: var(--text-color);
+    text-align: center;
+  }
+
+  /* --- 5. CONFIGURAÇÃO BASE DO BOTÃO (A Caixa Cinza) --- */
+  .mobile-menu a.nav-button,
+  .mobile-menu button.nav-button {
+    width: 100% !important;
+    margin: 8px 0;
+    padding: 14px 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: rgba(240, 240, 240, 0.85);
+    color: var(--text-color);
+    font-size: 15px;
+    font-weight: 600;
+    border: none;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+    text-decoration: none !important;
+    outline: none !important;
+    box-shadow: none !important;
+    position: relative;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  /* Remove linha nativa em todos os estados */
+  .mobile-menu a.nav-button:hover,
+  .mobile-menu a.nav-button:focus,
+  .mobile-menu a.nav-button:active,
+  .mobile-menu button.nav-button:hover,
+  .mobile-menu button.nav-button:focus,
+  .mobile-menu button.nav-button:active {
+    text-decoration: none !important;
+    outline: none !important;
+    border-bottom: none !important;
+  }
+
+  /* Remove ::after antigo do botão pai */
+  .mobile-menu a.nav-button::after,
+  .mobile-menu button.nav-button::after {
+    content: none !important;
+    display: none !important;
+  }
+
+  /* --- 6. CONFIGURAÇÃO DO TEXTO (SPAN) COM ANIMAÇÃO SCALE-X --- */
+  .mobile-menu .nav-button span {
+    display: inline-block;
+    position: relative;
+    width: auto !important;
+    color: inherit;
+    border-bottom: none !important;
+    transition: color 0.3s ease;
+  }
+
+  /* A LINHA QUE EXPANDE (IGUAL AO DESKTOP) */
+  .mobile-menu .nav-button span::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background-color: #4c35d3;
+    transform: scaleX(0);
+    transform-origin: center;
+    transition: transform 0.3s ease-out;
+  }
+
+  /* --- 7. ESTADOS DE INTERAÇÃO (HOVER E ATIVO) --- */
+
+  /* Quando passar o mouse ou estiver ativo: EXPANDIR A LINHA */
+  .mobile-menu .nav-button.active span::after {
+    display: none !important;
+    content: none !important;
+    transform: scaleX(0) !important;
+  }
+
+  /* Mudar a cor do texto */
+  .mobile-menu .nav-button:hover span,
+  .mobile-menu .nav-button.active span {
+    color: #4c35d3 !important;
+  }
+
+  /* Estado ATIVO no botão pai */
+  .mobile-menu .nav-button.active {
+    background-color: white !important;
+    color: var(--primary-color) !important;
+    font-weight: 700 !important;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05) !important;
+  }
+
+  /* Estado HOVER no botão pai */
+  .mobile-menu a.nav-button:hover,
+  .mobile-menu button.nav-button:hover {
+    background-color: rgba(240, 240, 240, 1.0);
+    color: var(--primary-color);
+  }
+
+  /* Efeito de clique (Active) */
+  .mobile-menu a.nav-button:active,
+  .mobile-menu button.nav-button:active {
+    background-color: #e0e0e0;
+    transform: scale(0.98);
+  }
+
+  /* --- 8. BOTÕES ESPECIAIS (MUDAR SENHA E SAIR) --- */
+
+  /* Botão Mudar Senha */
+  .mobile-menu .change-pass-btn {
+    background-color: var(--border-color) !important;
+    color: var(--text-color) !important;
+    font-weight: 600;
+    margin: 10px 0 !important;
+  }
+
+  .mobile-menu .change-pass-btn:hover,
+  .mobile-menu .change-pass-btn:active {
+    background-color: rgba(240, 240, 240, 1.0) !important;
+    color: var(--primary-color) !important;
+  }
+
+  .mobile-menu .change-pass-btn:hover span {
+    color: var(--primary-color) !important;
+  }
+
+  /* Remove linha do botão Mudar Senha */
+  .mobile-menu .change-pass-btn span::after {
+    display: none !important;
+    content: none !important;
+    width: 0 !important;
+  }
+
+  /* Botão Sair (Danger) - SEM LINHA */
+  .mobile-menu .danger-btn {
+    background-color: var(--danger-color) !important;
+    color: white !important;
+    font-weight: 600;
+    border: none;
+  }
+
+  .mobile-menu .danger-btn:hover,
+  .mobile-menu .danger-btn:active {
+    background-color: var(--danger-hover) !important;
+    color: white !important;
+  }
+
+  .mobile-menu .danger-btn span {
+    color: white !important;
+  }
+
+  /* Remove texto roxo no hover do botão Sair */
+  .mobile-menu .danger-btn:hover span,
+  .mobile-menu .danger-btn:hover {
+    color: white !important;
+  }
+
+  /* REMOVE A LINHA ANIMADA DO BOTÃO SAIR */
+  .mobile-menu .danger-btn span::after {
+    display: none !important;
+    content: none !important;
+    transform: scaleX(0) !important;
+  }
+
+  /* --- 9. USER INFO --- */
+  .mobile-user-info {
+    display: block !important;
+    background: white;
+    color: var(--text-color-light);
+    border: none;
+    padding: 12px 16px;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 500;
+    margin-bottom: 10px;
+    width: 100%;
+    text-align: center !important;
+    line-height: 1.4;
+    white-space: nowrap !important;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 100%;
+    box-sizing: border-box;
+  }
+
+  .mobile-user-info strong,
+  .mobile-user-info .user-name {
+    font-weight: 700;
+    color: var(--text-color);
+  }
+
+  .mobile-user-info .user-role {
+    font-weight: 500;
+    margin-left: 4px;
+  }
+
+  /* --- 10. DIVIDER E ELEMENTOS ADICIONAIS --- */
+  .menu-divider {
+    width: 100%;
+    border: 0;
+    border-top: 1px solid lightgray;
+    margin: 20px 0;
+  }
+
+  .logo-img {
+    max-height: 40px;
+  }
+
+  /* Container de autenticação */
+  .mobile-auth-section {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 20px;
+    border-top: 1px solid rgba(0,0,0,0.05);
+    padding-top: 20px;
+  }
+
+  /* Botões de Login e Registro (Roxo) */
+  .mobile-auth-section .login-btn,
+  .mobile-auth-section a[routerLink="/register"] {
+    background-color: var(--primary-color) !important;
+    color: white !important;
+    font-weight: 700 !important;
+    margin: 6px 0 !important;
+    box-shadow: 0 4px 6px rgba(76, 53, 211, 0.2) !important;
+  }
+
+  .mobile-auth-section .login-btn:hover,
+  .mobile-auth-section a[routerLink="/register"]:hover {
+    background-color: var(--primary-hover) !important;
+    color: white !important;
+    transform: translateY(-1px);
+  }
+
+  /* Remove animação da linha */
+  .mobile-auth-section .login-btn span::after,
+  .mobile-auth-section a[routerLink="/register"] span::after {
+    display: none !important;
+    content: none !important;
+  }
+
+  /* Força texto branco */
+  .mobile-auth-section .login-btn span,
+  .mobile-auth-section a[routerLink="/register"] span,
+  .mobile-auth-section .login-btn:hover span,
+  .mobile-auth-section a[routerLink="/register"]:hover span {
+    color: white !important;
+    transform: none !important;
+  }
+
+  /* Botão Desativar Conta */
+  .mobile-auth-section .deactivate-btn {
+    justify-content: center;
+    background: transparent;
+    color: #ef4444 !important;
+    border: 1px solid #ef4444 !important;
+  }
+
+  .mobile-auth-section .deactivate-btn:hover {
+    background: #ef4444 !important;
+    color: white !important;
+  }
+
+  .mobile-auth-section .deactivate-btn span::after {
+    display: none !important;
+    content: none !important;
+    width: 0 !important;
+  }
+
+  .mobile-auth-section .deactivate-btn:hover span,
+  .mobile-auth-section .deactivate-btn:hover {
+    color: white !important;
+  }
+
+  /* Modal de desativação */
+  .modal-content.deactivate-modal .modal-header h3 {
+    width: 100%;
+    text-align: center;
+    margin-left: 0;
+    margin-right: 0;
+  }
+
+  .modal-content.deactivate-modal .modal-header .close-btn {
+    position: absolute;
+    right: 15px;
+    top: 15px;
+  }
+
+ /* Responsividade do Modal Content (Histórico de Retiradas) */
+.modal-content {
+  width: 90% !important;
+  max-width: 500px !important;
+  max-height: 90vh !important;
+  padding: 14px !important;
+  box-sizing: border-box !important;
+}
+
+.modal-header {
+  padding: 10px 15px !important;
+  margin-bottom: 10px !important;
+}
+
+.modal-header h3 {
+  font-size: 18px !important;
+  margin: 0 !important;
+}
+
+.modal-body {
+  max-height: calc(90vh - 100px) !important;
+  overflow-y: auto !important;
+  padding: 0 5px !important;
+}
+
+/* Cards de retirada individuais */
+.withdrawal-card {
+  padding: 12px !important;
+  margin-bottom: 12px !important;
+}
+
+.withdrawal-header {
+  flex-direction: row !important;
+  justify-content: space-between !important;
+  align-items: center !important;
+  flex-wrap: wrap !important;
+  gap: 8px !important;
+  margin-bottom: 10px !important;
+}
+
+.withdrawal-header .date {
+  font-size: 12px !important;
+}
+
+.withdrawal-total {
+  font-size: 15px !important;
+  font-weight: 700 !important;
+}
+
+.withdrawal-items {
+  font-size: 12px !important;
+}
+
+.withdrawal-item {
+  padding: 6px 0 !important;
+  display: flex !important;
+  justify-content: space-between !important;
+  align-items: flex-start !important;
+  gap: 10px !important;
+}
+
+.withdrawal-item .item-name {
+  flex: 1 !important;
+  font-size: 12px !important;
+  word-wrap: break-word !important;
+}
+
+.withdrawal-item .item-price {
+  font-size: 12px !important;
+  white-space: nowrap !important;
+}
+
+/* Total individual de gastos */
+.modal-footer,
+.total-gastos {
+  padding: 12px 15px !important;
+  font-size: 14px !important;
+}
+}
+
+@media (max-width: 768px) {
   /* 0. Reset Básico */
   * {
     box-sizing: border-box; /* Garante que padding não afete a largura total */
@@ -1484,11 +1996,11 @@ td:last-child {
     overflow: hidden;
   }
 
-  .table-container table td {
+.table-container table td {
     display: flex !important;
     flex-direction: row;
     flex-wrap: wrap;
-    justify-content: space-between !important;
+    justify-content: flex-start !important;
     align-items: center !important;
     width: 100% !important;
     padding: 14px 16px !important;
@@ -1496,18 +2008,20 @@ td:last-child {
     border-top: none !important;
     border-left: none !important;
     border-right: none !important;
-    text-align: right !important;
+    text-align: left !important;
     font-size: 14px !important;
     white-space: normal !important;
     word-wrap: break-word;
   }
+
 
   .table-container table td:nth-child(1)::before,
   .table-container table td:nth-child(2)::before,
   .table-container table td:nth-child(3)::before,
   .table-container table td:nth-child(4)::before,
   .table-container table td:nth-child(5)::before,
-  .table-container table td:nth-child(6)::before {
+  .table-container table td:nth-child(6)::before,
+  .table-container table td:last-child::before {
     font-weight: 600;
     color: var(--text-color-light);
     display: inline !important;
@@ -1519,26 +2033,41 @@ td:last-child {
     text-align: left !important;
   }
 
-  .table-container table td:nth-child(1)::before {
+/* Os rótulos começarão a ser aplicados a partir do TD 2 (que é o ID) */
+.table-container table td:nth-child(2)::before {
     content: "ID: ";
-  }
-  .table-container table td:nth-child(2)::before {
+}
+.table-container table td:nth-child(3)::before {
     content: "Nome: ";
-  }
-  .table-container table td:nth-child(3)::before {
+}
+.table-container table td:nth-child(4)::before {
     content: "Descrição: ";
-  }
-  .table-container table td:nth-child(4)::before {
+}
+.table-container table td:nth-child(5)::before {
     content: "Custo (R$): ";
-  }
-  .table-container table td:nth-child(5)::before {
+}
+/* O TD 6 é o penúltimo (Tempo Reposição) */
+.table-container table td:nth-child(6):not(:last-child)::before {
     content: "Tempo Reposição (min): ";
-  }
-  .table-container table td:nth-child(6)::before {
+}
+.table-container table td:last-child::before {
     content: "Ações: ";
-  }
+}
+
+  /* OCULTA a coluna Imagem INTEIRA (cabeçalho e dados) no mobile */
+.table-container table th:nth-child(1),
+.table-container table td:nth-child(1) {
+    display: none !important;
+}
 
   .table-container table td:nth-child(6)::before {
+    display: block !important;
+    width: 100% !important;
+    margin-bottom: 8px !important;
+    text-align: left !important;
+  }
+
+  .table-container table td:last-child::before {
     display: block !important;
     width: 100% !important;
     margin-bottom: 8px !important;

@@ -19,10 +19,16 @@ public class Dish {
 
     @Column(name = "tempo_reposicao_min")
     private Integer tempoReposicao;
-    
-    // --- Bloqueio Lógico (Soft Delete) ---
+
     @Column(name = "is_active", nullable = false)
-    private boolean isActive = true; // Por padrão, o prato é ativo
+    private boolean isActive = true;
+
+    // Campo corrigido para suportar URLs longas do Cloudinary
+    @Lob
+    @Column(name = "image_url", columnDefinition = "TEXT")
+    private String imageUrl;
+
+    // --- GETTERS E SETTERS ---
 
     public Long getId() {
         return id;
@@ -63,13 +69,20 @@ public class Dish {
     public void setTempoReposicao(Integer tempoReposicao) {
         this.tempoReposicao = tempoReposicao;
     }
-    
-    // --- Getters e Setters para isActive ---
+
     public boolean isActive() {
         return isActive;
     }
 
     public void setActive(boolean isActive) {
         this.isActive = isActive;
+    }
+
+    public String getImageUrl() {
+        return imageUrl;
+    }
+
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
     }
 }

@@ -2,6 +2,23 @@
   padding: 25px 0rem 0px 0rem !important;
 }
 
+.table-container img {
+    width: 40px; 
+    height: 40px; 
+    object-fit: cover; 
+    border-radius: 4px;
+    /* Garante que a célula não force alinhamento estranho */
+    display: block; 
+    margin: 0 auto; 
+}
+
+/* Garante que a primeira coluna tenha espaço para a miniatura */
+.table-container th:nth-child(1),
+.table-container td:nth-child(1) {
+    width: 60px; /* Largura suficiente para 40px de imagem + padding */
+    text-align: center;
+}
+
 @media (max-width: 768px) {
   .page-title {
     line-height: 1.3;

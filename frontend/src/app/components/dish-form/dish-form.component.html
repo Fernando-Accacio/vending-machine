@@ -1,19 +1,50 @@
-    <a class="back-arrow-link" (click)="goBack()">
-        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-right: 5px;">
-            <path d="m12 19-7-7 7-7"/><path d="M19 12H5"/>
-        </svg>
-        Voltar
-    </a>
+<a class="back-arrow-link" (click)="goBack()">
+    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-right: 5px;">
+        <path d="m12 19-7-7 7-7"/><path d="M19 12H5"/>
+    </svg>
+    Voltar
+</a>
 
+<div *ngIf="successMessage" class="toast-message success">
+    {{ successMessage }}
+</div>
+<div *ngIf="errorMessage" class="toast-message error">
+    {{ errorMessage }}
+</div>
 <div class="form-wrapper">
     
     <form (ngSubmit)="saveDish()">
-
         <div class="form-container">
 
           <h2>{{ isEdit ? 'Editar Item' : 'Adicionar Item' }}</h2>
-
             
+            <div class="form-group">
+                <label>Imagem do Produto:</label>
+                <div class="image-options" style="display: flex; gap: 15px; margin-bottom: 10px;">
+                    <label>
+                        <input type="radio" name="imgOpt" [(ngModel)]="imageOption" value="link"> Link da Internet
+                    </label>
+                    <label>
+                        <input type="radio" name="imgOpt" [(ngModel)]="imageOption" value="upload"> Upload de Arquivo
+                    </label>
+                </div>
+
+                <div *ngIf="imageOption === 'link'">
+                    <input type="text" placeholder="Cole a URL da imagem aqui (https://...)" [(ngModel)]="dish.imageUrl" name="imageUrl">
+                    <div *ngIf="dish.imageUrl" style="margin-top: 10px;">
+                        <img [src]="dish.imageUrl" alt="Preview" style="max-width: 100px; height: auto; border-radius: 4px;">
+                    </div>
+                </div>
+
+                <div *ngIf="imageOption === 'upload'">
+                    <input type="file" (change)="onFileSelected($event)" accept="image/*">
+                    <div *ngIf="isEdit && dish.imageUrl && !selectedFile" style="margin-top: 10px;">
+                        <small>Imagem Atual:</small><br>
+                        <img [src]="dish.imageUrl" alt="Atual" style="max-width: 100px; height: auto; border-radius: 4px;">
+                    </div>
+                </div>
+            </div>
+
             <div class="form-group">
                 <label for="name">Nome:</label>
                 <input type="text" id="name" [(ngModel)]="dish.name" name="name" required>
@@ -37,6 +68,5 @@
         </div>
 
         <button class="adicionar" type="submit">{{ isEdit ? 'Atualizar' : 'Adicionar' }}</button>
-    
     </form>
 </div>

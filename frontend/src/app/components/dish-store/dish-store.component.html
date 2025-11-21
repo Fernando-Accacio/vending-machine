@@ -3,6 +3,7 @@
 </div>
 
 <div class="container" *ngIf="!isLoadingLocal">
+  
   <div class="dishes-container">
     <h2>Itens Disponíveis</h2>
 
@@ -12,6 +13,13 @@
 
     <div *ngIf="dishes.length > 0" class="dishes-grid">
       <div *ngFor="let dish of dishes" class="dish-card">
+        
+        <!-- Container da imagem com altura maior -->
+        <div class="dish-image-container">
+            <img [src]="dish.imageUrl || 'assets/logo.png'" 
+                 [alt]="dish.name">
+        </div>
+
         <h3>{{dish.name}}</h3>
         <p>{{dish.description}}</p>
         
@@ -19,6 +27,7 @@
           <p class="real-cost">Custo real: R$ {{dish.custo.toFixed(2)}}</p>
           <p class="payable-cost">Valor a pagar: R$ 0,00</p>
         </div>
+        
         <button (click)="addToCart(dish)" class="add-button">
           Adicionar à cesta
         </button>
@@ -31,8 +40,14 @@
     <div *ngIf="cart.length === 0" class="empty-cart">
       Sua cesta está vazia
     </div>
+    
     <div *ngIf="cart.length > 0">
       <div *ngFor="let item of cart" class="cart-item">
+        
+        <img [src]="item.imageUrl || 'assets/logo.png'" 
+             [alt]="item.name" 
+             class="cart-item-image">
+
         <div class="item-info">
           <span>{{item.name}}</span>
           
@@ -41,6 +56,7 @@
             <span class="payable-cost-cart">Valor a pagar: R$ 0,00</span>
           </div>
         </div>
+        
         <div class="quantity-controls">
           <button (click)="removeFromCart(item)">-</button>
           <span>{{item.quantity}}</span>
@@ -52,6 +68,7 @@
         <strong class="real-cost-total">Custo total (ONG): R$ {{totalAmount.toFixed(2)}}</strong>
         <strong class="payable-cost-total">Total a pagar: R$ 0,00</strong>
       </div>
+      
       <div class="cart-lead-time" style="margin-top: 10px; text-align: right;">
         <strong>Tempo de Retirada: {{ totalLeadTime }} min</strong>
       </div>

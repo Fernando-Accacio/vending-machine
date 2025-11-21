@@ -323,8 +323,59 @@ h2 {
   border-radius: 8px;
 }
 
+/* --- Estilos para o Grid de Itens --- */
+.dishes-grid {
+    /* Ajusta o grid para 2 colunas em desktop e 1 coluna em mobile */
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); 
+    gap: 20px;
+}
+
+.dish-card {
+    /* Garante que o card é um container flexível */
+    display: flex;
+    flex-direction: column;
+    overflow: hidden; /* Importante para o canto arredondado da imagem */
+}
+
+/* --- Imagem do Produto no Card (Cliente) --- */
+.dish-image-container {
+    width: 100%;
+    height: 200px;
+    overflow: hidden;
+    border-radius: 12px 12px 0 0;
+    margin-bottom: 15px;
+}
+
+.dish-image-container img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    transition: transform 0.3s ease-in-out;
+}
+
+
+.dish-card:hover .dish-image-container img {
+    /* Efeito sutil no hover para interação */
+    transform: scale(1.05);
+}
+
+/* --- Miniatura na Cesta (Carrinho) --- */
+.cart-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+.cart-item img {
+    width: 50px; /* Tamanho da miniatura na cesta */
+    height: 50px;
+    object-fit: cover;
+    border-radius: 6px;
+    flex-shrink: 0; /* Impede que o flexbox encolha a imagem */
+}
+
 @media (max-width: 768px) {
-  
+
   .container-loading {
     display: flex;
     flex-direction: column; /* Garante alinhamento vertical */
@@ -336,4 +387,9 @@ h2 {
     padding: 20px;
     box-sizing: border-box;  /* Garante que o padding não estoure a largura */
   }
+
+      .dishes-grid {
+        /* Garante uma coluna em mobile */
+        grid-template-columns: 1fr;
+      }
 }

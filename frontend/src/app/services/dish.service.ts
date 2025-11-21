@@ -3,41 +3,43 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { environment } from '../../environments/environment'; 
 
-// 1. INTERFACE
 export interface Dish {
-  id: number;
-  name: string;
-  description: string;
-  custo: number; 
-  tempoReposicao: number; 
+  id?: number; // Opcional
+  name: string;
+  description: string;
+  custo: number; 
+  tempoReposicao: number;
+  imageUrl?: string; // Novo campo
 }
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root'
 })
 export class DishService {
-  
-  private apiUrl = `${environment.apiUrl}/dishes`; 
+  
+  private apiUrl = `${environment.apiUrl}/dishes`; 
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) {}
 
-  getDishes(): Observable<Dish[]> {
-    return this.http.get<Dish[]>(this.apiUrl);
-  }
+  getDishes(): Observable<Dish[]> {
+    return this.http.get<Dish[]>(this.apiUrl);
+  }
 
-  getDish(id: number): Observable<Dish> {
-    return this.http.get<Dish>(`${this.apiUrl}/${id}`);
-  }
+  getDish(id: number): Observable<Dish> {
+    return this.http.get<Dish>(`${this.apiUrl}/${id}`);
+  }
 
-  createDish(dish: Omit<Dish, 'id'>): Observable<Dish> {
-    return this.http.post<Dish>(this.apiUrl, dish);
-  }
+  // Aceita FormData agora
+  createDish(dishData: FormData): Observable<Dish> {
+    return this.http.post<Dish>(this.apiUrl, dishData);
+  }
 
-  updateDish(id: number, dish: Partial<Dish>): Observable<Dish> {
-    return this.http.put<Dish>(`${this.apiUrl}/${id}`, dish);
-  }
+  // Aceita FormData agora
+  updateDish(id: number, dishData: FormData): Observable<Dish> {
+    return this.http.put<Dish>(`${this.apiUrl}/${id}`, dishData);
+  }
 
-  deleteDish(id: number): Observable<void> {
-    return this.http.delete<void>(`${this.apiUrl}/${id}`);
-  }
+  deleteDish(id: number): Observable<void> {
+    return this.http.delete<void>(`${this.apiUrl}/${id}`);
+  }
 }
