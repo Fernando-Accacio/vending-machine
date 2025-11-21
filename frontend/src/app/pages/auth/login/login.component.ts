@@ -34,7 +34,7 @@ export class LoginComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    setTimeout(() => { this.isLoadingLocal = false; }, 50); 
+    setTimeout(() => { this.isLoadingLocal = false; }, 500); 
   }
 
   togglePasswordVisibility(): void {
@@ -71,17 +71,13 @@ export class LoginComponent implements OnInit {
       error: (error) => {
         console.log('ERRO LOGIN:', error);
         
-        // Pega a mensagem vinda do JSON do backend
         const serverMessage = error.error?.message;
 
         if (error.status === 403) {
-            // CONTA BLOQUEADA
             this.showMessage(serverMessage || 'Sua conta foi suspensa. Entre em contato com a gerência.');
         } else if (error.status === 401) {
-            // SENHA ERRADA
             this.showMessage('Documento e/ou senha inválidas!');
         } else {
-            // OUTROS ERROS
             this.showMessage('Erro de conexão ou servidor indisponível.');
         }
         

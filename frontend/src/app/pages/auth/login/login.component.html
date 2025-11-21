@@ -1,5 +1,6 @@
-<div *ngIf="isLoadingLocal" class="container-loading">
-  <p>Carregando... Por favor, aguarde.</p>
+<div *ngIf="isLoadingLocal" class="loading-overlay">
+  <div class="spinner"></div>
+  <p>Carregando...</p>
 </div>
 
 <div *ngIf="!isLoadingLocal">
@@ -10,6 +11,10 @@
 
   <div class="login-container">
     <h2>Login</h2>
+
+    <div *ngIf="message.text" class="alert" [ngClass]="{'alert-success': message.type === 'success', 'alert-error': message.type === 'error'}">
+      {{ message.text }}
+    </div>
 
     <form (ngSubmit)="login()">
       
@@ -32,9 +37,6 @@
       
       <button class="adicionar" type="submit">Entrar</button>
 
-      <div *ngIf="message.text" class="alert" style="margin-top: 15px;" [ngClass]="{'alert-success': message.type === 'success', 'alert-error': message.type === 'error'}">
-        {{ message.text }}
-      </div>
       <div class="register-link">
         Não tem uma conta? <a routerLink="/register">Registre-se aqui</a>
       </div>

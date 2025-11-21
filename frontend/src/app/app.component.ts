@@ -11,7 +11,6 @@ import { FooterComponent } from './components/footer/footer.component';
 @Component({
   selector: 'app-root',
   standalone: true,
-  // ADICIONADO FooterComponent NA LISTA DE IMPORTS
   imports: [CommonModule, RouterModule, FormsModule, FooterComponent],
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
