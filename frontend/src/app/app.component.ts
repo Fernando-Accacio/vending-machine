@@ -33,6 +33,9 @@ export class AppComponent implements OnInit {
   deactivateError = '';
   isDeactivating = false;
 
+  // --- NOVA VARIÁVEL: Modal de Logout ---
+  showLogoutModal = false;
+
   constructor(
     private authService: AuthenticateService,
     private userService: UserService, 
@@ -48,25 +51,49 @@ export class AppComponent implements OnInit {
       this.isEntregador = this.authService.isEntregador();
       this.isCliente = this.authService.isCliente();
       
-      // Lógica para esconder header no login
-      this.showHeader = this.router.url !== '/login';
+      this.checkHeaderDisplay(this.router.url);
     });
 
-    this.router.events.subscribe(() => {
-      this.showHeader = this.router.url !== '/login';
+    this.router.events.subscribe((val: any) => {
+      if (this.router.url) {
+        this.checkHeaderDisplay(this.router.url);
+      }
     });
+  }
+
+  checkHeaderDisplay(url: string) {
+    if (url.includes('/login') || url.includes('/register')) {
+      this.showHeader = false;
+    } else {
+      this.showHeader = true;
+    }
   }
 
   toggleMenu() {
     this.isMenuOpen = !this.isMenuOpen;
   }
 
-  logout() {
-    this.isLoadingGlobal = true;
+  // --- LOGOUT COM CONFIRMAÇÃO ---
+
+  // 1. Abre o modal de confirmação
+  openLogoutModal() {
+    this.showLogoutModal = true;
+    this.isMenuOpen = false; // Fecha o menu mobile se estiver aberto
+  }
+
+  // 2. Fecha o modal se o usuário desistir
+  closeLogoutModal() {
+    this.showLogoutModal = false;
+  }
+
+  // 3. Executa o logout de fato (chamado pelo botão "Sim" do modal)
+  confirmLogout() {
+    this.showLogoutModal = false; // Fecha o modal
+    this.isLoadingGlobal = true;  // Mostra o spinner global
+    
     setTimeout(() => {
       this.authService.logout();
       this.isLoadingGlobal = false;
-      this.isMenuOpen = false;
       this.router.navigate(['/login']);
     }, 800);
   }

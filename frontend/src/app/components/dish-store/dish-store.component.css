@@ -322,3 +322,18 @@ h2 {
   border: 1px dashed #ddd;
   border-radius: 8px;
 }
+
+@media (max-width: 768px) {
+  
+  .container-loading {
+    display: flex;
+    flex-direction: column; /* Garante alinhamento vertical */
+    justify-content: center; /* Centraliza verticalmente */
+    align-items: center;     /* Centraliza horizontalmente */
+    min-height: 60vh;        /* Força a altura para pegar o meio da tela */
+    width: 100%;
+    text-align: center;
+    padding: 20px;
+    box-sizing: border-box;  /* Garante que o padding não estoure a largura */
+  }
+}

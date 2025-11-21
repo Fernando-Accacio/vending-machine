@@ -36,7 +36,8 @@ export class RegisterComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    setTimeout(() => { this.isLoadingLocal = false; }, 50);
+    // Aumentei para 500ms para visualizar o spinner, igual ao login
+    setTimeout(() => { this.isLoadingLocal = false; }, 500);
   }
 
   togglePasswordVisibility(): void { this.passwordFieldType = this.passwordFieldType === 'password' ? 'text' : 'password'; }
@@ -54,12 +55,12 @@ export class RegisterComponent implements OnInit {
   register(): void {
     this.message = { text: '', type: null };
 
-    // Expressão regular para validar formato de email padrão (ex: usuario@dominio.com)
+    // Validação de email
     const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
 
     if (!this.registerData.email || !emailPattern.test(this.registerData.email)) {
        this.showMessage('Por favor, insira um endereço de email válido.');
-       return; // Interrompe o registro aqui
+       return; 
     }
 
     if (this.registerData.password !== this.registerData.confirmPassword) {

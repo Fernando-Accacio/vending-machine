@@ -20,6 +20,14 @@ html, body {
   font-family: 'Roboto', sans-serif;
   background-color: var(--background-color);
   color: var(--text-color);
+
+  -webkit-hyphens: auto; /* Para Safari e iOS */
+  -ms-hyphens: auto;     /* Para versões antigas da Microsoft */
+  hyphens: auto;         /* Padrão moderno */
+
+  /* Garante que palavras gigantes (ex: URLs) quebrem se necessário */
+  overflow-wrap: break-word; 
+  word-wrap: break-word;
 }
 
 /*
@@ -638,8 +646,6 @@ a:hover {
 .auth-btn.desktop-nav {
     display: flex;
     align-items: center;
-    /* AUMENTADO: Distância maior entre o "Mudar Senha" e o grupo do usuário */
-    gap: 35px; 
     margin-left: auto;
 }
 
@@ -787,7 +793,13 @@ a:hover {
     background-color: rgba(240, 240, 240, 1.0) !important; /* Garante o fundo correto */
 }
 
-/* O botão de sair não deve ter a linha */
+/* --- Remove linha roxa do botão Desativar --- */
+.auth-btn .deactivate-btn::after {
+   display: none !important;
+   content: none !important;
+   width: 0 !important;
+}
+
 .logout-btn::after,
 .danger-btn::after {
     display: none !important;
@@ -801,6 +813,22 @@ a:hover {
     color: white !important; /* Texto branco */
     background-color: var(--danger-hover) !important; /* Fundo vermelho escuro */
     box-shadow: 0 4px 12px rgba(220, 38, 38, 0.3) !important;
+}
+
+/* Botão de Registrar / Criar Conta (Estilo idêntico ao Login) */
+.auth-btn .register-btn {
+  background-color: var(--primary-color);
+  color: white;
+  font-weight: 600;
+}
+
+.auth-btn .register-btn:hover {
+  background-color: var(--primary-hover);
+}
+
+/* Remove a linha de baixo (underline) igual ao login */
+.header .register-btn::after {
+    display: none !important;
 }
 
 /* Botões primários dentro do header (ex: "Nova Retirada") */
@@ -928,6 +956,18 @@ td:last-child {
   width: 90px;
   padding: 10px 12px;  
   margin: 0 !important;
+}
+
+/* Força todos os botões dentro da coluna de ações a terem a mesma largura */
+.table-container td button,
+.action-buttons-container button {
+    width: 110px !important;       /* Largura fixa igual para todos */
+    min-width: 110px !important;   /* Garante que não encolha */
+    padding: 10px 0 !important;    /* Remove padding lateral para centralizar pelo width */
+    display: inline-flex !important;
+    justify-content: center !important;
+    align-items: center !important;
+    box-sizing: border-box !important;
 }
 
 /* Botão "NOVO ITEM" (newDish) */
@@ -1078,6 +1118,134 @@ td:last-child {
     cursor: not-allowed;
 }
 
+/* --- CSS GERAL DO MODAL DE LOGOUT --- */
+
+/* Fundo escuro atrás do modal */
+.modal-backdrop {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5); /* Escurece o fundo */
+    backdrop-filter: blur(2px); /* Desfoque leve no fundo */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999; /* Fica na frente de tudo */
+    opacity: 1;
+    transition: opacity 0.3s ease;
+}
+
+/* A caixa branca do modal */
+.modal-content {
+    background: #ffffff;
+    width: 100%;
+    max-width: 420px; /* Tamanho máximo no Desktop */
+    border-radius: 12px; /* Cantos arredondados */
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+    padding: 24px;
+    position: relative;
+    box-sizing: border-box;
+    animation: slideUp 0.3s ease-out;
+}
+
+/* Cabeçalho (Título e Botão Fechar) */
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 16px;
+}
+
+.modal-header h3 {
+    margin: 0;
+    font-size: 1.5rem; /* Tamanho grande igual ao print */
+    color: #1f2937; /* Cor escura */
+    font-weight: 600;
+    line-height: 1.2;
+}
+
+/* Botão X de fechar */
+.close-btn {
+    background: transparent;
+    border: none;
+    font-size: 1.5rem;
+    color: #9ca3af;
+    cursor: pointer;
+    line-height: 1;
+    padding: 0;
+    transition: color 0.2s;
+}
+
+.close-btn:hover {
+    color: #ef4444; /* Vermelho ao passar o mouse */
+}
+
+/* Corpo do texto */
+.modal-body {
+    margin-bottom: 24px;
+    font-size: 1rem;
+    color: #4b5563; /* Cinza médio */
+    line-height: 1.5;
+    border-top: 1px solid #e5e7eb; /* A linha fina separando o título */
+    padding-top: 16px;
+}
+
+/* Rodapé (Botões) */
+.modal-footer {
+    display: flex;
+    justify-content: flex-end; /* Alinha à direita */
+    gap: 12px; /* Espaço entre os botões */
+}
+
+/* --- ESTILOS DOS BOTÕES (HOVER) --- */
+
+/* Botão Cancelar (Branco) */
+.btn-cancel {
+    background-color: #ffffff;
+    border: 1px solid #d1d5db;
+    color: #374151;
+    padding: 10px 22px;
+    border-radius: 6px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.btn-cancel:hover {
+    background-color: #f3f4f6; /* Cinza bem clarinho */
+    border-color: #9ca3af;
+    color: #111827;
+}
+
+/* Botão Sair (Vermelho) */
+.btn-confirm-deactivate {
+    background-color: #ef4444; /* Vermelho base */
+    border: none;
+    color: #ffffff;
+    padding: 10px 24px;
+    border-radius: 6px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+}
+
+.btn-confirm-deactivate:hover {
+    background-color: #dc2626; /* Vermelho mais escuro */
+    box-shadow: 0 4px 6px rgba(220, 38, 38, 0.2);
+}
+
+/* Animação de entrada suave */
+@keyframes slideUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+.modal-body {
+    border-top: none !important;
+}
+
 /* =========================================
    CORREÇÕES ESPECÍFICAS PARA CELULARES PEQUENOS (320px) - V3 FINAL
    ========================================= */
@@ -1148,6 +1316,49 @@ td:last-child {
     justify-content: center !important;
     align-items: center !important;
   }
+}
+
+/* --- MEDIA QUERY ESPECÍFICO PARA O MODAL EM TELAS PEQUENAS --- */
+@media (max-width: 480px) {
+    
+    .modal-content {
+        width: 90% !important; /* Deixa uma margem lateral */
+        max-width: 90% !important;
+        margin: 0 auto !important; /* Centraliza */
+        padding: 20px !important;
+        border-radius: 16px !important; /* Mais arredondado no mobile parece mais app nativo */
+    }
+
+    /* Ajuste do Título "Sair do Sistema" */
+    .modal-header h3 {
+        font-size: 1.4rem !important;
+        text-align: left; /* Garante alinhamento à esquerda como na foto */
+    }
+
+    /* Ajuste do Texto */
+    .modal-body {
+        font-size: 0.95rem !important;
+        text-align: left;
+        padding-top: 15px !important;
+        margin-bottom: 20px !important;
+    }
+
+    /* Ajuste dos Botões no Mobile */
+    .modal-footer {
+        gap: 10px !important;
+    }
+
+    .btn-cancel, 
+    .btn-confirm-deactivate {
+        font-size: 14px !important;
+        padding: 10px 16px !important;
+        flex: 1; /* Faz os botões dividirem o espaço ou terem tamanho igual se desejar */
+        justify-content: center;
+        display: flex;
+        align-items: center;
+    }
+    
+    /* Se quiser que o botão "Sair" não fique esticado, remova o "flex: 1" acima */
 }
 
 @media (max-width: 1150px) {
@@ -1348,12 +1559,16 @@ td:last-child {
   .table-container table td .delete,
   .table-container table td .edit {
     flex: none !important;
-    width: auto !important;
-    min-width: 0 !important;
-    padding: 12px 16px !important;
+    width: 110px !important;      /* Força o tamanho fixo */
+    min-width: 110px !important;  /* Garante que não encolha */
+    padding: 10px 0 !important;   /* Remove padding lateral para o texto centralizar */
     margin: 0 !important;
     white-space: nowrap !important;
     font-size: 14px !important;
+    text-align: center !important;
+    justify-content: center !important;
+    display: inline-flex !important;
+    align-items: center !important;
   }
 
   /* 13. AJUSTE "MINHAS RETIRADAS" (MOBILE) */
@@ -1582,10 +1797,11 @@ td:last-child {
 /* --- 7. ESTADOS DE INTERAÇÃO (HOVER E ATIVO) --- */
 
 /* Quando passar o mouse ou estiver ativo: EXPANDIR A LINHA */
-.mobile-menu .nav-button:hover span::after,
 .mobile-menu .nav-button.active span::after {
-    transform: scaleX(1);
-}
+      display: none !important;
+      content: none !important;
+      transform: scaleX(0) !important;
+  }
 
 /* Mudar a cor do texto */
 .mobile-menu .nav-button:hover span,
@@ -1595,10 +1811,11 @@ td:last-child {
 
 /* Estado ATIVO no botão pai */
 .mobile-menu .nav-button.active {
-    background-color: white !important;
-    font-weight: 700;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05) !important;
-}
+      background-color: white !important;
+      color: var(--primary-color) !important;
+      font-weight: 700 !important;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.05) !important; /* Sombra suave para destacar */
+  }
 
 /* Estado HOVER no botão pai */
 .mobile-menu a.nav-button:hover,
@@ -1700,7 +1917,7 @@ td:last-child {
 .menu-divider {
     width: 100%;
     border: 0;
-    border-top: 1px solid var(--border-color);
+    border-top: 1px solid lightgray;
     margin: 20px 0;
 }
 
@@ -1708,13 +1925,64 @@ td:last-child {
     max-height: 40px;
 }
 
-.mobile-auth-section {
+/* Container com espaçamento superior (a distância para "Itens") */
+  .mobile-auth-section {
     width: 100%;
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 8px;
-}
+    margin-top: 20px;
+    border-top: 1px solid rgba(0,0,0,0.05);
+    padding-top: 20px;
+  }
+
+  /* Estilo dos botões (Roxo igual ao Desktop) */
+  /* Seleciona o botão de Login e o de Registro dentro do menu mobile */
+  .mobile-auth-section .login-btn,
+  .mobile-auth-section a[routerLink="/register"] {
+    background-color: var(--primary-color) !important; /* Fundo Roxo */
+    color: white !important;                           /* Texto Branco */
+    font-weight: 700 !important;
+    margin: 6px 0 !important;                          /* Espaço entre os botões */
+    box-shadow: 0 4px 6px rgba(76, 53, 211, 0.2) !important; /* Sombra suave roxa */
+  }
+
+  /* Hover dos botões (Roxo um pouco diferente) */
+  .mobile-auth-section .login-btn:hover,
+  .mobile-auth-section a[routerLink="/register"]:hover {
+    background-color: var(--primary-hover) !important;
+    color: white !important;
+    transform: translateY(-1px);
+  }
+
+  /* Remover a animação da linha embaixo do texto (Scale-X) */
+  .mobile-auth-section .login-btn span::after,
+  .mobile-auth-section a[routerLink="/register"] span::after {
+    display: none !important;
+    content: none !important;
+  }
+
+  /* 5. Forçar a cor do texto do SPAN para branco (mesmo no hover) */
+  .mobile-auth-section .login-btn span,
+  .mobile-auth-section a[routerLink="/register"] span {
+    color: white !important;
+  }
+
+/* --- CORREÇÃO DO HOVER (TEXTO SUMINDO) --- */
+
+  /* Força o SPAN (texto) a ficar BRANCO no hover desses botões específicos */
+  .mobile-auth-section .login-btn:hover span,
+  .mobile-auth-section a[routerLink="/register"]:hover span {
+    color: white !important;
+    transform: none !important; /* Evita que o texto mude de cor/tamanho indesejado */
+  }
+
+  /* Garante o fundo roxo escuro no hover */
+  .mobile-auth-section .login-btn:hover,
+  .mobile-auth-section a[routerLink="/register"]:hover {
+    background-color: var(--primary-hover) !important;
+    color: white !important;
+  }
 
 .mobile-auth-section .deactivate-btn {
         /* Garante que o texto fique centralizado dentro do botão */
@@ -1730,6 +1998,30 @@ td:last-child {
         background: #ef4444 !important;
         color: white !important;
     }
+
+  .mobile-auth-section .deactivate-btn span::after {
+      display: none !important;
+      content: none !important;
+      width: 0 !important;
+  }
+
+  .mobile-auth-section .deactivate-btn:hover span,
+  .mobile-auth-section .deactivate-btn:hover {
+      color: white !important;
+  }
+
+  /* 1. Remove a linha roxa do botão 'Mudar Senha' */
+  .mobile-menu .change-pass-btn span::after {
+      display: none !important;
+      content: none !important;
+      width: 0 !important;
+  }
+
+  /* 2. Remove o texto roxo no hover do botão 'Sair' (Força branco) */
+  .mobile-menu .danger-btn:hover span,
+  .mobile-menu .danger-btn:hover {
+      color: white !important;
+  }
 
     /* Centralizar o texto "Desativar Conta" no H3 do modal */
     .modal-content.deactivate-modal .modal-header h3 {
