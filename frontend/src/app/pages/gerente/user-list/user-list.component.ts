@@ -17,13 +17,16 @@ export class UserListComponent implements OnInit {
   errorMessage = '';
 
   // Controle de Carregamento da Tela Principal
-  isLoading: boolean = true; // <--- Começa travado
+  isLoading: boolean = true;
 
   // Controle do Modal de Histórico
   showHistoryModal = false;
   selectedUserHistory: any[] = [];
   selectedUserName = '';
   isLoadingHistory = false;
+  
+  // VARIÁVEL PARA O TOTAL GERAL
+  totalHistoryValue: number = 0;
 
   constructor(
     private userService: UserService,
@@ -36,9 +39,6 @@ export class UserListComponent implements OnInit {
   }
 
   loadUsers() {
-    // Note: Se você quiser usar SÓ essa tela branca e não o spinner global, 
-    // pode remover o loadingService.show() daqui. 
-    // Vou deixar os dois por segurança, mas a tela branca terá prioridade visual.
     this.isLoading = true; 
     
     this.userService.getAllUsers().subscribe({
@@ -48,14 +48,13 @@ export class UserListComponent implements OnInit {
             return role !== 'GERENTE' && role !== 'ADMIN';
         });
         
-        // Simula um pequeno delay (opcional) para não piscar muito rápido se a net for veloz
         setTimeout(() => {
-           this.isLoading = false; // <--- Libera a tela
+           this.isLoading = false;
         }, 500);
       },
       error: (err) => {
         this.errorMessage = 'Erro ao carregar usuários.';
-        this.isLoading = false; // <--- Libera a tela para mostrar o erro
+        this.isLoading = false;
       }
     });
   }
@@ -87,10 +86,13 @@ export class UserListComponent implements OnInit {
     this.showHistoryModal = true;
     this.isLoadingHistory = true;
     this.selectedUserHistory = []; 
+    this.totalHistoryValue = 0; // Reseta o valor ao abrir
 
     this.withdrawalService.getWithdrawalsByUserId(user.id).subscribe({
       next: (data) => {
         this.selectedUserHistory = data;
+        // CALCULA O TOTAL ASSIM QUE OS DADOS CHEGAM
+        this.calculateTotalHistory();
         this.isLoadingHistory = false;
       },
       error: (err) => {
@@ -98,6 +100,12 @@ export class UserListComponent implements OnInit {
         this.isLoadingHistory = false;
       }
     });
+  }
+
+  // FUNÇÃO PARA SOMAR TUDO
+  calculateTotalHistory() {
+    // Soma o campo 'totalCost' de cada item do histórico
+    this.totalHistoryValue = this.selectedUserHistory.reduce((acc, item) => acc + item.totalCost, 0);
   }
 
   closeModal() {

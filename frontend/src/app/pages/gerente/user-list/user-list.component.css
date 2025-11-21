@@ -382,6 +382,32 @@ h2 {
     gap: 6px; /* Espaço entre o ícone e o texto */
 }
 
+/* --- Rodapé de Total Geral --- */
+.total-footer {
+  margin-top: 20px;
+  padding-top: 15px;
+  border-top: 2px dashed #ccc; /* Linha pontilhada para separar */
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #f9f9f9; /* Leve fundo para destaque */
+  padding: 15px;
+  border-radius: 0 0 8px 8px;
+}
+
+.total-label {
+  font-weight: 600;
+  color: #555;
+  font-size: 1rem;
+  text-transform: uppercase;
+}
+
+.total-value {
+  font-weight: bold;
+  color: #d32f2f;
+  font-size: 1.4rem;
+}
+
 /* =========================================
    RESPONSIVIDADE PARA MOBILE (ESTILO CARD)
    ========================================= */
@@ -549,4 +575,33 @@ h2 {
     .item-row {
         font-size: 0.8rem;
     }
+
+    /* Ajusta o container do footer para não ficar tão apertado */
+  .total-footer {
+    padding: 10px; /* Reduz o padding */
+    align-items: flex-end; /* Alinha melhor caso quebre linha */
+  }
+
+  /* Diminui o texto "TOTAL INDIVIDUAL..." */
+  .total-label {
+    font-size: 0.75rem; /* Reduz para aprox 12px */
+    line-height: 1.1;   /* Diminui o espaço entre as linhas do texto quebrado */
+    max-width: 60%;     /* Garante que ele não empurre o preço para fora */
+  }
+
+  /* Diminui o valor */
+  .total-value {
+    font-size: 1.1rem; /* Reduz para aprox 17px */
+  }
+
+  /* --- Opcional: Ajuste para os itens da lista (o absorvente da imagem) --- */
+  .history-card .items-detail-list .item-row {
+    font-size: 0.85rem; /* Deixa os itens um pouco menores também */
+  }
+  
+  /* Garante que o preço do item (R$ 4.50) não quebre linha feio */
+  .item-price {
+    white-space: nowrap;
+    margin-left: 5px;
+  }
 }
