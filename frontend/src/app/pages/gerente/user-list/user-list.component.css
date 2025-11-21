@@ -409,6 +409,78 @@ h2 {
   font-size: 1.4rem;
 }
 
+/* Modal em mobile - CORRIGIDO */
+.modal-content {
+    width: 90% !important;
+    max-width: 500px !important; /* Limita a largura máxima */
+    max-height: 80vh !important; /* Reduz a altura para 80% da tela */
+    overflow-y: auto !important;
+    margin: 20px auto !important; /* Centraliza */
+    padding: 16px !important; /* Reduz o padding interno */
+    box-sizing: border-box !important;
+}
+
+/* Ajusta o cabeçalho do modal */
+.modal-header {
+    padding: 12px 15px !important;
+    margin-bottom: 10px !important;
+}
+
+.modal-header h3 {
+    font-size: 1.1rem !important;
+    margin: 0 !important;
+}
+
+/* Ajusta o corpo do modal (onde ficam os cards) */
+.modal-body {
+    max-height: calc(80vh - 120px) !important; /* Altura dinâmica */
+    overflow-y: auto !important;
+    padding: 0 8px !important;
+}
+
+/* Cards de histórico menores */
+.history-card {
+    padding: 10px !important;
+    margin-bottom: 10px !important;
+}
+
+/* Cabeçalho dos cards (data e total) */
+.history-header {
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    gap: 4px !important;
+    margin-bottom: 8px !important;
+}
+
+.history-date {
+    font-size: 0.8rem !important;
+}
+
+.history-total {
+    font-size: 0.9rem !important;
+}
+
+/* Itens da lista menores */
+.item-row {
+    font-size: 0.75rem !important;
+    padding: 3px 0 !important;
+}
+
+/* Footer do Total Individual */
+.total-footer {
+    padding: 8px !important;
+    margin-top: 12px !important;
+}
+
+.total-label {
+    font-size: 0.7rem !important;
+    max-width: 65% !important;
+}
+
+.total-value {
+    font-size: 1rem !important;
+}
+
 /* =========================================
    RESPONSIVIDADE PARA MOBILE (ESTILO CARD)
    ========================================= */
