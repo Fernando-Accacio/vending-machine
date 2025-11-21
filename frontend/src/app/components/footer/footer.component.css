@@ -1,0 +1,32 @@
+.app-footer {
+  background-color: #ffffff;
+  border-top: 1px solid #e5e7eb; /* Linha sutil no topo */
+  padding: 25px 0; /* Espaçamento em cima e embaixo */
+  width: 100%;
+  margin-top: auto; /* Garante que fique no final da página (Sticky) */
+}
+
+.footer-content {
+  max-width: 1360px;
+  margin: 0 auto;
+  
+  /* CENTRALIZAÇÃO */
+  display: flex;
+  justify-content: center; /* Centraliza horizontalmente */
+  align-items: center;     /* Centraliza verticalmente */
+}
+
+.copyright {
+  font-size: 0.9rem;       /* Tamanho legível, mas discreto */
+  color: #6b7280;          /* Cinza suave (igual da imagem) */
+  font-weight: 400;        /* Peso da fonte normal */
+  text-align: center;      /* Garante centro em telas pequenas */
+}
+
+/* Responsividade básica */
+@media (max-width: 768px) {
+  .copyright {
+    font-size: 0.8rem;
+    padding: 0 15px; /* Evita que o texto cole na borda do celular */
+  }
+}

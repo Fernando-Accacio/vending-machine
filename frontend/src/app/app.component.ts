@@ -5,10 +5,14 @@ import { AuthenticateService } from './services/auth/authenticate.service';
 import { UserService } from './services/user.service';
 import { FormsModule } from '@angular/forms';
 
+// IMPORTAÇÃO DO FOOTER
+import { FooterComponent } from './components/footer/footer.component'; 
+
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [CommonModule, RouterModule, FormsModule],
+  // ADICIONADO FooterComponent NA LISTA DE IMPORTS
+  imports: [CommonModule, RouterModule, FormsModule, FooterComponent],
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })
@@ -32,7 +36,7 @@ export class AppComponent implements OnInit {
 
   constructor(
     private authService: AuthenticateService,
-    private userService: UserService, // Injetar UserService
+    private userService: UserService, 
     private router: Router
   ) {}
 
@@ -45,7 +49,7 @@ export class AppComponent implements OnInit {
       this.isEntregador = this.authService.isEntregador();
       this.isCliente = this.authService.isCliente();
       
-      // Lógica para esconder header no login (opcional)
+      // Lógica para esconder header no login
       this.showHeader = this.router.url !== '/login';
     });
 
@@ -73,7 +77,7 @@ export class AppComponent implements OnInit {
     this.showDeactivateModal = true;
     this.deactivatePassword = '';
     this.deactivateError = '';
-    this.isMenuOpen = false; // Fecha o menu mobile se estiver aberto
+    this.isMenuOpen = false; 
   }
 
   closeDeactivateModal() {
@@ -100,7 +104,6 @@ export class AppComponent implements OnInit {
       },
       error: (err) => {
         console.error(err);
-        // Se o backend retornar erro de senha (400 ou 403)
         this.deactivateError = 'Senha incorreta ou erro ao desativar.';
         this.isDeactivating = false;
       }

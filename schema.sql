@@ -14,11 +14,6 @@
 /*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
-
--- Copiando estrutura do banco de dados para railway
-CREATE DATABASE IF NOT EXISTS `railway` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci */ /*!80016 DEFAULT ENCRYPTION='N' */;
-USE `railway`;
-
 -- Copiando estrutura para tabela railway.dishes
 CREATE TABLE IF NOT EXISTS `dishes` (
   `id` bigint NOT NULL AUTO_INCREMENT,
@@ -46,14 +41,17 @@ CREATE TABLE IF NOT EXISTS `users` (
   `password` varchar(255) DEFAULT NULL,
   `phone_number` varchar(255) DEFAULT NULL,
   `role` varchar(255) DEFAULT NULL,
+  `active` tinyint(1) DEFAULT '1',
   PRIMARY KEY (`id`),
   UNIQUE KEY `UK66hiuien6n7r49ecmfugrcofc` (`documento`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
--- Copiando dados para a tabela railway.users: ~2 rows (aproximadamente)
-INSERT INTO `users` (`id`, `documento`, `email`, `name`, `password`, `phone_number`, `role`) VALUES
-	(10, '555', 'gerente@gmail.com', 'Gerente', '$2a$10$u5VjPrBdHI7aNERFU1lpgOPXQjO./L0ugDZr/S9W1X2ayNeXiSQkC', '11555555555', 'GERENTE'),
-	(11, '999', 'cliente@gmail.com', 'Cliente', '$2a$10$feJ8MTalP3eIm.qskANjkOUGsqFgFz6l3/mdYl2TXIjDEuJPOs1w6', '11999999999', 'cliente');
+-- Copiando dados para a tabela railway.users: ~4 rows (aproximadamente)
+INSERT INTO `users` (`id`, `documento`, `email`, `name`, `password`, `phone_number`, `role`, `active`) VALUES
+	(10, '555', 'gerente@gmail.com', 'Gerente', '$2a$10$u5VjPrBdHI7aNERFU1lpgOPXQjO./L0ugDZr/S9W1X2ayNeXiSQkC', '11555555555', 'GERENTE', 1),
+	(11, '999', 'cliente@gmail.com', 'Cliente', '$2a$10$feJ8MTalP3eIm.qskANjkOUGsqFgFz6l3/mdYl2TXIjDEuJPOs1w6', '11999999999', 'cliente', 1),
+	(12, '888', 'outrocliente@gmail.com', 'Outro Cliente', '$2a$10$w.J5TCHMDZEumwYKQtW9iOKnyVT9ijQ4MSPDDfWWIObSrGM0Zy.B2', '11888888888', 'cliente', 1),
+	(13, '222', '222', 'Apenas um teste', '$2a$10$DYoQGVOzGTkXdtt0K5ZGIexk3/40zOduilmmSvEaXL9CLu3XfzgxG', '222', 'cliente', 1);
 
 -- Copiando estrutura para tabela railway.withdrawals
 CREATE TABLE IF NOT EXISTS `withdrawals` (
@@ -66,9 +64,12 @@ CREATE TABLE IF NOT EXISTS `withdrawals` (
   CONSTRAINT `FKesk6migh8b3x43q3740dh5fja` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
--- Copiando dados para a tabela railway.withdrawals: ~1 rows (aproximadamente)
+-- Copiando dados para a tabela railway.withdrawals: ~4 rows (aproximadamente)
 INSERT INTO `withdrawals` (`id`, `total_cost`, `withdrawal_date`, `user_id`) VALUES
-	(11, 44.5, '2025-11-16 01:12:28.718304', 11);
+	(14, 29.5, '2025-11-20 19:33:32.194680', 11),
+	(15, 20, '2025-11-20 19:33:40.623916', 11),
+	(16, 16.5, '2025-11-20 22:32:25.344360', 12),
+	(17, 4.5, '2025-11-20 22:53:48.673232', 12);
 
 -- Copiando estrutura para tabela railway.withdrawal_items
 CREATE TABLE IF NOT EXISTS `withdrawal_items` (
@@ -84,11 +85,16 @@ CREATE TABLE IF NOT EXISTS `withdrawal_items` (
   CONSTRAINT `FKj095oxjaj8wyfw8vtk3bkobin` FOREIGN KEY (`withdrawal_id`) REFERENCES `withdrawals` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
--- Copiando dados para a tabela railway.withdrawal_items: ~3 rows (aproximadamente)
+-- Copiando dados para a tabela railway.withdrawal_items: ~8 rows (aproximadamente)
 INSERT INTO `withdrawal_items` (`id`, `cost_at_time`, `quantity`, `dish_id`, `withdrawal_id`) VALUES
-	(11, 2.5, 1, 15, 11),
-	(12, 15, 2, 14, 11),
-	(13, 12, 1, 13, 11);
+	(18, 15, 1, 14, 14),
+	(19, 2.5, 1, 15, 14),
+	(20, 12, 1, 13, 14),
+	(21, 15, 1, 14, 15),
+	(22, 2.5, 2, 15, 15),
+	(23, 4.5, 1, 12, 16),
+	(24, 12, 1, 13, 16),
+	(25, 4.5, 1, 12, 17);
 
 /*!40103 SET TIME_ZONE=IFNULL(@OLD_TIME_ZONE, 'system') */;
 /*!40101 SET SQL_MODE=IFNULL(@OLD_SQL_MODE, '') */;

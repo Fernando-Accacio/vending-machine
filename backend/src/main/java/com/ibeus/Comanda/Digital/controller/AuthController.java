@@ -8,8 +8,6 @@ import com.ibeus.Comanda.Digital.model.User;
 import com.ibeus.Comanda.Digital.service.JwtProvider;
 import com.ibeus.Comanda.Digital.service.UserService;
 
-// (Sem imports extras complexos)
-
 @RestController
 @RequestMapping("/auth")
 public class AuthController {
@@ -43,6 +41,17 @@ public class AuthController {
 
     @PostMapping("/register")
     public ResponseEntity<?> register(@RequestBody RegisterRequest registerRequest) {
+        
+        // --- VALIDAÇÃO GENÉRICA DE EMAIL ---
+        // Regex padrão que aceita formatos como nome@dominio.com, nome@dominio.com.br, etc.
+        String emailRegex = "^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$";
+
+        if (registerRequest.getEmail() == null || !registerRequest.getEmail().matches(emailRegex)) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                    .body(new ErrorResponse("Por favor, insira um endereço de email válido."));
+        }
+        // -----------------------------------
+
         try {
             User newUser = userService.register(registerRequest);
             return ResponseEntity.status(HttpStatus.CREATED).body(newUser); 
@@ -53,7 +62,6 @@ public class AuthController {
 
     // --- CLASSES AUXILIARES (DTOs) ---
     
-    // Classe simples para garantir que o erro volte como JSON { "message": "..." }
     public static class ErrorResponse {
         private String message;
         public ErrorResponse(String message) { this.message = message; }

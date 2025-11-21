@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { CommonModule, Location } from '@angular/common'; // <--- Location
+import { CommonModule, Location } from '@angular/common'; 
 import { FormsModule } from '@angular/forms';
 import { Router, RouterModule } from '@angular/router';
 import { AuthenticateService } from '../../services/auth/authenticate.service';
@@ -32,7 +32,7 @@ export class RegisterComponent implements OnInit {
     private authService: AuthenticateService,
     private router: Router,
     private loadingService: LoadingService,
-    private location: Location // <--- Injeção
+    private location: Location
   ) {}
 
   ngOnInit(): void {
@@ -53,6 +53,14 @@ export class RegisterComponent implements OnInit {
 
   register(): void {
     this.message = { text: '', type: null };
+
+    // Expressão regular para validar formato de email padrão (ex: usuario@dominio.com)
+    const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+
+    if (!this.registerData.email || !emailPattern.test(this.registerData.email)) {
+       this.showMessage('Por favor, insira um endereço de email válido.');
+       return; // Interrompe o registro aqui
+    }
 
     if (this.registerData.password !== this.registerData.confirmPassword) {
       this.showMessage('As senhas não conferem!');

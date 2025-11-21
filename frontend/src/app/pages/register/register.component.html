@@ -11,10 +11,6 @@
   <div class="container">
     <h2>Registrar Novo Usuário</h2>
 
-    <div *ngIf="message.text" class="alert" [ngClass]="{'alert-success': message.type === 'success', 'alert-error': message.type === 'error'}">
-      {{ message.text }}
-    </div>
-
     <form (ngSubmit)="register()">
       
       <div class="form-group">
@@ -24,7 +20,12 @@
 
       <div class="form-group">
         <label for="email">Email:</label>
-        <input type="email" id="email" [(ngModel)]="registerData.email" name="email" required>
+        <input 
+          type="email" 
+          id="email" 
+          [(ngModel)]="registerData.email" 
+          name="email" 
+          required>
       </div>
 
       <div class="form-group">
@@ -49,7 +50,6 @@
       
       <div class="form-group form-group-password">
         <label for="confirmPassword">Confirmar Senha:</label>
-        <!-- NOVO WRAPPER -->
         <div class="input-wrapper">
           <input [type]="confirmPasswordFieldType" id="confirmPassword" [(ngModel)]="registerData.confirmPassword" name="confirmPassword" required>
           <button type="button" class="password-toggle" (click)="toggleConfirmPasswordVisibility()">
@@ -60,6 +60,9 @@
 
       <button class="adicionar" type="submit">Registrar</button>
 
+      <div *ngIf="message.text" class="alert" style="margin-top: 15px;" [ngClass]="{'alert-success': message.type === 'success', 'alert-error': message.type === 'error'}">
+        {{ message.text }}
+      </div>
       <div class="login-link">
         Já tem uma conta? <a routerLink="/login">Faça o login</a>
       </div>
