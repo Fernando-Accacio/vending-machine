@@ -121,6 +121,24 @@ html, body {
     animation: spin 1s linear infinite; /* Aplica a animação */
 }
 
+/* --- ANIMAÇÃO DE ENTRADA PADRÃO --- */
+@keyframes fadeInUp {
+    from { 
+        opacity: 0; 
+        transform: translateY(10px); /* Faz subir um pouquinho */
+    }
+    to { 
+        opacity: 1; 
+        transform: translateY(0); 
+    }
+}
+
+/* Crie uma classe que usa essa animação */
+.anime-fade-in {
+    animation: fadeInUp 0.4s ease-out forwards;
+    width: 100%; /* Garante que não quebre o layout */
+}
+
 .app-container {
   width: 100%;
   max-width: 100%;
@@ -935,36 +953,117 @@ td:last-child {
     display: none;
 }
 
-/* --- AJUSTE FINO PARA LAPTOPS (1024px a 1280px) --- */
-@media (min-width: 900px) and (max-width: 1280px) {
-    
-    /* 1. Reduzir padding lateral do cabeçalho */
-    .header {
-        padding: 0 15px;
+/* Botão Desativar (Link texto simples para não chamar muita atenção) */
+.deactivate-btn {
+    background: transparent;
+    color: #ef4444; /* Vermelho */
+    border: 1px solid #ef4444;
+    font-size: 0.85rem;
+    padding: 6px 12px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.2s;
+    margin-left: 10px;
+    border: 1px solid #ef4444 !important;
+}
+
+/* Regras de HOVER */
+.deactivate-btn:hover {
+    background: #ef4444;
+    color: white;
+    outline: none !important; 
+    box-shadow: none !important; 
+    border-bottom: 1px solid #ef4444 !important;
     }
 
-    /* 3. Reduzir o espaço entre os grupos de botões */
-    .auth-btn.desktop-nav {
-        gap: 8px; /* Aproxima os elementos da direita */
+.deactivate-btn:focus {
+    outline: none !important; 
+    box-shadow: none !important; 
+   border-color: #ef4444 !important;
     }
 
-    /* 4. Ajustar o nome do usuário */
-    .user-info .user-name {
-        max-width: 80px !important;   /* Limite menor para o nome */
-        font-size: 13px;
-        display: inline-block;
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        vertical-align: middle;
-    }
+/* Ajuste para mobile */
+.mobile-auth-section .deactivate-btn {
+    width: 100%;
+    text-align: left;
+    margin-left: 0;
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+}
 
-    /* 6. Botão Sair mais compacto */
-    .header .logout-btn {
-        padding: 0 12px !important;
-        height: 36px !important;
-        font-size: 13px !important;
-    }
+/* --- ESTILOS DO MODAL (POPUP) --- */
+.modal-backdrop {
+    position: fixed; /* OBRIGATÓRIO: Faz ficar por cima de tudo */
+    top: 0; 
+    left: 0; 
+    width: 100%; 
+    height: 100%;
+    background: rgba(0,0,0,0.5); /* Fundo escuro transparente */
+    backdrop-filter: blur(2px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999; /* Garante que fique na frente de tudo */
+}
+
+.modal-content {
+    background: white;
+    padding: 25px;
+    border-radius: 12px;
+    width: 500px;
+    max-width: 90%;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+    position: relative;
+}
+
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+    border-bottom: 1px solid #eee;
+    padding-bottom: 10px;
+}
+
+.close-btn {
+    margin-bottom: 30px;
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    cursor: pointer;
+    color: #666;
+}
+
+.close-btn:hover {
+  color: red;
+}
+
+/* Botões do Modal */
+.btn-cancel {
+    padding: 10px 20px;
+    border: 1px solid #ccc;
+    background: #fff;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: 500;
+}
+
+.btn-confirm-deactivate {
+    padding: 10px 20px;
+    border: none;
+    background: #ef4444; /* Vermelho */
+    color: white;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: 600;
+
+}
+
+.btn-confirm-deactivate:disabled {
+    background-color: #fca5a5;
+    cursor: not-allowed;
 }
 
 /* =========================================
@@ -1039,7 +1138,7 @@ td:last-child {
   }
 }
 
-@media (max-width: 768px) {
+@media (max-width: 1150px) {
   /* 0. Reset Básico */
   * {
     box-sizing: border-box; /* Garante que padding não afete a largura total */
@@ -1604,4 +1703,34 @@ td:last-child {
     align-items: center;
     gap: 8px;
 }
+
+.mobile-auth-section .deactivate-btn {
+        /* Garante que o texto fique centralizado dentro do botão */
+        justify-content: center; 
+        
+        /* Cores iguais ao desktop */
+        background: transparent;
+        color: #ef4444 !important; /* Vermelho */
+        border: 1px solid #ef4444 !important;
+    }
+
+    .mobile-auth-section .deactivate-btn:hover {
+        background: #ef4444 !important;
+        color: white !important;
+    }
+
+    /* Centralizar o texto "Desativar Conta" no H3 do modal */
+    .modal-content.deactivate-modal .modal-header h3 {
+        width: 100%; /* Ocupa toda a largura disponível */
+        text-align: center; /* Centraliza o texto */
+        margin-left: 0; /* Remove margens que podem desalinhar */
+        margin-right: 0;
+    }
+
+    /* Ajusta o botão de fechar para não conflitar com o título centralizado */
+    .modal-content.deactivate-modal .modal-header .close-btn {
+        position: absolute; /* Posiciona absolutamente */
+        right: 15px; /* Alinha à direita */
+        top: 15px; /* Alinha ao topo */
+    }
 }

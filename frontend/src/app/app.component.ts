@@ -1,104 +1,109 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Router, RouterModule, NavigationEnd } from '@angular/router'; 
+import { RouterModule, Router } from '@angular/router';
 import { AuthenticateService } from './services/auth/authenticate.service';
-import { filter, Subscription } from 'rxjs'; 
-import { LoadingService } from './services/loading/loading.service';
+import { UserService } from './services/user.service';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [CommonModule, RouterModule], 
+  imports: [CommonModule, RouterModule, FormsModule],
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })
-export class AppComponent implements OnInit, OnDestroy {
-  title = 'frontend';
-  showHeader = true;
+export class AppComponent implements OnInit {
+  
+  isMenuOpen = false;
   isAuthenticated = false;
   isGerente = false;
-  isCliente = false;
   isEntregador = false;
+  isCliente = false;
+  userName: string | null = '';
   
-  isLoadingGlobal: boolean = false; 
-  
-  isMenuOpen = false; 
-  userName: string | null = null; 
-  userEmail: string | null = null;
+  isLoadingGlobal = false;
+  showHeader = true;
 
-  // --- SUBSCRIPTIONS PARA LIMPAR DEPOIS ---
-  private loadingSubscription?: Subscription;
-  private authSubscription?: Subscription;
-  private routerSubscription?: Subscription;
+  // --- Variáveis para Desativação de Conta ---
+  showDeactivateModal = false;
+  deactivatePassword = '';
+  deactivateError = '';
+  isDeactivating = false;
 
   constructor(
-    private authService: AuthenticateService, 
-    private router: Router,
-    private loadingService: LoadingService 
+    private authService: AuthenticateService,
+    private userService: UserService, // Injetar UserService
+    private router: Router
   ) {}
 
-  ngOnInit(): void {
-    // --- INSCRIÇÃO NO LOADING SERVICE ---
-    this.loadingSubscription = this.loadingService.isLoading$.subscribe((isLoading: boolean) => {
-      this.isLoadingGlobal = isLoading;
-    });
-    
-    // --- INSCRIÇÃO NO AUTH STATE ---
-    this.authSubscription = this.authService.authState$.subscribe(state => {
+  ngOnInit() {
+    this.authService.authState$.subscribe(state => {
       this.isAuthenticated = state.isAuthenticated;
-      this.isGerente = state.role === 'GERENTE'; 
-      this.isCliente = state.role === 'cliente';
-      this.isEntregador = state.role === 'entregador';
-
-      if (this.isAuthenticated) {
-        this.userName = this.authService.getName();
-        this.userEmail = this.authService.getEmail();
-      } else {
-        this.userName = null;
-        this.userEmail = null;
-      }
+      this.userName = this.authService.getName();
+      
+      this.isGerente = this.authService.isGerente();
+      this.isEntregador = this.authService.isEntregador();
+      this.isCliente = this.authService.isCliente();
+      
+      // Lógica para esconder header no login (opcional)
+      this.showHeader = this.router.url !== '/login';
     });
 
-    // --- INSCRIÇÃO NO ROUTER ---
-    this.routerSubscription = this.router.events.pipe(
-      filter((event): event is NavigationEnd => event instanceof NavigationEnd)
-    ).subscribe((event: NavigationEnd) => {
-      if (event.url === '/login' || event.url === '/register') {
-        this.showHeader = false;
-      } else {
-        this.showHeader = true;
-      }
-      this.isMenuOpen = false;
+    this.router.events.subscribe(() => {
+      this.showHeader = this.router.url !== '/login';
     });
   }
 
-  ngOnDestroy(): void {
-    // --- LIMPA TODAS AS SUBSCRIPTIONS ---
-    if (this.loadingSubscription) {
-      this.loadingSubscription.unsubscribe();
-    }
-    if (this.authSubscription) {
-      this.authSubscription.unsubscribe();
-    }
-    if (this.routerSubscription) {
-      this.routerSubscription.unsubscribe();
-    }
-  }
-
-  toggleMenu(): void {
+  toggleMenu() {
     this.isMenuOpen = !this.isMenuOpen;
   }
 
-  logout(): void {
-    this.authService.logout();
-    this.router.navigate(['/login']); 
+  logout() {
+    this.isLoadingGlobal = true;
+    setTimeout(() => {
+      this.authService.logout();
+      this.isLoadingGlobal = false;
+      this.isMenuOpen = false;
+      this.router.navigate(['/login']);
+    }, 800);
   }
 
-  goBack(): void {
-    window.history.back();
+  // --- Lógica do Modal de Desativação ---
+  openDeactivateModal() {
+    this.showDeactivateModal = true;
+    this.deactivatePassword = '';
+    this.deactivateError = '';
+    this.isMenuOpen = false; // Fecha o menu mobile se estiver aberto
   }
 
-  canGoBack(): boolean {
-    return this.router.url !== '/';
+  closeDeactivateModal() {
+    this.showDeactivateModal = false;
+    this.deactivatePassword = '';
+  }
+
+  confirmDeactivate() {
+    if (!this.deactivatePassword) {
+      this.deactivateError = 'Por favor, digite sua senha.';
+      return;
+    }
+
+    this.isDeactivating = true;
+    this.deactivateError = '';
+
+    this.userService.deactivateMyAccount(this.deactivatePassword).subscribe({
+      next: (res) => {
+        alert('Sua conta foi desativada com sucesso.');
+        this.isDeactivating = false;
+        this.closeDeactivateModal();
+        this.authService.logout();
+        this.router.navigate(['/login']);
+      },
+      error: (err) => {
+        console.error(err);
+        // Se o backend retornar erro de senha (400 ou 403)
+        this.deactivateError = 'Senha incorreta ou erro ao desativar.';
+        this.isDeactivating = false;
+      }
+    });
   }
 }

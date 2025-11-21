@@ -4,10 +4,6 @@ import { WithdrawalService, Withdrawal } from '../../../services/withdrawal.serv
 import { AuthenticateService } from '../../../services/auth/authenticate.service';
 import { RouterModule } from '@angular/router'; 
 
-interface DisplayWithdrawal extends Withdrawal {
-  displayIndex: number; 
-}
-
 @Component({
   selector: 'app-my-withdrawals',
   standalone: true,
@@ -16,7 +12,9 @@ interface DisplayWithdrawal extends Withdrawal {
   styleUrl: './my-withdrawals.component.css'
 })
 export class MyWithdrawalsComponent implements OnInit {
-  history: DisplayWithdrawal[] = []; 
+  
+  history: Withdrawal[] = []; 
+  
   isLoading: boolean = true;
   errorMessage: string | null = null;
   
@@ -32,24 +30,22 @@ export class MyWithdrawalsComponent implements OnInit {
   loadHistory(): void {
     this.withdrawalService.getHistory().subscribe({
       next: (data: Withdrawal[]) => {
-        // --- Adiciona o displayIndex ---
-        // O segundo parâmetro do 'map' é o índice (começa em 0)
+        
         this.history = data.map((w, index) => { 
-          const dateStringUTC = w.withdrawalDate + 'Z';
+          const dateString = w.withdrawalDate ? w.withdrawalDate : new Date().toISOString();
+          
           return {
             ...w,
-            // O índice de exibição será 1, 2, 3...
             displayIndex: index + 1, 
-            withdrawalDate: new Date(dateStringUTC) as any 
-          } as DisplayWithdrawal;
+            withdrawalDate: new Date(dateString) as any 
+          };
         });
-        // ---------------------------------------------
 
         this.isLoading = false;
       },
       error: (err) => {
-        console.error('Erro ao buscar histórico (pós-interceptor):', err);
-        this.errorMessage = "Falha ao carregar histórico. Verifique a conexão ou status do servidor.";
+        console.error('Erro ao buscar histórico:', err);
+        this.errorMessage = "Falha ao carregar histórico.";
         this.isLoading = false;
       }
     });

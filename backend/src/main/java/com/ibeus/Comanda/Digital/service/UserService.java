@@ -7,6 +7,7 @@ import com.ibeus.Comanda.Digital.model.User;
 import com.ibeus.Comanda.Digital.repository.UserRepository;
 import com.ibeus.Comanda.Digital.controller.AuthController.RegisterRequest;
 
+import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 
@@ -39,22 +40,53 @@ public class UserService {
         user.setPassword(passwordEncoder.encode(request.getPassword()));
         
         user.setRole("cliente");
+        user.setActive(true); // Garante que nasce ativo
 
         return userRepository.save(user);
     }
 
-    // --- MÉTODO DE LOGIN (findByDocumentoAndPassword) ---
-    public Optional<User> findByDocumentoAndPassword(String documento, String password) {
+    // --- MÉTODO DE LOGIN ATUALIZADO ---
+    public User authenticateUser(String documento, String password) {
         Optional<User> userOptional = userRepository.findByDocumento(documento);
 
         if (userOptional.isPresent()) {
             User user = userOptional.get();
+            
+            // 1. VERIFICA SE ESTÁ ATIVO ANTES DE TUDO
+            // Assim, o bloqueio tem prioridade sobre a senha.
+            if (!user.isActive()) {
+                throw new RuntimeException("Conta bloqueada. Contate o gerente.");
+            }
+
+            // 2. DEPOIS VERIFICA A SENHA
             if (passwordEncoder.matches(password, user.getPassword())) {
-                return Optional.of(user);
+                return user;
             }
         }
-        
-        return Optional.empty();
+        // Retorna null se usuário não existe ou senha errada
+        return null; 
+    }
+
+    // --- Novos Métodos para o ADMIN ---
+
+    public List<User> findAllUsers() {
+        return userRepository.findAll();
+    }
+
+    public User toggleUserStatus(Long id) {
+        User user = findById(id);
+        // Inverte o status (se true vira false, se false vira true)
+        user.setActive(!user.isActive());
+        return userRepository.save(user);
+    }
+
+    // --- Método para o Cliente se Auto-Desativar ---
+    public void deactivateMyAccount(String email) {
+        User user = findByEmail(email);
+        if (user != null) {
+            user.setActive(false);
+            userRepository.save(user);
+        }
     }
 
     // --- Métodos de Busca/CRUD ---
@@ -95,44 +127,29 @@ public class UserService {
         userRepository.delete(user);
     }
 
-    //
-    // --- MÉTODO DE ALTERAÇÃO DE CREDENCIAIS ---
-    //
+    // --- ALTERAÇÃO DE CREDENCIAIS ---
     @org.springframework.transaction.annotation.Transactional
-    public void changeCredentials(
-            String userEmail, 
-            String oldPassword, 
-            String newPassword,
-            String newUsername 
-    ) {
-        // 1. Busca o usuário pelo email (que veio do token)
+    public void changeCredentials(String userEmail, String oldPassword, String newPassword, String newUsername) {
         User user = userRepository.findByEmail(userEmail)
                 .orElseThrow(() -> new RuntimeException("Usuário não encontrado."));
 
-        // 2. Verifica se a senha antiga está correta (OBRIGATÓRIO para qualquer alteração)
         if (!passwordEncoder.matches(oldPassword, user.getPassword())) {
             throw new RuntimeException("A senha atual está incorreta.");
         }
         
-        // 3. Lógica Opcional: Altera o nome de usuário
         if (newUsername != null && !newUsername.trim().isEmpty()) {
             user.setName(newUsername.trim());
         }
 
-        // 4. Lógica Opcional: Altera a senha
         if (newPassword != null && !newPassword.trim().isEmpty()) {
-             // 4.1. Validação de Senha
              if (passwordEncoder.matches(newPassword, user.getPassword())) {
                  throw new RuntimeException("A nova senha não pode ser igual à antiga.");
              }
-            // 4.2. Criptografa e salva a nova senha
             user.setPassword(passwordEncoder.encode(newPassword));
         } else if ((newUsername == null || newUsername.trim().isEmpty())) {
-             // Se não mudou nem senha e nem nome de usuário, cancela
-             throw new RuntimeException("Nenhuma credencial para alterar (Nova Senha e Novo Nome de Usuário vazios).");
+             throw new RuntimeException("Nenhuma credencial para alterar.");
         }
         
-        // 5. Salva o usuário com as alterações feitas
         userRepository.save(user);
     }
 }

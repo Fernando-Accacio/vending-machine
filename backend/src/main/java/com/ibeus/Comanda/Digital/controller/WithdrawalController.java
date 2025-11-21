@@ -1,39 +1,36 @@
 package com.ibeus.Comanda.Digital.controller;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.web.bind.annotation.*;
 import com.ibeus.Comanda.Digital.model.Withdrawal;
 import com.ibeus.Comanda.Digital.service.WithdrawalService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
+import java.security.Principal;
 import java.util.List;
 
 @RestController
-@RequestMapping("/withdrawals") 
-@CrossOrigin(origins = "http://localhost:4200") 
+@RequestMapping("/withdrawals")
 public class WithdrawalController {
 
     @Autowired
     private WithdrawalService withdrawalService;
 
-    // --- DTOs (Data Transfer Objects) ---
-    
+    // --- DTOs ---
     public static class CartItemDto {
         private Long dishId;
-        private int quantity;
+        private Integer quantity;
         
         public Long getDishId() { return dishId; }
         public void setDishId(Long dishId) { this.dishId = dishId; }
-        public int getQuantity() { return quantity; }
-        public void setQuantity(int quantity) { this.quantity = quantity; }
+        public Integer getQuantity() { return quantity; }
+        public void setQuantity(Integer quantity) { this.quantity = quantity; }
     }
 
     public static class WithdrawalRequest {
-        private String email; 
-        private List<CartItemDto> cart; 
-        
+        private String email;
+        private List<CartItemDto> cart;
+
         public String getEmail() { return email; }
         public void setEmail(String email) { this.email = email; }
         public List<CartItemDto> getCart() { return cart; }
@@ -42,53 +39,34 @@ public class WithdrawalController {
 
     // --- ENDPOINTS ---
 
-    /**
-     * Endpoint para CRIAR uma nova retirada (POST - Cliente)
-     */
     @PostMapping
     public ResponseEntity<Withdrawal> createWithdrawal(@RequestBody WithdrawalRequest request) {
-        try {
-            Withdrawal savedWithdrawal = withdrawalService.createWithdrawal(request);
-            return ResponseEntity.ok(savedWithdrawal);
-        } catch (Exception e) {
-            return ResponseEntity.badRequest().body(null);
-        }
+        Withdrawal withdrawal = withdrawalService.createWithdrawal(request);
+        return ResponseEntity.ok(withdrawal);
     }
 
-    /**
-     * Endpoint para BUSCAR todas as retiradas (GET - Gerente)
-     */
+    // Endpoint para o Gerente (Relatório Geral)
     @GetMapping
     public ResponseEntity<List<Withdrawal>> getAllWithdrawals() {
-        try {
-            // Requer permissão GERENTE no SecurityConfig
-            List<Withdrawal> withdrawals = withdrawalService.findAll();
-            return ResponseEntity.ok(withdrawals);
-        } catch (Exception e) {
-            return ResponseEntity.status(500).body(null); 
-        }
+        return ResponseEntity.ok(withdrawalService.findAll());
     }
-    
-    /**
-     * Endpoint para BUSCAR o histórico de retiradas do usuário logado (GET - Cliente)
-     */
+
+    // Endpoint para o Cliente Logado (Meus Pedidos)
+    @GetMapping("/my-withdrawals") // Ajustado para diferenciar do get all
+    public ResponseEntity<List<Withdrawal>> getMyWithdrawals(Principal principal) {
+        String email = principal.getName();
+        return ResponseEntity.ok(withdrawalService.findByEmail(email));
+    }
+
+    // Endpoint antigo de histórico (manter para compatibilidade se necessário, ou redirecionar)
     @GetMapping("/history")
-    public ResponseEntity<List<Withdrawal>> getMyWithdrawalsHistory() {
-        try {
-            // Obtém o email do token (Spring Security Principal)
-            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-            String email = authentication.getName(); // O email é o Subject do JWT
-            
-            if (email == null) {
-                return ResponseEntity.status(401).body(null); // Não autenticado
-            }
-            
-            // Requer que você implemente este método no WithdrawalService:
-            List<Withdrawal> history = withdrawalService.findByEmail(email); 
-            return ResponseEntity.ok(history);
-            
-        } catch (Exception e) {
-            return ResponseEntity.status(500).body(null);
-        }
+    public ResponseEntity<List<Withdrawal>> getHistory(Principal principal) {
+        return getMyWithdrawals(principal);
+    }
+
+    // --- NOVO ENDPOINT: HISTÓRICO POR ID (Para o Admin ver o histórico de um user específico) ---
+    @GetMapping("/user/{userId}")
+    public ResponseEntity<List<Withdrawal>> getWithdrawalsByUserId(@PathVariable Long userId) {
+        return ResponseEntity.ok(withdrawalService.findByUserId(userId));
     }
 }

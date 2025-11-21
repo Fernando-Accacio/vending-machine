@@ -22,20 +22,22 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
   // 2. ADICIONA O TRATAMENTO DE ERROS
   return next(req).pipe(
     catchError((error: HttpErrorResponse) => {
-      // Se o erro for 401 (Não Autorizado) ou 403 (Proibido)
-      if (error.status === 401 || error.status === 403) {
-        console.warn('Sessão expirada ou acesso negado (401/403). Redirecionando para login.');
+      
+      // Só faz logout forçado se for 401/403 E NÃO FOR UMA TENTATIVA DE LOGIN
+      // Se a URL for '.../auth/login', deixamos o erro passar para o componente Login mostrar a mensagem.
+      const isLoginRequest = req.url.includes('/login');
+
+      if ((error.status === 401 || error.status === 403) && !isLoginRequest) {
+        console.warn('Sessão expirada ou acesso negado em rota protegida.');
         
-        // Força o logout e redireciona
         authService.logout(); 
         router.navigate(['/login']);
         
-        // Não propaga o erro de autenticação, apenas o de login
-        // Podemos parar a execução aqui ou propagar o erro
         return throwError(() => new Error('Sessão Inválida'));
       }
       
-      // Para todos os outros erros (ex: 500, 404), apenas propaga
+      // Se for erro no Login (ou erro 500, 404, etc), propaga o erro original
+      // Assim o seu login.component.ts vai receber o JSON correto com a mensagem!
       return throwError(() => error); 
     })
   );

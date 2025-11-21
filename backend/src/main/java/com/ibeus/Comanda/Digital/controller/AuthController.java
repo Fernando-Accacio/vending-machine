@@ -1,7 +1,5 @@
 package com.ibeus.Comanda.Digital.controller;
 
-import java.util.Optional;
-
 import org.springframework.http.HttpStatus; 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -9,6 +7,8 @@ import org.springframework.web.bind.annotation.*;
 import com.ibeus.Comanda.Digital.model.User;
 import com.ibeus.Comanda.Digital.service.JwtProvider;
 import com.ibeus.Comanda.Digital.service.UserService;
+
+// (Sem imports extras complexos)
 
 @RestController
 @RequestMapping("/auth")
@@ -24,48 +24,52 @@ public class AuthController {
 
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody LoginRequest loginRequest) {
-        
-        Optional<User> userOptional = this.userService.findByDocumentoAndPassword(loginRequest.getDocumento(), loginRequest.getPassword());
+        try {
+            User user = this.userService.authenticateUser(loginRequest.getDocumento(), loginRequest.getPassword());
 
-        if (userOptional.isEmpty()) {
-            return ResponseEntity.status(401).body("Credenciais inválidas");
+            if (user == null) {
+                // Retorna erro 401 com JSON manual
+                return ResponseEntity.status(401).body(new ErrorResponse("Credenciais inválidas (Senha ou CPF incorretos)"));
+            }
+
+            String token = tokenProvider.generateToken(user.getEmail(), user.getRole(), user.getName(), user.getPhoneNumber());
+            return ResponseEntity.ok(new LoginResponse(token));
+            
+        } catch (RuntimeException e) {
+            // Retorna erro 403 com JSON manual (Conta bloqueada)
+            return ResponseEntity.status(403).body(new ErrorResponse(e.getMessage()));
         }
-
-        User user = userOptional.get();
-
-        String token = tokenProvider.generateToken(user.getEmail(), user.getRole(), user.getName(), user.getPhoneNumber());
-        return ResponseEntity.ok(new LoginResponse(token));
     }
 
-    
     @PostMapping("/register")
     public ResponseEntity<?> register(@RequestBody RegisterRequest registerRequest) {
         try {
             User newUser = userService.register(registerRequest);
-            // Não retorna o token, força o usuário a logar depois de registrar
             return ResponseEntity.status(HttpStatus.CREATED).body(newUser); 
         } catch (RuntimeException e) {
-            // Pega o erro "Usuário já cadastrado" do service
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ErrorResponse(e.getMessage()));
         }
     }
 
+    // --- CLASSES AUXILIARES (DTOs) ---
+    
+    // Classe simples para garantir que o erro volte como JSON { "message": "..." }
+    public static class ErrorResponse {
+        private String message;
+        public ErrorResponse(String message) { this.message = message; }
+        public String getMessage() { return message; }
+        public void setMessage(String message) { this.message = message; }
+    }
 
-    // --- DTO (Molde) para o Login  ---
     public static class LoginRequest {
         private String documento;
         private String password;
-
-        // Getters
         public String getDocumento() { return this.documento; }
         public String getPassword() { return this.password; }
-        
-        // >>> SETTERS ADICIONADOS PARA FUNCIONAR O @RequestBody <<<
         public void setDocumento(String documento) { this.documento = documento; }
         public void setPassword(String password) { this.password = password; }
     }
 
-    // --- DTO (Molde) para o Registro ---
     public static class RegisterRequest {
         private String name;
         private String email;
@@ -74,7 +78,6 @@ public class AuthController {
         private String phoneNumber;
         private String role;
 
-        // Getters
         public String getName() { return name; }
         public String getEmail() { return email; }
         public String getPassword() { return password; }
@@ -90,21 +93,10 @@ public class AuthController {
         public void setRole(String role) { this.role = role; }
     }
 
-    // --- DTO para a Resposta ---
     public static class LoginResponse {
         private String token;
-
-        public LoginResponse(String token) {
-            this.token = token;
-        }
-
-        public String getToken() {
-            return token;
-        }
-        
-        // Setter para garantir que o Jackson consiga serializar (boa prática)
-        public void setToken(String token) {
-            this.token = token;
-        }
+        public LoginResponse(String token) { this.token = token; }
+        public String getToken() { return token; }
+        public void setToken(String token) { this.token = token; }
     }
 }

@@ -1,0 +1,135 @@
+<div class="loading-container" *ngIf="isLoading">
+    <p>Carregando usuários... Por favor, aguarde.</p>
+</div>
+
+<div class="user-list-container" *ngIf="!isLoading">
+    
+    <h2>Gerenciamento de Beneficiários</h2>
+    
+    <div *ngIf="errorMessage" class="error-alert">{{ errorMessage }}</div>
+    <div class="table-responsive">
+       </div>
+
+    <div class="table-responsive">
+        <table class="styled-table">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Nome / Email</th>
+                    <th>Documento (CPF)</th>
+                    <th>Função</th>
+                    <th>Status</th>
+                    <th>Ações</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let user of users">
+                    <td data-label="ID">{{ user.id }}</td>
+                    <td data-label="Usuário">
+                        <div class="user-info">
+                            <span class="user-name">{{ user.name }}</span>
+                            <span class="user-email">{{ user.email }}</span>
+                        </div>
+                    </td>
+                    <td data-label="Documento">{{ user.documento }}</td>
+                    <td data-label="Função">
+                        <span class="badge" [ngClass]="user.role === 'gerente' ? 'role-admin' : 'role-user'">
+                            {{ user.role }}
+                        </span>
+                    </td>
+                    <td data-label="Status">
+                        <span class="status-indicator" [ngClass]="user.active ? 'active' : 'inactive'">
+                            {{ user.active ? 'Ativo' : 'Bloqueado' }}
+                        </span>
+                    </td>
+                    <td class="actions-cell" data-label="Ações">
+                        <div class="action-wrapper">
+                            
+<button class="btn-icon" title="Ver Histórico" (click)="viewHistory(user)">
+    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <line x1="8" y1="6" x2="21" y2="6"></line>
+        <line x1="8" y1="12" x2="21" y2="12"></line>
+        <line x1="8" y1="18" x2="21" y2="18"></line>
+        <line x1="3" y1="6" x2="3.01" y2="6"></line>
+        <line x1="3" y1="12" x2="3.01" y2="12"></line>
+        <line x1="3" y1="18" x2="3.01" y2="18"></line>
+    </svg>
+</button>
+                            
+                            <button 
+                                class="btn-action" 
+                                [ngClass]="user.active ? 'btn-block' : 'btn-activate'"
+                                (click)="toggleStatus(user)">
+                                {{ user.active ? 'Bloquear' : 'Reativar' }}
+                            </button>
+
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<div class="modal-backdrop" *ngIf="showHistoryModal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h3>Histórico: {{ selectedUserName }}</h3>
+            <button class="close-btn" (click)="closeModal()">×</button>
+        </div>
+        <div class="modal-body">
+            <div *ngIf="isLoadingHistory" class="modal-loading">
+                Carregando dados...
+            </div>
+
+            <p *ngIf="!isLoadingHistory && selectedUserHistory.length === 0">
+                Nenhum histórico disponível para este usuário.
+            </p>
+            
+                <ul class="history-list" *ngIf="!isLoadingHistory && selectedUserHistory.length > 0">
+                    <li *ngFor="let item of selectedUserHistory" class="history-card">
+                        
+                        <div class="history-header">
+                            <span class="history-date">
+                                <strong>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align: text-bottom; margin-right: 4px;">
+                                    <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                                    <line x1="16" y1="2" x2="16" y2="6"></line>
+                                    <line x1="8" y1="2" x2="8" y2="6"></line>
+                                    <line x1="3" y1="10" x2="21" y2="10"></line>
+                                </svg>
+                                {{ item.withdrawalDate | date: 'dd/MM/yyyy HH:mm' }}
+                            </strong>
+                            </span>
+                            <span class="history-total">
+                                Total: R$ {{ item.totalCost | number: '1.2-2' }}
+                            </span>
+                        </div>
+
+                        <div class="purchased-items-container" *ngIf="item.items && item.items.length > 0">
+                            <p class="items-label">Itens retirados:</p>
+                            
+                            <ul class="items-detail-list">
+                                <li *ngFor="let produto of item.items" class="item-row">
+                                    
+                                    <span class="item-name">
+                                        • {{ produto.quantity }}x {{ produto.dish?.name }}
+                                    </span>
+                                    
+                                    <span class="item-price">
+                                        R$ {{ (produto.costAtTime * produto.quantity) | number: '1.2-2' }}
+                                    </span>
+                                    
+                                </li>
+                            </ul>
+                        </div>
+
+                        <div class="no-items" *ngIf="!item.items || item.items.length === 0">
+                            <small>Nenhum detalhe de item disponível.</small>
+                        </div>
+
+                    </li>
+                </ul>
+        </div>
+    </div>
+</div>

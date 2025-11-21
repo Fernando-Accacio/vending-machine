@@ -1,0 +1,552 @@
+.user-list-container {
+    width: 100%;
+}
+
+/* --- TELA DE CARREGAMENTO --- */
+.loading-screen {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 60vh; /* Ocupa boa parte da altura da tela */
+    width: 100%;
+    background-color: transparent; /* Ou white se preferir fundo sólido */
+    color: var(--text-color-light); /* Cinza suave igual da imagem */
+    font-size: 1.1rem;
+    font-weight: 500;
+    font-family: 'Roboto', sans-serif;
+    animation: fadeIn 0.5s ease-in-out;
+}
+/* --- TELA DE CARREGAMENTO IDENTICA À DE ITENS --- */
+.loading-container {
+    display: flex;
+    justify-content: center; /* Centraliza na horizontal */
+    align-items: center;     /* Centraliza na vertical */
+    width: 100%;
+    min-height: 60vh;        /* Força altura para ficar no meio da tela */
+    
+    /* Estilo do Texto */
+    color: #9ca3af;          /* Aquele cinza suave do print */
+    font-size: 0.9rem;         /* Tamanho padrão */
+    font-weight: 400;        /* Peso da fonte normal */
+    font-family: 'Roboto', sans-serif; /* Garante a fonte do sistema */
+    
+}
+
+/* --- CONTAINER PRINCIPAL --- */
+.user-list-container {
+    width: 100%;
+}
+
+/* --- TÍTULO DA PÁGINA --- 
+   Usa as variáveis globais para manter consistência com "Itens" e "Relatórios" */
+h2 {
+    font-size: 45px;
+    font-weight: 400;
+    color: var(--text-color); /* Cinza escuro, não mais verde neon */
+    margin-bottom: 1.5rem;
+    border-bottom: 2px solid var(--border-color);
+    padding-bottom: 10px;
+    padding-top: 20px;
+    font-family: 'Roboto', sans-serif; /* Garante a fonte padrão */
+}
+
+/* --- TABELA (ESTILO LIGHT / CLEAN) --- */
+.table-responsive {
+    background-color: var(--card-background); /* Branco */
+    border-radius: 8px;
+    overflow-x: auto; /* Scroll lateral se necessário */
+}
+
+.styled-table {
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 800px; /* Garante largura mínima para não esmagar colunas */
+}
+
+.styled-table th {
+    background-color: #f9fafb; /* Fundo cinza bem claro para o cabeçalho */
+    color: var(--text-color-light); /* Texto cinza médio */
+    font-weight: 600;
+    text-transform: uppercase;
+    font-size: 0.75rem;
+    letter-spacing: 0.05em;
+    padding: 12px 16px;
+    border-bottom: 1px solid var(--border-color);
+    text-align: left;
+}
+
+.styled-table td {
+    padding: 12px 16px; /* Ajuste o padding para dar ar */
+    vertical-align: middle; /* Força o conteúdo a ficar no centro vertical */
+    border-bottom: 1px solid var(--border-color); /* Garante que a linha da tabela seja contínua */
+}
+
+/* Efeito Hover na linha */
+.styled-table tbody tr:hover {
+    background-color: #f9fafb;
+}
+
+/* --- INFORMAÇÕES DO USUÁRIO NA TABELA --- */
+.user-info {
+    display: flex;
+    flex-direction: column;
+}
+
+.user-name {
+    font-weight: 600;
+    color: var(--text-color);
+}
+
+.user-email {
+    font-size: 0.85rem;
+    color: var(--text-color-light);
+}
+
+/* --- BADGES (FUNÇÃO E STATUS) --- */
+.badge {
+    display: inline-block;
+    padding: 2px 10px;
+    border-radius: 9999px; /* Pílula */
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+}
+
+.role-admin {
+    background-color: #e0e7ff; /* Roxo bem claro */
+    color: var(--primary-color-dark); /* Roxo escuro */
+}
+
+.role-user {
+    background-color: #f3f4f6; /* Cinza claro */
+    color: #4b5563; /* Cinza escuro */
+}
+
+/* Indicadores de Status (Ativo/Bloqueado) */
+.status-indicator {
+    display: inline-flex;
+    align-items: center;
+    padding: 2px 10px;
+    border-radius: 9999px;
+    font-size: 0.75rem;
+    font-weight: 600;
+}
+
+.status-indicator.active {
+    background-color: #d1fae5; /* Fundo Verde Claro */
+    color: #065f46; /* Texto Verde Escuro */
+    border: 1px solid transparent;
+}
+
+.status-indicator.inactive {
+    background-color: #fee2e2; /* Fundo Vermelho Claro */
+    color: #991b1b; /* Texto Vermelho Escuro */
+    border: 1px solid transparent;
+}
+
+/* --- BOTÕES DE AÇÃO --- */
+.actions-cell {
+    vertical-align: middle !important; /* Força o alinhamento vertical na linha */
+    padding: 12px 16px;
+    width: 1%; /* Mantém a coluna compacta */
+    white-space: nowrap;
+}
+
+/* Botão do Olho */
+.btn-icon {
+    width: 34px !important;  /* Força tamanho */
+    height: 34px !important; /* Força tamanho */
+    
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    
+    background: white;
+    border: 1px solid #d1d5db;
+    border-radius: 6px;
+    color: #6b7280;
+    cursor: pointer;
+    transition: all 0.2s;
+    margin: 0;
+}
+
+.action-wrapper {
+    display: flex;
+    align-items: center; /* Centraliza verticalmente */
+    justify-content: flex-start;
+    gap: 10px; /* Espaço entre os botões */
+}
+
+/* Botão Bloquear */
+.btn-action {
+    height: 34px;     /* MESMA altura do botão de olho */
+    display: inline-flex; /* Flex inline para alinhar texto e ícone (se tiver) */
+    align-items: center;
+    justify-content: center;
+    
+    padding: 0 16px;
+    border: none;
+    border-radius: 6px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    cursor: pointer;
+    color: white;
+    
+    /* Remove margens extras */
+    margin: 0;
+}
+
+.btn-icon:hover {
+    border-color: var(--primary-color);
+    color: var(--primary-color);
+    background-color: #f5f3ff;
+}
+
+/* Botão Bloquear/Ativar */
+.btn-action {
+    height: 34px !important; /* EXATAMENTE A MESMA ALTURA DO ÍCONE */
+    
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    
+    padding: 0 16px;
+    border: none;
+    border-radius: 6px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: white;
+    cursor: pointer;
+    margin: 0;
+    transition: all 0.2s ease;
+}
+
+.btn-block {
+    background-color: var(--danger-color); /* Vermelho Global */
+}
+
+.btn-block:hover {
+    background-color: var(--danger-hover);
+    box-shadow: 0 2px 8px rgba(239, 68, 68, 0.25);
+}
+
+.btn-activate {
+    background-color: var(--secondary-color); /* Verde Global */
+}
+
+.btn-activate:hover {
+    background-color: #059669;
+    box-shadow: 0 2px 8px rgba(16, 185, 129, 0.25);
+}
+
+/* Faz a última coluna (Ações) ter apenas a largura do conteúdo */
+.styled-table th:last-child,
+.styled-table td:last-child {
+    width: 1%; /* Truque de CSS: força a coluna a encolher até o conteúdo */
+    white-space: nowrap; /* Impede que os botões quebrem linha */
+}
+
+/* --- MODAL (POPUP) --- */
+.modal-backdrop {
+    position: fixed;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background: rgba(0,0,0,0.5); /* Escurece o fundo suavemente */
+    backdrop-filter: blur(4px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1100;
+}
+
+.modal-content {
+    background: var(--card-background);
+    padding: 25px;
+    border-radius: 12px;
+    width: 500px;
+    max-width: 90%;
+    border: 1px solid var(--border-color);
+    box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+}
+
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    border-bottom: 1px solid var(--border-color);
+    padding-bottom: 15px;
+}
+
+.modal-header h3 {
+    margin: 0;
+    color: var(--text-color);
+    font-size: 1.2rem;
+}
+
+.close-btn {
+    background: none;
+    border: none;
+    color: var(--text-color-light);
+    font-size: 1.5rem;
+    cursor: pointer;
+    transition: color 0.2s;
+}
+
+.close-btn:hover {
+    color: var(--danger-color);
+}
+
+.modal-body p {
+    color: var(--text-color);
+}
+
+/* Removemos as bolinhas padrões da lista principal */
+.history-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+/* Cada compra é um cartão separado agora */
+.history-card {
+    background-color: #fff;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    padding: 15px;
+    margin-bottom: 12px; /* Espaço entre uma compra e outra */
+    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+}
+
+/* Estilo do cabeçalho (Data e Valor Total) */
+.history-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+    padding-bottom: 8px;
+    border-bottom: 1px dashed #e5e7eb;
+}
+
+.history-date {
+    color: var(--text-color);
+    font-size: 0.95rem;
+}
+
+.history-total {
+    color: var(--primary-color); /* ou verde */
+    font-weight: 700;
+    font-size: 1rem;
+}
+
+/* Container dos itens pequenos */
+.purchased-items-container {
+    background-color: #f9fafb; /* Fundo cinza bem claro */
+    border-radius: 6px;
+    padding: 10px;
+}
+
+.items-label {
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    color: #9ca3af;
+    font-weight: 600;
+    margin-bottom: 5px;
+}
+
+/* Lista interna dos produtos */
+.items-detail-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.item-row {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.85rem;
+    color: #4b5563;
+    padding: 2px 0;
+}
+
+.item-name {
+    font-weight: 500;
+}
+
+.item-price {
+    font-family: monospace; /* Alinha melhor os números */
+}
+
+.history-date strong {
+    display: flex;
+    align-items: center; /* A mágica acontece aqui */
+    gap: 6px; /* Espaço entre o ícone e o texto */
+}
+
+/* =========================================
+   RESPONSIVIDADE PARA MOBILE (ESTILO CARD)
+   ========================================= */
+@media (max-width: 768px) {
+
+    /* 1. Centralização do Título */
+    h2 {
+        text-align: center;
+        margin-top: 20px;
+        font-size: 40px;
+        line-height: 1.3;
+        padding: 15px 20px;
+    }
+
+    /* 2. Reseta a tabela para virar blocos */
+    .table-responsive {
+        border: none;
+        background: transparent;
+        box-shadow: none;
+        overflow: visible;
+        padding: 0 15px;
+    }
+    
+    .styled-table {
+        border: none;
+        background: transparent;
+        min-width: 100%;
+    }
+
+    .styled-table thead {
+        display: none;
+    }
+
+    /* 3. Transforma a LINHA em um CARD */
+    .styled-table tbody tr {
+        display: block;
+        background-color: var(--card-background);
+        border: 1px solid var(--border-color);
+        border-radius: 12px;
+        margin-bottom: 16px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+        padding: 0;
+        overflow: hidden;
+    }
+
+    .styled-table tbody tr:hover {
+        background-color: var(--card-background);
+    }
+
+    /* 4. Estilo das CÉLULAS */
+    .styled-table td {
+        display: block;
+        width: 100%;
+        padding: 12px 16px;
+        border-bottom: 1px solid #f3f4f6;
+        text-align: left;
+        position: relative;
+    }
+
+    .styled-table td:last-child {
+        border-bottom: 0;
+    }
+
+    /* 5. O RÓTULO (::before) */
+    .styled-table td::before {
+        content: attr(data-label);
+        display: block;
+        font-weight: 600;
+        color: var(--text-color-light);
+        text-transform: uppercase;
+        font-size: 0.7rem;
+        letter-spacing: 0.05em;
+        margin-bottom: 6px;
+    }
+
+    /* 6. Ajustes de Conteúdo Específicos */
+    
+    /* Nome e Email */
+    .user-info {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 4px;
+    }
+
+    .user-name {
+        font-size: 1rem;
+        font-weight: 600;
+    }
+
+    .user-email {
+        font-size: 0.85rem;
+        color: var(--text-color-light);
+    }
+
+    /* Badges e Status */
+    .badge, .status-indicator {
+        display: inline-flex;
+        margin: 0;
+    }
+
+    /* 7. CÉLULA DE AÇÕES - Layout Horizontal dos Botões */
+    .styled-table td.actions-cell {
+        padding: 16px;
+        background-color: #f9fafb;
+        border-top: 1px solid var(--border-color);
+        width: 100%;
+    }
+
+    .styled-table td.actions-cell::before {
+        margin-bottom: 10px;
+    }
+
+    .action-wrapper {
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+        gap: 8px;
+        width: 100%;
+    }
+
+    /* Botões com tamanho confortável para toque */
+    .btn-icon {
+        width: 42px !important;
+        height: 42px !important;
+        flex-shrink: 0;
+    }
+    
+    .btn-action {
+        flex: 1;
+        height: 42px !important;
+        font-size: 0.9rem;
+    }
+
+    /* Modal em mobile */
+    .modal-content {
+        width: 95%;
+        max-height: 85vh;
+        overflow-y: auto;
+        margin: 20px;
+    }
+
+    .modal-header h3 {
+        font-size: 1.1rem;
+    }
+
+    .history-card {
+        padding: 12px;
+    }
+
+    .history-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 6px;
+    }
+
+    .history-date {
+        font-size: 0.85rem;
+    }
+
+    .history-total {
+        font-size: 0.95rem;
+    }
+
+    .item-row {
+        font-size: 0.8rem;
+    }
+}

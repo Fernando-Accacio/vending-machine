@@ -7,6 +7,7 @@ import { DishFormComponent } from './components/dish-form/dish-form.component';
 import { DishStoreComponent } from './components/dish-store/dish-store.component';
 import { LoginComponent } from './pages/auth/login/login.component';
 import { ReportsComponent } from './pages/gerente/reports/reports.component';
+import { UserListComponent } from './pages/gerente/user-list/user-list.component';
 import { RegisterComponent } from './pages/register/register.component';
 import { ChangePasswordComponent } from './pages/change-password/change-password.component';
 import { MyWithdrawalsComponent } from './pages/cliente/my-withdrawals/my-withdrawals.component'; 
@@ -33,10 +34,11 @@ const routes: Routes = [
   { path: 'add-item', component: DishFormComponent, canActivate: [gerenteGuardGuard] },
   { path: 'edit-item/:id', component: DishFormComponent, canActivate: [gerenteGuardGuard] },
   { path: 'relatorios', component: ReportsComponent, canActivate: [gerenteGuardGuard] },
+  { path: 'usuarios', component: UserListComponent, canActivate: [gerenteGuardGuard] },
 
   // Rota de Mudar Senha (Qualquer um logado)
-  { path: 'change-password', component: ChangePasswordComponent, canActivate: [authGuard] },  
-  // --- ROTA DE CLIENTE NOVO ---
+  { path: 'change-password', component: ChangePasswordComponent, canActivate: [authGuard] },  
+  // --- ROTA DE CLIENTE---
   { path: 'minhas-retiradas', component: MyWithdrawalsComponent, canActivate: [clienteGuardGuard] },
 
   // Redireciona qualquer rota "lixo" para a página inicial

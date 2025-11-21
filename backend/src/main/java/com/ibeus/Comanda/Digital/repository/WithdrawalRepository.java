@@ -9,9 +9,12 @@ import java.util.List;
 @Repository
 public interface WithdrawalRepository extends JpaRepository<Withdrawal, Long> {
     
-    // Busca retiradas pelo email do usuário (Spring Data JPA Magic)
-    // Assume que a entidade Withdrawal tem um campo User e User tem um campo email
+    // Busca retiradas pelo email do usuário
     List<Withdrawal> findByUserEmail(String email); 
+
+    // --- NOVO MÉTODO ADICIONADO PARA O HISTÓRICO DO ADMIN ---
+    // O Spring Data JPA entende automaticamente que deve buscar pelo ID da entidade "User" dentro de "Withdrawal"
+    List<Withdrawal> findByUserId(Long userId);
     
     @Query("SELECT w FROM Withdrawal w " +
             "LEFT JOIN FETCH w.user " +

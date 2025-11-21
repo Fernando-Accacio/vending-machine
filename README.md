@@ -1,4 +1,4 @@
-🛍 Vending Machine Social
+# 🛍 Vending Machine Social
 
 Este projeto implementa um sistema Full-Stack de **Vending Machine Social**, simulando um modelo de **gestão social** onde os produtos retirados são registrados, contabilizados e o custo é rastreado para cobrança posterior de ONGs parceiras.
 
@@ -14,12 +14,14 @@ O sistema foi estruturado para atender a todas as demandas de um projeto em prod
 * **Itens e Cesta:** Catálogo de itens e cálculo do total da retirada.
 * **Cálculo de Lead Time Dinâmico:** O carrinho calcula o tempo de retirada baseado na fórmula: `10 min (Fixo) + (Quantidade Solicitada × Tempo de Reposição do Item)`.
 * **Histórico de Retiradas:** Usuários logados podem ver seu histórico de pedidos (`/minhas-retiradas`).
-* **Autenticação Segura:** Registro e Login por Documento (CPF) e Senha, com proteção de rota para troca de senha.
+* **Gestão de Conta:** O usuário pode alterar seus dados e, se desejar, **desativar sua própria conta**.
+* **Autenticação Segura:** Registro e Login por Documento (CPF) e Senha.
 
 ### 🔐 Lado do Admin (Gerente/ONG)
 * **Acesso Restrito:** Painel protegido que exige a role **`GERENTE`**.
 * **Gerenciamento de Itens (CRUD):** O gerente pode **Criar, Ler, Atualizar e Deletar** itens do catálogo.
-* **Relatórios:** Exibe **todas as retiradas** do sistema, detalhando usuário, itens e o custo total (`/relatorios`).
+* **Gestão de Beneficiários:** Controle total sobre os usuários, permitindo **Bloquear/Reativar** contas e visualizar o **histórico individual** de retirada de cada cliente.
+* **Relatórios Gerais:** Exibe **todas as retiradas** do sistema, detalhando usuário, itens e o custo total (`/relatorios`).
 
 ---
 
@@ -40,7 +42,8 @@ Após o login, você verá o menu principal:
 * **Home (Itens):** A página principal onde você vê todos os "Itens Disponíveis" para retirada.
 * **Minhas Retiradas:** O seu histórico de todos os pedidos que você já fez.
 * **Olá, Cliente:** Um menu para gerenciar sua conta.
-    * **Mudar Senha e usuário:** Permite atualizar suas informações de login.
+    * **Mudar Senha e usuário:** Permite atualizar suas informações.
+    * **Desativar Conta:** Permite encerrar o uso da conta.
     * **Sair:** Desconecta você do sistema com segurança.
 
 ### 3. Como Fazer uma Retirada (Passo a Passo)
@@ -76,14 +79,17 @@ Ao clicar em **"Minhas Retiradas"** no menu, você acessa seu histórico complet
 ### 5. Gerenciando sua Conta
 
 #### Alterar Senha ou Usuário
-
 1.  Clique no menu **"Olá, Cliente"** e escolha **"Mudar Senha e usuário"**.
 2.  Você **deve** digitar sua **"Senha Atual"** para confirmar que é você.
-3.  Preencha os campos "Novo Nome de Usuário" ou "Nova Senha" (você pode mudar só um ou os dois).
-4.  Clique em **"Salvar Alterações"**.
+3.  Preencha os campos "Novo Nome de Usuário" ou "Nova Senha" e clique em **"Salvar Alterações"**.
+
+#### Desativar Conta
+Caso não deseje mais utilizar o sistema, você pode desativar sua conta:
+1.  No menu do usuário, clique no botão vermelho **"Desativar Conta"**.
+2.  Um aviso aparecerá informando que, para reativar a conta no futuro, será necessário **entrar em contato com o gerente**.
+3.  Confirme sua senha atual e clique em **"Confirmar Desativação"**.
 
 #### Sair do Sistema
-
 Para proteger sua conta, sempre clique em **"Sair"** no menu quando terminar de usar o site.
 
 ---
@@ -94,28 +100,38 @@ Este manual é destinado aos usuários com perfil de **Gerente** ou **ONG**, que
 
 ### 1. Acesso ao Painel de Admin
 
-O login é feito pela mesma tela do cliente, mas o sistema identificará sua permissão de "GERENTE" e liberará o acesso às áreas restritas.
+O login é feito pela mesma tela do cliente, mas o sistema identificará sua permissão de "GERENTE" e liberará o acesso às áreas restritas através do menu superior.
 
 ### 2. Gerenciamento de Itens (CRUD)
 
 Como administrador, você tem controle total sobre o catálogo de produtos disponíveis no site. Você pode:
 
-* **Criar (Create):** Adicionar novos itens ao catálogo, definindo nome, descrição e o "Custo Real" (o valor que será cobrado da ONG).
+* **Criar (Create):** Adicionar novos itens ao catálogo, definindo nome, descrição e o "Custo Real".
 * **Ler (Read):** Visualizar todos os itens atualmente disponíveis.
-* **Atualizar (Update):** Editar informações de itens existentes (Ex: corrigir o custo de um item ou alterar sua descrição).
+* **Atualizar (Update):** Editar informações de itens existentes.
 * **Deletar (Delete):** Remover itens que não serão mais oferecidos.
 
-### 3. Relatórios de Retirada
+### 3. Gerenciamento de Beneficiários
 
-A seção **"Relatórios"** (/relatorios) é a sua principal ferramenta de gestão e prestação de contas. Nela, você pode visualizar **todas as retiradas** feitas no sistema por todos os usuários.
+Acesse a aba **"Beneficiários"** para visualizar e gerenciar a base de usuários do sistema. Nesta tela é possível:
+
+* **Listagem Geral:** Visualizar uma tabela contendo ID, Nome/Email, Documento (CPF) e Status atual de todos os clientes.
+* **Bloquear / Reativar Conta:**
+    * Ao clicar no botão **"Bloquear"** (vermelho), o acesso do usuário ao sistema é imediatamente suspenso.
+    * Para contas já bloqueadas (ou desativadas pelo próprio usuário), o botão aparecerá como **"Ativar"** (verde), permitindo restaurar o acesso do cliente.
+* **Histórico Individual:**
+    * Ao clicar no ícone de lista (ao lado do botão de bloqueio), uma janela se abrirá exibindo o **Histórico Completo** daquele cliente específico.
+    * Isso permite auditar retiradas individuais sem precisar procurar no relatório geral.
+
+### 4. Relatórios Gerais
+
+A seção **"Relatórios"** (/relatorios) é a ferramenta de prestação de contas global. Nela, você visualiza **todas as retiradas** feitas no sistema por todos os usuários, em ordem cronológica.
 
 Os relatórios detalham:
 * O usuário que fez a retirada.
 * A data e hora do pedido.
 * Todos os itens e quantidades de cada retirada.
 * O **Custo Total** daquela retirada (o valor a ser cobrado da ONG).
-
-Isso permite um rastreamento completo dos custos e da distribuição dos itens.
 
 ---
 
@@ -148,7 +164,9 @@ dish-app-java/
 │   └── app.config.ts     \# Configurações de rotas e injeção (Interceptors, Guards)
 └── angular.json          \# Configuração do Workspace Angular
 
-Este repositório inclui a pasta screenshots/, contendo imagens de exemplo do site em funcionamento, e o arquivo schema.sql, que contém a exportação completa do banco de dados (estrutura e dados) para importação e teste local.
+````
+
+Este repositório inclui a pasta `screenshots/`, contendo imagens de exemplo do site em funcionamento, e o arquivo `schema.sql`, que contém a exportação completa do banco de dados (estrutura e dados) para importação e teste local.
 
 ---
 
@@ -203,3 +221,4 @@ O arquivo `frontend/src/app/services/config/env.ts` define a URL da API que o An
     ng serve
     ```
 3.  O aplicativo estará em `http://localhost:4200/`.
+````

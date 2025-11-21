@@ -21,7 +21,6 @@ export class MyWithdrawalsComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    // Melhoramos a checagem: o botão só aparece se estiver autenticado, mas checamos de novo.
     if (this.authService.isAuthenticated()) {
       this.loadHistory();
     } else {

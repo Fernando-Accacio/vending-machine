@@ -30,6 +30,7 @@
                     <div class="nav-container" *ngIf="isGerente">
                         <a routerLink="/itens" routerLinkActive="active" class="nav-button">Itens</a>
                         <a routerLink="/relatorios" routerLinkActive="active" class="nav-button">Relatórios</a>
+                        <a routerLink="/usuarios" routerLinkActive="active" class="nav-button">Beneficiários</a>
                     </div>
 
                     <div class="nav-container" *ngIf="isEntregador">
@@ -43,8 +44,12 @@
                         
                         <div class="auth-buttons">
                             <a routerLink="/change-password" routerLinkActive="active" class="nav-button change-pass-btn">
-                                Mudar Senha e usuário
+                                Mudar Senha/Usuário
                             </a>
+                            
+                            <button *ngIf="!isGerente" class="nav-button deactivate-btn" (click)="openDeactivateModal()">
+                                Desativar Conta
+                            </button>
                         </div>
 
                         <div class="user-separator">
@@ -87,54 +92,35 @@
                     <hr *ngIf="isAuthenticated" class="menu-divider">
 
                     <ng-container *ngIf="isCliente || (!isGerente && !isEntregador)">
-                        <a routerLink="/" 
-                           class="nav-button" 
-                           routerLinkActive="active" 
-                           [routerLinkActiveOptions]="{exact: true}" 
-                           (click)="toggleMenu()">
-                           <span>Itens</span>
-                        </a>
-
-                        <a *ngIf="isAuthenticated" 
-                           routerLink="/minhas-retiradas" 
-                           class="nav-button" 
-                           routerLinkActive="active" 
-                           (click)="toggleMenu()">
-                           <span>Minhas Retiradas</span>
-                        </a>
+                        <a routerLink="/" class="nav-button" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}" (click)="toggleMenu()"><span>Itens</span></a>
+                        <a *ngIf="isAuthenticated" routerLink="/minhas-retiradas" class="nav-button" routerLinkActive="active" (click)="toggleMenu()"><span>Minhas Retiradas</span></a>
                     </ng-container>
 
                     <ng-container *ngIf="isGerente">
-                        <a routerLink="/itens" class="nav-button" routerLinkActive="active" (click)="toggleMenu()">
-                            <span>Gerenciamento de Itens</span>
-                        </a>
-                        <a routerLink="/relatorios" class="nav-button" routerLinkActive="active" (click)="toggleMenu()">
-                            <span>Relatórios</span>
-                        </a>
+                        <a routerLink="/itens" class="nav-button" routerLinkActive="active" (click)="toggleMenu()"><span>Gerenciamento de Itens</span></a>
+                        <a routerLink="/relatorios" class="nav-button" routerLinkActive="active" (click)="toggleMenu()"><span>Relatórios</span></a>
+                        <a routerLink="/usuarios" class="nav-button" routerLinkActive="active" (click)="toggleMenu()"><span>Beneficiários</span></a>
                     </ng-container>
 
                     <ng-container *ngIf="isEntregador">
-                        <a routerLink="/entregas" class="nav-button" routerLinkActive="active" (click)="toggleMenu()">
-                            <span>Pedidos de Entrega</span>
-                        </a>
+                        <a routerLink="/entregas" class="nav-button" routerLinkActive="active" (click)="toggleMenu()"><span>Pedidos de Entrega</span></a>
                     </ng-container>
 
                     <hr *ngIf="isAuthenticated" class="menu-divider">
 
                     <div class="mobile-auth-section">
                         <a *ngIf="isAuthenticated" routerLink="/change-password" class="nav-button change-pass-btn" routerLinkActive="active" (click)="toggleMenu()">
-                            <span>Mudar Senha e usuário</span>
+                            <span>Mudar Senha/Usuário</span>
                         </a>
                         
-                    <button class="nav-button logout-btn danger-btn" (click)="logout()">
-                        <svg stroke="currentColor" fill="white" stroke-width="0" viewBox="0 0 512 512" 
-                            height="18" width="18" 
-                            style="width: 18px; height: 18px; min-width: 18px; display: inline-block; vertical-align: middle; margin-right: 8px; fill: white;"
-                            xmlns="http://www.w3.org/2000/svg">
-                            <path d="M497 273L329 441c-15 15-41 4.5-41-17v-96H152c-13.3 0-24-10.7-24-24v-96c0-13.3 10.7-24 24-24h136V88c0-21.4 25.9-32 41-17l168 168c9.3 9.4 9.3 24.6 0 34zM192 436v-40c0-6.6-5.4-12-12-12H96c-17.7 0-32-14.3-32-32V160c0-17.7 14.3-32 32-32h84c6.6 0 12-5.4 12-12V76c0-6.6-5.4-12-12-12H96c-53 0-96 43-96 96v192c0 53 43 96 96 96h84c6.6 0 12-5.4 12-12z"></path>
-                        </svg>
-                        <span>Sair</span>
-                    </button>
+                        <button *ngIf="isAuthenticated && !isGerente" class="nav-button deactivate-btn" (click)="openDeactivateModal()">
+                            <span>Desativar Conta</span>
+                        </button>
+
+                        <button class="nav-button logout-btn danger-btn" (click)="logout()">
+                            <svg stroke="currentColor" fill="white" stroke-width="0" viewBox="0 0 512 512" height="18" width="18" style="width: 18px; height: 18px; min-width: 18px; display: inline-block; vertical-align: middle; margin-right: 8px; fill: white;" xmlns="http://www.w3.org/2000/svg"><path d="M497 273L329 441c-15 15-41 4.5-41-17v-96H152c-13.3 0-24-10.7-24-24v-96c0-13.3 10.7-24 24-24h136V88c0-21.4 25.9-32 41-17l168 168c9.3 9.4 9.3 24.6 0 34zM192 436v-40c0-6.6-5.4-12-12-12H96c-17.7 0-32-14.3-32-32V160c0-17.7 14.3-32 32-32h84c6.6 0 12-5.4 12-12V76c0-6.6-5.4-12-12-12H96c-53 0-96 43-96 96v192c0 53 43 96 96 96h84c6.6 0 12-5.4 12-12z"></path></svg>
+                            <span>Sair</span>
+                        </button>
                         
                         <a *ngIf="!isAuthenticated" routerLink="/login" class="nav-button login-btn" routerLinkActive="active" (click)="toggleMenu()">
                             <span>Login</span>
@@ -152,4 +138,44 @@
             <router-outlet></router-outlet>
         </main>
     </div>
+
+    <div class="modal-backdrop" *ngIf="showDeactivateModal">
+        <div class="modal-content deactivate-modal">
+            <div class="modal-header">
+                <h3 style="color: var(--danger-color);">Desativar Conta</h3>
+                <button class="close-btn" (click)="closeDeactivateModal()">×</button>
+            </div>
+            <div class="modal-body">
+                <p>Você tem certeza que deseja desativar sua conta?</p>
+                <div class="warning-box" style="background: #fff5f5; padding: 10px; border-radius: 6px; border: 1px solid #fed7d7; margin-bottom: 15px;">
+                    <p style="color: #c53030; font-size: 0.9rem; margin: 0;">
+                        <strong>Atenção:</strong> Para reativar sua conta futuramente, você precisará <strong>entrar em contato com o gerente</strong>. Você não poderá fazer login até lá.
+                    </p>
+                </div>
+                
+                <div class="form-group">
+                    <label for="confirmPass">Confirme sua senha para continuar:</label>
+                    <input 
+                        type="password" 
+                        id="confirmPass" 
+                        class="form-control" 
+                        [(ngModel)]="deactivatePassword" 
+                        placeholder="Digite sua senha atual"
+                        style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 6px; margin-top: 5px;">
+                </div>
+
+                <p *ngIf="deactivateError" class="error-msg" style="color: red; font-size: 0.9rem; margin-top: 10px;">
+                    {{ deactivateError }}
+                </p>
+            </div>
+            <div class="modal-footer" style="display: flex; justify-content: flex-end; gap: 10px; margin-top: 20px;">
+                <button class="btn-cancel" (click)="closeDeactivateModal()" style="padding: 8px 16px; border: 1px solid #ddd; background: white; border-radius: 6px; cursor: pointer;">Cancelar</button>
+                <button class="btn-confirm-deactivate" (click)="confirmDeactivate()" [disabled]="isDeactivating" 
+                    style="padding: 8px 16px; border: none; background: var(--danger-color); color: white; border-radius: 6px; cursor: pointer;">
+                    {{ isDeactivating ? 'Processando...' : 'Confirmar Desativação' }}
+                </button>
+            </div>
+        </div>
+    </div>
+
 </div>

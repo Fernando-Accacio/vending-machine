@@ -1,68 +1,91 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from '../../environments/environment'; 
 
-// --- INTERFACES DO BACKEND ---
+export interface CartItemDto {
+  dishId: number;
+  quantity: number;
+}
+
+export interface WithdrawalRequest {
+  email: string;
+  cart: CartItemDto[];
+}
 
 export interface Dish {
     id: number;
     name: string;
-    description: string;
     custo: number;
-    tempoReposicao: number;
 }
 
 export interface WithdrawalItem {
-    id: number;
+    id?: number;
+    dish: Dish;
     quantity: number;
     costAtTime: number;
-    dish: Dish; 
 }
 
 export interface Withdrawal {
-displayIndex: any; 
     id: number;
+    withdrawalDate: string; 
     totalCost: number;
-    withdrawalDate: string;
-    user: {
-        documento: string;
+    items: WithdrawalItem[];
+    displayIndex?: number; 
+    user?: { 
+        id: number;
         name: string;
         email: string;
-    };
-    items: WithdrawalItem[];
+        documento: string;
+    }; 
 }
 
 export type ReportWithdrawal = Withdrawal; 
 
-export interface CartItemDto {
-    dishId: number; 
-    quantity: number;
-}
-
-export interface WithdrawalRequest {
-    email: string;
-    cart: CartItemDto[];
-}
-
 @Injectable({
-    providedIn: 'root'
+  providedIn: 'root'
 })
 export class WithdrawalService {
 
-    private apiUrl = `${environment.apiUrl}/withdrawals`; 
+  private apiUrl = environment.apiUrl + '/withdrawals'; 
 
-    constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) { }
 
-    createWithdrawal(request: WithdrawalRequest): Observable<Withdrawal> {
-        return this.http.post<Withdrawal>(this.apiUrl, request);
-    }
+  private getHeaders() {
+    const token = localStorage.getItem('auth_token') || localStorage.getItem('token');
+    return {
+      headers: new HttpHeaders({
+        'Authorization': `Bearer ${token}`,
+        'Content-Type': 'application/json'
+      })
+    };
+  }
 
-    getHistory(): Observable<Withdrawal[]> { // Função para o Cliente
-        return this.http.get<Withdrawal[]>(`${this.apiUrl}/history`);
-    }
+  // --- MÉTODOS PRINCIPAIS ---
 
-    getWithdrawalsReport(): Observable<ReportWithdrawal[]> { // Função para o Gerente
-        return this.http.get<ReportWithdrawal[]>(this.apiUrl); 
-    }
+  createWithdrawal(withdrawalData: WithdrawalRequest): Observable<any> {
+    return this.http.post(this.apiUrl, withdrawalData, this.getHeaders());
+  }
+
+  getAllWithdrawals(): Observable<Withdrawal[]> {
+    return this.http.get<Withdrawal[]>(this.apiUrl, this.getHeaders());
+  }
+
+  getMyWithdrawals(): Observable<Withdrawal[]> {
+    return this.http.get<Withdrawal[]>(`${this.apiUrl}/my-withdrawals`, this.getHeaders());
+  }
+
+  // Método chamado pelo Modal do Gerente
+  getWithdrawalsByUserId(userId: number): Observable<Withdrawal[]> {
+    return this.http.get<Withdrawal[]>(`${this.apiUrl}/user/${userId}`, this.getHeaders());
+  }
+
+  // --- MÉTODOS DE COMPATIBILIDADE ---
+  getHistory(): Observable<Withdrawal[]> {
+    return this.getMyWithdrawals();
+  }
+
+  getWithdrawalsReport(): Observable<Withdrawal[]> {
+    return this.getAllWithdrawals();
+  }
 }

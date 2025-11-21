@@ -79,7 +79,14 @@ public class WithdrawalService {
      * Busca retiradas por email (Histórico do Cliente).
      */
     public List<Withdrawal> findByEmail(String email) {
-        // Isso depende de você ter configurado a relação correta no WithdrawalRepository
         return withdrawalRepository.findByUserEmail(email); 
+    }
+
+    // --- NOVO MÉTODO ADICIONADO ---
+    /**
+     * Busca retiradas por ID do usuário (Histórico Individual do Admin).
+     */
+    public List<Withdrawal> findByUserId(Long userId) {
+        return withdrawalRepository.findByUserId(userId);
     }
 }

@@ -4,6 +4,7 @@ import { CommonModule, DatePipe, DecimalPipe } from '@angular/common';
 
 interface DisplayReportWithdrawal extends ReportWithdrawal {
   displayIndex: number;
+  user: NonNullable<ReportWithdrawal['user']>; 
 }
 
 @Component({
@@ -26,25 +27,35 @@ export class ReportsComponent implements OnInit {
   }
 
   loadReports(): void {
-    this.isLoading = true; // -> Garante o loading
+    this.isLoading = true; 
 
     this.withdrawalService.getWithdrawalsReport().subscribe({
       next: (data) => {
         this.withdrawals = data.map((w, index) => {
-          const dateStringUTC = w.withdrawalDate + 'Z';
+          
+          const dateString = w.withdrawalDate;
+          
+          const userSafe = w.user || { 
+            id: 0, 
+            name: 'Usuário Removido', 
+            email: '', 
+            documento: '---' 
+          };
+
           return {
             ...w,
-            withdrawalDate: new Date(dateStringUTC) as any,
+            user: userSafe,
+            withdrawalDate: new Date(dateString) as any,
             displayIndex: index + 1 
           } as DisplayReportWithdrawal;
         }); 
 
         this.totalCostAll = data.reduce((total: number, w: ReportWithdrawal) => total + w.totalCost, 0); 
-        this.isLoading = false; // -> Desliga no sucesso
+        this.isLoading = false; 
       },
       error: (err) => {
         console.error("Erro ao carregar relatórios:", err);
-        this.isLoading = false; // -> Desliga no erro
+        this.isLoading = false; 
       }
     });
   }

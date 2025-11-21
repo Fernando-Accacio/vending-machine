@@ -19,7 +19,6 @@ import { LoadingService } from '../../../services/loading/loading.service';
 export class LoginComponent implements OnInit {
   
   public isLoadingLocal: boolean = true;
-  
   passwordFieldType: string = 'password';
   message: { text: string, type: 'success' | 'error' | null } = { text: '', type: null };
 
@@ -35,10 +34,7 @@ export class LoginComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    // Simula um carregamento muito rápido para consistência visual
-    setTimeout(() => {
-      this.isLoadingLocal = false;
-    }, 50); // 50ms é quase instantâneo
+    setTimeout(() => { this.isLoadingLocal = false; }, 50); 
   }
 
   togglePasswordVisibility(): void {
@@ -52,38 +48,43 @@ export class LoginComponent implements OnInit {
 
   login() {
     this.message = { text: '', type: null }; 
-    
-    // ATIVA APENAS O LOADING GLOBAL (Correto para a ação de login)
     this.loadingService.show(); 
     
     this.authService.login(this.user.documento, this.user.password || '').subscribe({
       next: (data) => {
         this.authService.saveToken(data.token);
         const role = this.authService.getRole(); 
-        
         const cart = localStorage.getItem('cart');
+        
         if (cart) {
           this.router.navigate(['/']); 
           return;
         }
         
         switch(role) {
-          case 'GERENTE':
-            this.router.navigate(['/itens']); 
-            break;
-          case 'cliente':
-            this.router.navigate(['/']);
-            break
-          case 'entregador':
-            this.router.navigate(['/entregas']); 
-            break
-          default:
-            this.router.navigate(['/']);
+          case 'GERENTE': this.router.navigate(['/itens']); break;
+          case 'cliente': this.router.navigate(['/']); break;
+          case 'entregador': this.router.navigate(['/entregas']); break;
+          default: this.router.navigate(['/']);
         }
       },
       error: (error) => {
-        this.showMessage('Documento e/ou senha inválidas!') 
-        console.error('ERRO DE AUTENTICAÇÃO:', error);
+        console.log('ERRO LOGIN:', error);
+        
+        // Pega a mensagem vinda do JSON do backend
+        const serverMessage = error.error?.message;
+
+        if (error.status === 403) {
+            // CONTA BLOQUEADA
+            this.showMessage(serverMessage || 'Sua conta foi suspensa. Entre em contato com a gerência.');
+        } else if (error.status === 401) {
+            // SENHA ERRADA
+            this.showMessage('Documento e/ou senha inválidas!');
+        } else {
+            // OUTROS ERROS
+            this.showMessage('Erro de conexão ou servidor indisponível.');
+        }
+        
         this.loadingService.hide();
       },
       complete: () => {
