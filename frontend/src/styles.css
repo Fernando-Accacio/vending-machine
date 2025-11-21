@@ -953,9 +953,15 @@ td:last-child {
 /* Tamanho fixo para ambos os botões */
 .action-buttons-container .delete,
 .action-buttons-container .edit {
-  width: 90px;
-  padding: 10px 12px;  
-  margin: 0 !important;
+    width: 100px !important; 
+    min-width: 100px !important;
+    padding: 10px 0 !important; 
+    display: inline-flex !important;
+    justify-content: center !important;
+    align-items: center !important;
+    text-align: center !important;
+    box-sizing: border-box !important;
+    margin: 0 !important;
 }
 
 /* Força todos os botões dentro da coluna de ações a terem a mesma largura */
