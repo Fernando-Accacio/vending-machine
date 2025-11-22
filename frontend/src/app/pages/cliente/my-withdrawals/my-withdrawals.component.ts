@@ -13,7 +13,7 @@ import { RouterModule } from '@angular/router';
 })
 export class MyWithdrawalsComponent implements OnInit {
   
-  history: Withdrawal[] = []; 
+  history: any[] = []; // Mudei para any[] para aceitar o displayIndex sem erro de tipagem
   
   isLoading: boolean = true;
   errorMessage: string | null = null;
@@ -31,15 +31,30 @@ export class MyWithdrawalsComponent implements OnInit {
     this.withdrawalService.getHistory().subscribe({
       next: (data: Withdrawal[]) => {
         
-        this.history = data.map((w, index) => { 
+        // 1. Formata as datas corretamente
+        let formattedData = data.map((w) => { 
           const dateString = w.withdrawalDate ? w.withdrawalDate : new Date().toISOString();
-          
           return {
             ...w,
-            displayIndex: index + 1, 
-            withdrawalDate: new Date(dateString) as any 
+            withdrawalDate: new Date(dateString) as any
           };
         });
+
+        // 2. Ordena: Mais recentes primeiro
+        formattedData = formattedData.sort((a: any, b: any) => {
+            return b.withdrawalDate.getTime() - a.withdrawalDate.getTime();
+        });
+
+        // 3. A MÁGICA: Calcula o ID Sequencial do Cliente
+        // Se tenho 10 itens, o item no índice 0 (o mais novo) recebe o número 10.
+        const totalCount = formattedData.length;
+
+        this.history = formattedData.map((item, index) => ({
+            ...item,
+            // O ID Visual será: (Total de itens - Posição atual)
+            // Ex: Total 5. Item 0 (mais novo) vira #5. Item 4 (mais velho) vira #1.
+            displayIndex: totalCount - index 
+        }));
 
         this.isLoading = false;
       },

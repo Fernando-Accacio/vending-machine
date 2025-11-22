@@ -1,3 +1,11 @@
+<div *ngIf="successMessage" class="toast-message success">
+  {{ successMessage }}
+</div>
+
+<div *ngIf="errorMessage" class="toast-message error">
+  {{ errorMessage }}
+</div>
+
 <div *ngIf="isLoadingLocal" class="container-loading">
   <p>Carregando itens... Por favor, aguarde.</p>
 </div>
@@ -14,7 +22,6 @@
     <div *ngIf="dishes.length > 0" class="dishes-grid">
       <div *ngFor="let dish of dishes" class="dish-card">
         
-        <!-- Container da imagem com altura maior -->
         <div class="dish-image-container">
             <img [src]="dish.imageUrl || 'assets/logo.png'" 
                  [alt]="dish.name">

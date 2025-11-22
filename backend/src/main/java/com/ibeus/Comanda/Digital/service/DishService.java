@@ -1,6 +1,7 @@
 package com.ibeus.Comanda.Digital.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException; // IMPORTANTE
 import org.springframework.stereotype.Service;
 import com.ibeus.Comanda.Digital.model.Dish;
 import com.ibeus.Comanda.Digital.repository.DishRepository;
@@ -14,17 +15,14 @@ public class DishService {
     private DishRepository dishRepository;
 
     public List<Dish> findAll() {
-        // Agora usamos o método otimizado do repositório para filtrar no SQL
         return dishRepository.findByIsActiveTrue(); 
     }
 
     public Dish findById(Long id) {
-        // Encontra o prato
         return dishRepository.findById(id).orElseThrow(() -> new RuntimeException("Dish not found"));
     }
 
     public Dish create(Dish dish) {
-        // Garante que o prato recém-criado está ativo
         dish.setActive(true);
         return dishRepository.save(dish);
     }
@@ -32,25 +30,35 @@ public class DishService {
     public Dish update(Long id, Dish dishDetails) {
         Dish dish = findById(id);
         
-        // --- EDIÇÃO ---
         dish.setName(dishDetails.getName());
         dish.setDescription(dishDetails.getDescription());
         dish.setCusto(dishDetails.getCusto());
-        
-        // Adicionar o Setter para o Tempo de Reposição
         dish.setTempoReposicao(dishDetails.getTempoReposicao());
-        // --------------------------
         
-        // Mantém o status ativo atual (se o formulário de edição permite essa alteração)
-        // Se o formulário tiver a checkbox de inativar:
-        // dish.setActive(dishDetails.isActive()); 
+        // Se houver lógica de imagem, ela já foi tratada no Controller antes de chegar aqui, 
+        // ou você pode adicionar aqui se estiver passando o objeto completo.
+        if(dishDetails.getImageUrl() != null) {
+            dish.setImageUrl(dishDetails.getImageUrl());
+        }
         
         return dishRepository.save(dish);
     }
 
+    // --- AQUI ESTÁ A MUDANÇA MÁGICA ---
     public void delete(Long id) {
-        Dish dish = findById(id);
-        dish.setActive(false); // Marca o prato como inativo (Soft Delete)
-        dishRepository.save(dish);
+        if (!dishRepository.existsById(id)) {
+            throw new RuntimeException("Dish not found");
+        }
+
+        try {
+            // Tenta apagar fisicamente do banco (Hard Delete)
+            dishRepository.deleteById(id);
+        } catch (DataIntegrityViolationException e) {
+            // Se der erro porque o item já tem histórico (está amarrado a pedidos),
+            // nós fazemos o Soft Delete (apenas inativamos)
+            Dish dish = findById(id);
+            dish.setActive(false);
+            dishRepository.save(dish);
+        }
     }
 }

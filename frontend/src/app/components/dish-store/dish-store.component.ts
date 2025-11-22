@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { DishService, Dish } from '../../services/dish.service'; 
 import { Router } from '@angular/router';
-
 import { AuthenticateService } from '../../services/auth/authenticate.service';
 import { WithdrawalService, CartItemDto, WithdrawalRequest } from '../../services/withdrawal.service';
 import { LoadingService } from '../../services/loading/loading.service'; 
@@ -27,6 +26,10 @@ export class DishStoreComponent implements OnInit {
   totalLeadTime: number = 0; 
 
   public isLoadingLocal: boolean = false; 
+
+  // NOVAS VARIÁVEIS PARA MENSAGENS
+  successMessage: string | null = null;
+  errorMessage: string | null = null;
 
   constructor(
     private dishService: DishService, 
@@ -54,7 +57,6 @@ export class DishStoreComponent implements OnInit {
         },
         error: (err) => {
             console.error('Erro ao carregar itens:', err);
-            
             if (this.loadingService.isFirstLoad()) {
               this.loadingService.hide(); 
             }
@@ -111,27 +113,26 @@ export class DishStoreComponent implements OnInit {
   }
 
   checkout(): void {
+    // 1. Verifica Login
     if (!this.authService.isAuthenticated()) {
-      alert('Você precisa estar logado para finalizar uma retirada!');
-      this.router.navigate(['/login']); 
+      this.errorMessage = 'Você precisa estar logado para finalizar!';
+      setTimeout(() => this.router.navigate(['/login']), 2000);
       return;
     }
     
     const email = this.authService.getEmail(); 
     if (!email) {
-        alert('Erro de autenticação: Email não encontrado no token. Tente fazer login novamente.');
-        this.router.navigate(['/login']); 
+        this.errorMessage = 'Erro de autenticação. Faça login novamente.';
+        setTimeout(() => this.router.navigate(['/login']), 2000);
         return;
     }
 
-    // --- CORREÇÃO DO ERRO TS2322 AQUI ---
     const cartDto: CartItemDto[] = this.cart
-      .filter(item => item.id !== undefined) // 1. Filtra itens sem ID
+      .filter(item => item.id !== undefined)
       .map(item => ({
-        dishId: item.id!, // 2. O '!' avisa o TypeScript que o ID existe com certeza
+        dishId: item.id!,
         quantity: item.quantity
       }));
-    // -------------------------------------
 
     const request: WithdrawalRequest = {
       email: email,
@@ -143,21 +144,34 @@ export class DishStoreComponent implements OnInit {
     
     this.withdrawalService.createWithdrawal(request).subscribe({
       next: (response) => {
-        alert('Retirada registrada com sucesso!');
+        // 3. SUCESSO: Exibe a mensagem verde
+        this.successMessage = 'Retirada confirmada com sucesso! \u2713';
+        
+        // Limpa carrinho e local storage
         this.cart = [];
         this.updateTotal();
         localStorage.removeItem('cart');
-        this.router.navigate(['/']);
+
+        this.loadingService.hide();
+        
+        // 4. Redireciona após 2 segundos (para dar tempo de ler a mensagem)
+        setTimeout(() => {
+            this.isLoadingLocal = false;
+            this.successMessage = null; // Limpa msg
+            this.router.navigate(['/']); // Vai para Home ou Meus Pedidos
+        }, 2000);
       },
       error: (err) => {
         console.error('Falha ao registrar retirada', err);
-        alert('Houve um erro ao registrar sua retirada. Tente novamente.');
-        this.isLoadingLocal = false; 
         this.loadingService.hide();
+        this.isLoadingLocal = false; 
+        
+        // ERRO: Exibe mensagem vermelha
+        this.errorMessage = 'Erro ao processar retirada. Tente novamente.';
+        setTimeout(() => this.errorMessage = null, 3000);
       },
       complete: () => {
-        this.isLoadingLocal = false; 
-        this.loadingService.hide();
+        // O loading é controlado no next/error para evitar piscar
       }
     });
   }

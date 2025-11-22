@@ -12,7 +12,11 @@ import { RouterModule } from '@angular/router';
 })
 export class DishListComponent implements OnInit {
   dishes: Dish[] = [];
-  public isLoading: boolean = true; // (Começa em true)
+  public isLoading: boolean = true;
+
+  // NOVAS VARIÁVEIS PARA AS MENSAGENS
+  successMessage: string | null = null;
+  errorMessage: string | null = null;
 
   constructor(private dishService: DishService) {}
 
@@ -21,32 +25,50 @@ export class DishListComponent implements OnInit {
   }
 
   loadDishes() {
-    this.isLoading = true; // (Garante o loading em re-carregamentos)
+    this.isLoading = true;
     
-    this.dishService.getDishes().subscribe({ // (para objeto)
+    this.dishService.getDishes().subscribe({
       next: (data: Dish[]) => {
         this.dishes = data;
-        this.isLoading = false; // (Desliga no sucesso)
+        this.isLoading = false;
       },
-      error: (err) => { // -> NOVO
+      error: (err) => {
         console.error("Erro ao carregar itens:", err);
-        this.isLoading = false; // (Desliga no erro)
+        this.isLoading = false;
       }
     });
   }
 
   deleteDish(id: number) {
-    const shouldDelete = confirm("Tem certeza que deseja apagar este item? Esta ação fará um 'soft delete' do item.");
+    // 1. Pergunta de confirmação
+    const shouldDelete = confirm("Tem certeza que deseja EXCLUIR este item? \n\nSe ele nunca foi vendido, sumirá do banco de dados. \nSe já tiver histórico, ficará apenas inativo.");
 
     if (shouldDelete) {
+        // Limpa mensagens anteriores
+        this.successMessage = null;
+        this.errorMessage = null;
+
         this.dishService.deleteDish(id).subscribe({
             next: () => {
-                alert('Item deletado com sucesso!');
-                this.loadDishes(); // Isso vai reativar o loading
+                // 2. Exibe a mensagem de sucesso (VERDE)
+                this.successMessage = 'Item excluído com sucesso! \u2713';
+                
+                // 3. Recarrega a lista
+                this.loadDishes(); 
+
+                // 4. Remove a mensagem após 3 segundos
+                setTimeout(() => {
+                    this.successMessage = null;
+                }, 3000);
             },
             error: (error) => {
-                alert('Não é possível excluir o item. Se ele estiver vinculado a um pedido, ele será marcado como Inativo.');
+                // Exibe mensagem de erro (VERMELHO) caso falhe
+                this.errorMessage = 'Erro ao tentar excluir o item.';
                 console.error('Erro ao excluir o item:', error);
+                
+                setTimeout(() => {
+                    this.errorMessage = null;
+                }, 3000);
             },
         });
     }

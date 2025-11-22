@@ -248,10 +248,11 @@ h2 {
 }
 
 /* --- MODAL (POPUP) --- */
+/* --- MODAL (POPUP) - CORREÇÃO DE SCROLL DUPLO --- */
 .modal-backdrop {
     position: fixed;
     top: 0; left: 0; width: 100%; height: 100%;
-    background: rgba(0,0,0,0.5); /* Escurece o fundo suavemente */
+    background: rgba(0,0,0,0.5);
     backdrop-filter: blur(4px);
     display: flex;
     justify-content: center;
@@ -267,15 +268,22 @@ h2 {
     max-width: 90%;
     border: 1px solid var(--border-color);
     box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+    
+    /* --- MÁGICA PARA 1 SCROLLBAR SÓ --- */
+    display: flex;
+    flex-direction: column; /* Organiza Header, Body, Footer em pilha */
+    max-height: 85vh;       /* Altura máxima de 85% da tela */
+    overflow: hidden;       /* Esconde a barra de rolagem EXTERNA */
 }
 
 .modal-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 20px;
-    border-bottom: 1px solid var(--border-color);
     padding-bottom: 15px;
+    border-bottom: 1px solid var(--border-color);
+    
+    flex-shrink: 0; /* Impede que o cabeçalho seja esmagado */
 }
 
 .modal-header h3 {
@@ -297,103 +305,92 @@ h2 {
     color: var(--danger-color);
 }
 
+/* O CORPO É O ÚNICO QUE ROLA AGORA */
+.modal-body {
+    overflow-y: auto;  /* Habilita rolagem SÓ aqui */
+    flex-grow: 1;      /* Ocupa todo o espaço disponível no meio */
+    padding-right: 5px; /* Evita que o scroll tape o texto */
+    margin-top: 10px;
+}
+
 .modal-body p {
     color: var(--text-color);
 }
 
-/* Removemos as bolinhas padrões da lista principal */
-.history-list {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-}
+/* --- Resto dos estilos internos (listas, cards) mantém igual --- */
+.history-list { list-style: none; padding: 0; margin: 0; }
+.history-card { background-color: #fff; border: 1px solid var(--border-color); border-radius: 8px; padding: 15px; margin-bottom: 12px; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
+.history-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; padding-bottom: 8px; border-bottom: 1px dashed #e5e7eb; }
+.history-header-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 5px; }
+.history-date { color: #333; font-size: 0.95rem; display: flex; align-items: center; }
+.history-id { font-size: 0.9rem; font-weight: bold; color: #9ca3af; background-color: #f3f4f6; padding: 2px 8px; border-radius: 4px; letter-spacing: 0.5px; }
+.history-header-bottom { margin-bottom: 12px; padding-bottom: 10px; border-bottom: 1px dashed #e5e7eb; }
+.history-total { color: var(--primary-color); font-weight: 700; font-size: 1.1rem; }
+.purchased-items-container { background-color: #f9fafb; border-radius: 6px; padding: 10px; }
+.items-label { font-size: 0.75rem; text-transform: uppercase; color: #9ca3af; font-weight: 600; margin-bottom: 5px; }
+.items-detail-list { list-style: none; padding: 0; margin: 0; }
+.item-row { display: flex; justify-content: space-between; font-size: 0.85rem; color: #4b5563; padding: 2px 0; }
+.item-name { font-weight: 500; }
+.item-price { font-family: monospace; }
+.history-date strong { display: flex; align-items: center; gap: 6px; }
 
-/* Cada compra é um cartão separado agora */
-.history-card {
-    background-color: #fff;
-    border: 1px solid var(--border-color);
-    border-radius: 8px;
-    padding: 15px;
-    margin-bottom: 12px; /* Espaço entre uma compra e outra */
-    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
-}
-
-/* Estilo do cabeçalho (Data e Valor Total) */
-.history-header {
+/* --- RODAPÉ --- */
+.total-footer {
+    margin-top: 10px;
+    padding-top: 15px;
+    border-top: 2px dashed #ccc;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 10px;
-    padding-bottom: 8px;
-    border-bottom: 1px dashed #e5e7eb;
+    background-color: #f9f9f9;
+    padding: 15px;
+    border-radius: 0 0 8px 8px;
+    
+    flex-shrink: 0; /* Impede que o rodapé seja esmagado */
 }
 
-.history-date {
-    color: var(--text-color);
-    font-size: 0.95rem;
-}
+/* =========================================
+   AJUSTE MOBILE (DENTRO DO SEU @MEDIA)
+   ========================================= */
+@media (max-width: 768px) {
+    /* ... seus outros códigos mobile ... */
 
-.history-total {
-    color: var(--primary-color); /* ou verde */
-    font-weight: 700;
-    font-size: 1rem;
-}
+    /* Modal em mobile - CORRIGIDO */
+    .modal-content {
+        width: 95% !important;
+        max-width: 500px !important;
+        max-height: 85vh !important; /* Limita altura */
+        
+        /* IMPORTANTE: Removemos a rolagem daqui */
+        overflow-y: hidden !important; 
+        
+        margin: 20px auto !important;
+        padding: 16px !important;
+        
+        /* Garante Flexbox no mobile tbm */
+        display: flex !important;
+        flex-direction: column !important;
+    }
 
-/* Container dos itens pequenos */
-.purchased-items-container {
-    background-color: #f9fafb; /* Fundo cinza bem claro */
-    border-radius: 6px;
-    padding: 10px;
-}
+    /* O corpo ganha rolagem */
+    .modal-body {
+        overflow-y: auto !important;
+        flex-grow: 1 !important;
+        max-height: none !important; /* Remove limite fixo, deixa o flexbox cuidar */
+        padding: 0 5px !important;
+    }
 
-.items-label {
-    font-size: 0.75rem;
-    text-transform: uppercase;
-    color: #9ca3af;
-    font-weight: 600;
-    margin-bottom: 5px;
-}
-
-/* Lista interna dos produtos */
-.items-detail-list {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-}
-
-.item-row {
-    display: flex;
-    justify-content: space-between;
-    font-size: 0.85rem;
-    color: #4b5563;
-    padding: 2px 0;
-}
-
-.item-name {
-    font-weight: 500;
-}
-
-.item-price {
-    font-family: monospace; /* Alinha melhor os números */
-}
-
-.history-date strong {
-    display: flex;
-    align-items: center; /* A mágica acontece aqui */
-    gap: 6px; /* Espaço entre o ícone e o texto */
-}
-
-/* --- Rodapé de Total Geral --- */
-.total-footer {
-  margin-top: 20px;
-  padding-top: 15px;
-  border-top: 2px dashed #ccc; /* Linha pontilhada para separar */
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  background-color: #f9f9f9; /* Leve fundo para destaque */
-  padding: 15px;
-  border-radius: 0 0 8px 8px;
+    /* Cabeçalho */
+    .modal-header {
+        padding: 0 0 10px 0 !important;
+        margin-bottom: 10px !important;
+    }
+    
+    /* Footer */
+    .total-footer {
+        padding: 10px !important;
+        margin-top: 10px !important;
+    }
 }
 
 .total-label {
@@ -422,8 +419,8 @@ h2 {
 
 /* Ajusta o cabeçalho do modal */
 .modal-header {
-    padding: 12px 15px !important;
-    margin-bottom: 10px !important;
+        padding: 0 0 10px 0 !important;
+        margin-bottom: 10px !important;
 }
 
 .modal-header h3 {
@@ -433,9 +430,10 @@ h2 {
 
 /* Ajusta o corpo do modal (onde ficam os cards) */
 .modal-body {
-    max-height: calc(80vh - 120px) !important; /* Altura dinâmica */
-    overflow-y: auto !important;
-    padding: 0 8px !important;
+        overflow-y: auto !important;
+        flex-grow: 1 !important;
+        max-height: none !important; /* Remove limite fixo, deixa o flexbox cuidar */
+        padding: 0 5px !important;
 }
 
 /* Cards de histórico menores */
@@ -481,6 +479,36 @@ h2 {
     font-size: 1rem !important;
 }
 
+/* --- ESTILOS DE MENSAGEM (TOAST) - Igual à tela de Itens --- */
+.toast-message {
+    position: fixed; /* Fixa na tela */
+    top: 20px; /* Distância do topo */
+    right: 20px; /* Distância da direita */
+    padding: 15px 25px;
+    border-radius: 8px;
+    font-weight: 600;
+    color: white;
+    z-index: 1200; /* Z-index alto para ficar acima do modal se precisar */
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    min-width: 280px;
+    text-align: center;
+    animation: fadeIn 0.5s ease-in-out;
+}
+
+.success {
+    background-color: #28a745; /* Verde Sucesso */
+}
+
+.error {
+    background-color: #dc3545; /* Vermelho Erro */
+}
+
+/* Animação de entrada suave */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
 /* =========================================
    RESPONSIVIDADE PARA MOBILE (ESTILO CARD)
    ========================================= */
@@ -516,15 +544,20 @@ h2 {
     }
 
     /* 3. Transforma a LINHA em um CARD */
-    .styled-table tbody tr {
-        display: block;
-        background-color: var(--card-background);
-        border: 1px solid var(--border-color);
-        border-radius: 12px;
-        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
-        padding: 0;
-        overflow: hidden;
-    }
+.styled-table tbody tr {
+    display: block;
+    background-color: var(--card-background);
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    padding: 0;
+    overflow: hidden;
+    margin-bottom: 20px; /* Empurra o card de baixo para longe */
+}
+
+.styled-table tbody tr:last-child {
+    margin-bottom: 0;
+}
 
     .styled-table tbody tr:hover {
         background-color: var(--card-background);
@@ -617,10 +650,19 @@ h2 {
 
     /* Modal em mobile */
     .modal-content {
-        width: 95%;
-        max-height: 85vh;
-        overflow-y: auto;
-        margin: 20px;
+        width: 95% !important;
+        max-width: 500px !important;
+        max-height: 85vh !important; /* Limita altura */
+        
+        /* IMPORTANTE: Removemos a rolagem daqui */
+        overflow-y: hidden !important; 
+        
+        margin: 20px auto !important;
+        padding: 16px !important;
+        
+        /* Garante Flexbox no mobile tbm */
+        display: flex !important;
+        flex-direction: column !important;
     }
 
     .modal-header h3 {
@@ -637,6 +679,13 @@ h2 {
         gap: 6px;
     }
 
+    .history-header-top {
+        margin-bottom: 2px;
+    }
+    .history-id {
+        font-size: 0.8rem;
+    }
+
     .history-date {
         font-size: 0.85rem;
     }
@@ -650,10 +699,10 @@ h2 {
     }
 
     /* Ajusta o container do footer para não ficar tão apertado */
-  .total-footer {
-    padding: 10px; /* Reduz o padding */
-    align-items: flex-end; /* Alinha melhor caso quebre linha */
-  }
+.total-footer {
+        padding: 10px !important;
+        margin-top: 10px !important;
+}
 
   /* Diminui o texto "TOTAL INDIVIDUAL..." */
   .total-label {

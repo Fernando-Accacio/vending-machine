@@ -14,7 +14,10 @@ import { LoadingService } from '../../../services/loading/loading.service';
 export class UserListComponent implements OnInit {
 
   users: UserDTO[] = [];
-  errorMessage = '';
+  
+  // Mensagens de Feedback (Toast)
+  successMessage: string | null = null;
+  errorMessage: string | null = null;
 
   // Controle de Carregamento da Tela Principal
   isLoading: boolean = true;
@@ -55,12 +58,16 @@ export class UserListComponent implements OnInit {
       error: (err) => {
         this.errorMessage = 'Erro ao carregar usuários.';
         this.isLoading = false;
+        setTimeout(() => this.errorMessage = null, 3000);
       }
     });
   }
 
   toggleStatus(user: UserDTO) {
-    if (!confirm(`Deseja realmente ${user.active ? 'BLOQUEAR' : 'ATIVAR'} o usuário ${user.name}?`)) {
+    const actionText = user.active ? 'BLOQUEAR' : 'REATIVAR';
+    
+    // 1. Confirmação
+    if (!confirm(`Deseja realmente ${actionText} o usuário ${user.name}?`)) {
       return;
     }
     
@@ -73,10 +80,23 @@ export class UserListComponent implements OnInit {
           this.users[index] = updatedUser;
         }
         this.loadingService.hide();
+
+        // 2. Define a mensagem de sucesso baseada no status novo
+        const statusMsg = updatedUser.active ? 'reativado' : 'bloqueado';
+        this.successMessage = `Usuário ${statusMsg} com sucesso! \u2713`;
+
+        // 3. Remove a mensagem após 3 segundos
+        setTimeout(() => {
+            this.successMessage = null;
+        }, 3000);
       },
       error: (err) => {
-        alert('Erro ao alterar status.');
         this.loadingService.hide();
+        this.errorMessage = 'Erro ao alterar status do usuário.';
+        
+        setTimeout(() => {
+            this.errorMessage = null;
+        }, 3000);
       }
     });
   }
@@ -86,12 +106,11 @@ export class UserListComponent implements OnInit {
     this.showHistoryModal = true;
     this.isLoadingHistory = true;
     this.selectedUserHistory = []; 
-    this.totalHistoryValue = 0; // Reseta o valor ao abrir
+    this.totalHistoryValue = 0; 
 
     this.withdrawalService.getWithdrawalsByUserId(user.id).subscribe({
       next: (data) => {
         this.selectedUserHistory = data;
-        // CALCULA O TOTAL ASSIM QUE OS DADOS CHEGAM
         this.calculateTotalHistory();
         this.isLoadingHistory = false;
       },
@@ -102,9 +121,7 @@ export class UserListComponent implements OnInit {
     });
   }
 
-  // FUNÇÃO PARA SOMAR TUDO
   calculateTotalHistory() {
-    // Soma o campo 'totalCost' de cada item do histórico
     this.totalHistoryValue = this.selectedUserHistory.reduce((acc, item) => acc + item.totalCost, 0);
   }
 

@@ -374,6 +374,35 @@ h2 {
     flex-shrink: 0; /* Impede que o flexbox encolha a imagem */
 }
 
+/* --- ESTILOS DE MENSAGEM (TOAST) --- */
+.toast-message {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    padding: 15px 25px;
+    border-radius: 8px;
+    font-weight: 600;
+    color: white;
+    z-index: 99999; /* Bem alto para ficar acima de tudo */
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    min-width: 280px;
+    text-align: center;
+    animation: fadeIn 0.5s ease-in-out;
+}
+
+.success {
+    background-color: #28a745; /* Verde Sucesso */
+}
+
+.error {
+    background-color: #dc3545; /* Vermelho Erro */
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
 @media (max-width: 768px) {
 
   .container-loading {

@@ -19,6 +19,36 @@
     text-align: center;
 }
 
+/* --- ESTILOS DE MENSAGEM (TOAST) --- */
+.toast-message {
+    position: fixed; /* Fixa na tela */
+    top: 20px; /* Distância do topo */
+    right: 20px; /* Distância da direita */
+    padding: 15px 25px;
+    border-radius: 8px;
+    font-weight: 600;
+    color: white;
+    z-index: 1000; /* Garante que fique acima de tudo */
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    min-width: 280px;
+    text-align: center;
+    animation: fadeIn 0.5s ease-in-out;
+}
+
+.success {
+    background-color: #28a745; /* Verde Sucesso */
+}
+
+.error {
+    background-color: #dc3545; /* Vermelho Erro */
+}
+
+/* Animação de entrada suave */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
 @media (max-width: 768px) {
   .page-title {
     line-height: 1.3;

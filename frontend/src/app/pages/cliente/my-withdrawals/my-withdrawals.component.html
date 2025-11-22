@@ -9,10 +9,12 @@
         Você ainda não realizou nenhuma retirada.
     </div>
 
-<div *ngIf="!isLoading && history.length > 0">
+    <div *ngIf="!isLoading && history.length > 0">
         <div *ngFor="let withdrawal of history" class="withdrawal-card">
             <div class="withdrawal-header">
+                
                 <h3>Retirada #{{ withdrawal.displayIndex }}</h3> 
+                
                 <span class="date">{{ withdrawal.withdrawalDate | date: 'dd/MM/yyyy HH:mm':'America/Sao_Paulo' }}</span>
             </div>
             
@@ -32,7 +34,7 @@
                         {{ item.quantity }}x {{ item.dish.name }} 
                         <span class="item-cost-detail">(Custo unitário: R$ {{ item.costAtTime | number: '1.2-2' }})</span>
                     </li>
-                    </ul>
+                </ul>
             </div>
         </div>
     </div>
