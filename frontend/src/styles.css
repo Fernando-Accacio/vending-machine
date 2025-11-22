@@ -1091,6 +1091,11 @@ td:last-child {
     padding-bottom: 10px;
 }
 
+.header-sem-padding {
+    padding-bottom: 0 !important;
+    margin-bottom: 10px !important;
+}
+
 .close-btn {
     margin-bottom: 30px;
     background: none;
