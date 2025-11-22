@@ -738,4 +738,21 @@ h2 {
     padding: 20px;
     box-sizing: border-box;  /* Garante que o padding não estoure a largura */
   }
+
+  /* AJUSTE DAS MENSAGENS DE CONFIRMAÇÃO (TOAST) */
+   .toast-message {
+       left: 20px;           /* Margem esquerda */
+       right: 20px;          /* Margem direita (força a centralização) */
+       width: auto;          /* Deixa a largura automática baseada nas margens */
+       min-width: unset;     /* Remove a largura mínima do desktop */
+       
+       top: 20px;            /* Distância do topo */
+       font-size: 0.9rem;    /* Texto levemente menor para caber melhor */
+       padding: 15px;        /* Padding confortável */
+       
+       /* Garante que o texto fique centralizado dentro da caixa */
+       display: flex;        
+       align-items: center;
+       justify-content: center;
+   }
 }

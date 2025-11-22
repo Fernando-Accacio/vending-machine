@@ -10,20 +10,17 @@
 .back-arrow-link {
     display: flex;
     align-items: center;
-    
     /* Centraliza o link, alinhado à esquerda do box do formulário (400px) */
     max-width: 400px;
-    
-    /* Ajuste para dar um espaço em cima e alinhar melhor abaixo */
-    margin: 2rem auto 0.5rem;
-    
-    padding: 0;
-    
+    /* Ajuste para ficar igual ao Login: um pouco menos de margem no topo */
+    margin: 1.5rem auto 0.5rem;
+    padding: 0 1rem; 
     font-weight: 500;
     color: #555;
     text-decoration: none;
     font-size: 0.9rem;
-    gap: 5px;
+    gap: 8px; 
+    cursor: pointer; /* Importante para indicar que é clicável */
 }
 
 .back-arrow-link:hover {
@@ -166,9 +163,9 @@ h2 {
         margin: 1rem 15px 4rem 15px; /* Margem nas laterais para telas pequenas */
     }
     .back-arrow-link {
-        padding: 0 15px; /* Ajusta o padding do link para telas pequenas */
-        margin: 1.5rem 15px 0.5rem 15px; /* Ajusta as margens para acompanhar */
-        max-width: unset; /* Remove o max-width para telas pequenas */
+        padding: 0 1.5rem; 
+        margin: 4rem auto 0.5rem;
+        max-width: unset;
     }
 
     .image-options {
