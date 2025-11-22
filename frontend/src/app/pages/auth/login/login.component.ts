@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { AuthenticateService } from '../../../services/auth/authenticate.service';
+import { DishService } from '../../../services/dish.service';
 import { Router, RouterModule } from '@angular/router'; 
 import { LoadingService } from '../../../services/loading/loading.service';
 
@@ -29,12 +30,27 @@ export class LoginComponent implements OnInit {
 
   constructor(
     private authService: AuthenticateService, 
+    private dishService: DishService,
     private router: Router,
     private loadingService: LoadingService 
   ) {}
 
   ngOnInit(): void {
-    setTimeout(() => { this.isLoadingLocal = false; }, 500); 
+    // Mantém a tela travada (isLoadingLocal = true)
+    // e faz uma requisição leve ao backend apenas para "acordá-lo".
+    
+    this.dishService.getDishes().subscribe({
+      next: () => {
+        // Se o backend respondeu (sucesso), ele acordou. Libera a tela.
+        this.isLoadingLocal = false; 
+      },
+      error: (err) => {
+        // Se deu erro, o backend também acordou (respondeu com erro).
+        // Liberamos a tela para o usuário ver as mensagens de erro se tentar logar.
+        console.warn("Backend acordou com erro (ou sem itens), liberando tela.", err);
+        this.isLoadingLocal = false; 
+      }
+    });
   }
 
   togglePasswordVisibility(): void {

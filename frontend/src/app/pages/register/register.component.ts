@@ -3,6 +3,7 @@ import { CommonModule, Location } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router, RouterModule } from '@angular/router';
 import { AuthenticateService } from '../../services/auth/authenticate.service';
+import { DishService } from '../../services/dish.service';
 import { LoadingService } from '../../services/loading/loading.service';
 
 @Component({
@@ -30,14 +31,22 @@ export class RegisterComponent implements OnInit {
 
   constructor(
     private authService: AuthenticateService,
+    private dishService: DishService,
     private router: Router,
     private loadingService: LoadingService,
     private location: Location
   ) {}
 
   ngOnInit(): void {
-    // Aumentei para 500ms para visualizar o spinner, igual ao login
-    setTimeout(() => { this.isLoadingLocal = false; }, 500);
+    // Isso garante que o spinner fique rodando até o servidor responder
+    this.dishService.getDishes().subscribe({
+        next: () => {
+          this.isLoadingLocal = false;
+        },
+        error: () => {
+          this.isLoadingLocal = false;
+        }
+    });
   }
 
   togglePasswordVisibility(): void { this.passwordFieldType = this.passwordFieldType === 'password' ? 'text' : 'password'; }
