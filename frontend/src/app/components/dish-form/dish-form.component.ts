@@ -15,6 +15,8 @@ export class DishFormComponent implements OnInit {
     
     @Input() dishId: number | null = null;
     
+    isLoading: boolean = false;
+
     dish: Dish = {
         name: '',
         description: '',
@@ -27,12 +29,11 @@ export class DishFormComponent implements OnInit {
     selectedFile: File | null = null;
     imageOption: 'link' | 'upload' = 'link';
     
-    // VARIÁVEIS ADICIONADAS PARA MENSAGEM DE SUCESSO E ERRO
     successMessage: string | null = null;
     errorMessage: string | null = null;
 
     private GERENTE_LISTA_ITENS_ROUTE = '/itens'; 
-    private SUCCESS_DELAY_MS = 1500; // 1.5 segundos de atraso
+    private SUCCESS_DELAY_MS = 1500;
 
     constructor(
         private dishService: DishService,
@@ -52,10 +53,21 @@ export class DishFormComponent implements OnInit {
     loadDish(id: number) {
         this.isEdit = true;
         this.dishId = id;
-        this.dishService.getDish(id).subscribe((data: Dish) => {
-            this.dish = data;
-            // Define a opção de imagem correta ao carregar
-            this.imageOption = this.dish.imageUrl ? 'link' : 'upload';
+        
+        // ATIVA O LOADING AO BUSCAR DADOS
+        this.isLoading = true;
+
+        this.dishService.getDish(id).subscribe({
+            next: (data: Dish) => {
+                this.dish = data;
+                this.imageOption = this.dish.imageUrl ? 'link' : 'upload';
+                this.isLoading = false; // DESATIVA AO SUCESSO
+            },
+            error: (err) => {
+                console.error(err);
+                this.errorMessage = 'Erro ao carregar dados do item.';
+                this.isLoading = false; // DESATIVA AO ERRO
+            }
         });
     }
 
@@ -67,8 +79,11 @@ export class DishFormComponent implements OnInit {
     }
 
     saveDish() {
-        this.successMessage = null; // Limpa mensagens antigas
+        this.successMessage = null;
         this.errorMessage = null;
+
+        // ATIVA O LOADING AO SALVAR
+        this.isLoading = true;
 
         const formData = new FormData();
         formData.append('name', this.dish.name);
@@ -76,33 +91,31 @@ export class DishFormComponent implements OnInit {
         formData.append('custo', this.dish.custo.toString());
         formData.append('tempoReposicao', this.dish.tempoReposicao.toString());
 
-        // Lógica de Imagem
         if (this.imageOption === 'upload' && this.selectedFile) {
             formData.append('file', this.selectedFile);
         } else if (this.imageOption === 'link' && this.dish.imageUrl) {
             formData.append('imageUrl', this.dish.imageUrl);
         }
-        // Se for upload e não tem selectedFile, e não está editando, assume que não tem imagem
-        // Se for edição e selectedFile for null, o backend deve manter o imageUrl existente.
 
         const operation = this.isEdit ? 
             this.dishService.updateDish(this.dishId!, formData) : 
             this.dishService.createDish(formData);
 
         const successMsg = this.isEdit 
-    ? 'Item atualizado com sucesso! \u2713' 
-    : 'Item adicionado com sucesso! \u2713';
+            ? 'Item atualizado com sucesso! \u2713' 
+            : 'Item adicionado com sucesso! \u2713';
         const errorMsg = this.isEdit ? 'Erro ao atualizar item.' : 'Erro ao adicionar item.';
 
         operation.subscribe({
             next: () => {
+                this.isLoading = false; // DESATIVA
                 this.successMessage = successMsg;
-                // Espera um pouco antes de navegar para a mensagem ser lida
                 setTimeout(() => {
                     this.goBack();
                 }, this.SUCCESS_DELAY_MS);
             },
             error: (err) => {
+                this.isLoading = false; // DESATIVA
                 this.errorMessage = `${errorMsg} Verifique os logs.`;
                 console.error(errorMsg, err);
             }
